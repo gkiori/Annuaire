@@ -1,7 +1,9 @@
 package fr.isika.cda15.projet1.annuaire;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Recherche {
 	
@@ -431,6 +433,32 @@ public class Recherche {
 		}	
 		return courant;	
 	}
-
+	
+	public static Set<String> getListePromo(ArbreStagiaire monArbre) {
+		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
+		Set<String> listePromo = new HashSet<String>();
+		for(Stagiaire stagiaire : stagiaires){
+			listePromo.add(stagiaire.getPromo());
+		};
+		return listePromo;
+	}
+	
+	public static Set<String> getListeDepartement(ArbreStagiaire monArbre) {
+		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
+		Set<String> listeDepartement = new HashSet<String>();
+		for(Stagiaire stagiaire : stagiaires){
+			listeDepartement.add(stagiaire.getDepartement());
+		};
+		return listeDepartement;
+	}
+	
+	public static Set<String> getListeAnneeEntree(ArbreStagiaire monArbre) {
+		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
+		Set<String> listeAnneeEntree = new HashSet<String>();
+		for(Stagiaire stagiaire : stagiaires){
+			listeAnneeEntree.add(stagiaire.getAnneeEntree());
+		};
+		return listeAnneeEntree;
+	}
 }
 
