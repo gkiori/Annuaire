@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class PanelConnexion extends BorderPane{
+	
 	private final String fichierLoginPath = "src/resources/loginFile.bin";
 	private File fichierLogin = new File(fichierLoginPath);
 	
@@ -37,6 +40,7 @@ public class PanelConnexion extends BorderPane{
 	private GridPane gridPane = new GridPane();
 	private Text titre = new Text("Gestion Annuaire");
 	private BorderPane panelPrincipal = this;
+	
 	public PanelConnexion(final Stage stage) throws Exception {
 		
 		panelTitre.getChildren().add(titre);
@@ -51,6 +55,20 @@ public class PanelConnexion extends BorderPane{
 		panelPrincipal.setCenter(borderCenter);
 		
 		titre.setFont(Font.font("Verdana", 35));
+		
+		boutonLogin.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				try {
+					new PanelGestionnaire(stage);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
 		
 		if(fichierLogin.exists()) {
 			// Le fichier contenant les identifiant et les mdp

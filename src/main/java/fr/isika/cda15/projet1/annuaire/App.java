@@ -1,34 +1,39 @@
 package fr.isika.cda15.projet1.annuaire;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
 /**
- * JavaFX App
+ * JavaFX Application
  */
 public class App extends Application {
-
-    private static Scene scene;
+	
+	private BorderPane panelPrincipal = new BorderPane();
 
     @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
-    }
+    public void start(Stage stage) throws Exception {
+    	
+    	PanelConnexion connexion = new PanelConnexion(stage);
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
+		panelPrincipal.setCenter(connexion);
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+		Scene scene = new Scene(panelPrincipal, 400, 350);
+		stage.setTitle("Gestion Annuaire");
+		stage.setScene(scene);
+		stage.show();
+//    	
+//        var javaVersion = SystemInfo.javaVersion();
+//        var javafxVersion = SystemInfo.javafxVersion();
+//
+//        var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
+//        var scene = new Scene(new StackPane(label), 640, 480);
+//        stage.setScene(scene);
+//        stage.show();
     }
 
     public static void main(String[] args) {

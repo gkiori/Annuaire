@@ -22,8 +22,8 @@ public class ArbreStagiaire {
 	static final int STAGIAIRE_LONG = 142;
 	static final int FILS_GAUCHE_LONG = 134;
 	static final int FILS_DROIT_LONG = 138;
-	static final String PATH_FILE_BIN = "src/resources/stagiaires.bin";
-	static final String PATH_FILE_DON = "src/resources/STAGIAIRES.DON";
+	static final String PATH_FILE_BIN = "src/main/resources/stagiaires.bin";
+	static final String PATH_FILE_DON = "src/main/resources/STAGIAIRES.DON";
 	private Noeud racine;
 	private static RandomAccessFile raf;
 
