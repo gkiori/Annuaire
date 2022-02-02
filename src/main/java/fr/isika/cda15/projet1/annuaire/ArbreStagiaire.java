@@ -20,7 +20,7 @@ public class ArbreStagiaire {
 	static final int ANNEE_ENTREE = 4;
 	static final String PATH_FILE_BIN = "src/main/resources/stagiaires.bin";
 	static final String PATH_FILE_DON = "src/main/resources/STAGIAIRES.DON";
-	private Noeud racine;
+	private static Noeud racine;
 	private static RandomAccessFile raf;
 	
 	/**
@@ -35,7 +35,7 @@ public class ArbreStagiaire {
 	 * Retourne le noeud racine
 	 * @return
 	 */
-	public Noeud getRacine() {
+	public static Noeud getRacine() {
 		return racine;
 	}
 
@@ -188,7 +188,7 @@ public class ArbreStagiaire {
 		return stagiaireTemporaire;
 	}
 	
-	private int lectureIndexFilsG(int index) {
+	private static int lectureIndexFilsG(int index) {
 		int retour = 0;
 		try {
 			raf.seek((index*142)+134);
@@ -199,7 +199,7 @@ public class ArbreStagiaire {
 		return retour;
 	}
 	
-	private int lectureIndexFilsD(int index) {
+	private static int lectureIndexFilsD(int index) {
 		int retour = 0;
 		try {
 			raf.seek((index*142)+138);
@@ -210,7 +210,7 @@ public class ArbreStagiaire {
 		return retour;
 	}
 	
-	private void ecrireIndexFilsG(int index, int nouveauIndex) {
+	private static void ecrireIndexFilsG(int index, int nouveauIndex) {
 		try {
 			raf.seek((index*142)+134);
 			raf.writeInt(nouveauIndex);
@@ -219,7 +219,7 @@ public class ArbreStagiaire {
 		}
 	}
 	
-	private void ecrireIndexFilsD(int index, int nouveauIndex) {
+	private static void ecrireIndexFilsD(int index, int nouveauIndex) {
 		try {
 			raf.seek((index*142)+138);
 			raf.writeInt(nouveauIndex);
@@ -228,7 +228,7 @@ public class ArbreStagiaire {
 		}
 	}
 	
-	private void nouvelleRacine(Stagiaire x, int filsG, int filsD) {
+	private static void nouvelleRacine(Stagiaire x, int filsG, int filsD) {
 		ecritureNoeudFichier(x, -1);
 		try {
 			raf.seek(134);
@@ -242,19 +242,19 @@ public class ArbreStagiaire {
 	
 //	************************** Méthodes pour ajout de Noeud ************************** //	
 	
-	public void ajouter(Stagiaire x) {
-		if (this.racine == null) {
-			this.racine = ecritureNoeudFichier(x, -1); 
+	public static void ajouter(Stagiaire x) {
+		if (ArbreStagiaire.racine == null) {
+			ArbreStagiaire.racine = ecritureNoeudFichier(x, -1); 
 		}
 		ajouterNoeud(x, racine, -1);
 	}
 	
-	private Noeud ajouterNoeud(Stagiaire x, Noeud courant, int indexPere) {
+	private static Noeud ajouterNoeud(Stagiaire x, Noeud courant, int indexPere) {
 		if(courant == null) {
 			return ecritureNoeudFichier(x, indexPere);
 		}
 		if (x.compareTo(courant.getStagiaire()) < 0) {
-			courant.setGauche(this.ajouterNoeud(x, courant.getGauche(), courant.getIndex()));
+			courant.setGauche(ajouterNoeud(x, courant.getGauche(), courant.getIndex()));
 		}
 		if (x.compareTo(courant.getStagiaire()) > 0) {
 			courant.setDroit(ajouterNoeud(x, courant.getDroit(), courant.getIndex()));
@@ -264,16 +264,16 @@ public class ArbreStagiaire {
 	
 //	************************** Méthodes pour suppression de Noeud ************************** //	
 	
-	public void supprimer(Stagiaire x) {
-		Noeud racineAvant = new Noeud(this.racine.getStagiaire(), 0);
-		this.racine = supprimerNoeud(x, this.racine);
-		if(racineAvant != this.racine && this.racine != null) {
-			nouvelleRacine(this.racine.getStagiaire(), lectureIndexFilsG(this.racine.getIndex()), lectureIndexFilsD(this.racine.getIndex()));
-			this.racine.setIndex(0);
+	public static void supprimer(Stagiaire x) {
+		Noeud racineAvant = new Noeud(ArbreStagiaire.racine.getStagiaire(), 0);
+		ArbreStagiaire.racine = supprimerNoeud(x, ArbreStagiaire.racine);
+		if(racineAvant != ArbreStagiaire.racine && ArbreStagiaire.racine != null) {
+			nouvelleRacine(ArbreStagiaire.racine.getStagiaire(), lectureIndexFilsG(ArbreStagiaire.racine.getIndex()), lectureIndexFilsD(ArbreStagiaire.racine.getIndex()));
+			ArbreStagiaire.racine.setIndex(0);
 		}
 	}
 	
-	private Noeud supprimerNoeud(Stagiaire x, Noeud courant) {
+	private static Noeud supprimerNoeud(Stagiaire x, Noeud courant) {
         if (courant == null)
             return courant;
         if (courant.getStagiaire().compareTo(x) == 0) {
@@ -290,7 +290,7 @@ public class ArbreStagiaire {
         return courant;
     }
 	
-	private Noeud supprimerRacine(Noeud courant) {
+	private static Noeud supprimerRacine(Noeud courant) {
 		if (courant.getGauche() == null && courant.getDroit() == null) {
 			return null;
 		}else if (courant.getGauche() == null) {
@@ -315,7 +315,7 @@ public class ArbreStagiaire {
         return courant;
     }
 
-    private Noeud dernierDescendant(Noeud courant) {
+    private static Noeud dernierDescendant(Noeud courant) {
         if (courant.getDroit() == null)
             return courant;
         return dernierDescendant(courant.getDroit());
@@ -353,9 +353,9 @@ public class ArbreStagiaire {
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
-    public void modifier(Stagiaire ancienStagiaire, Stagiaire nouveauStagiaire) {
-    	this.supprimer(ancienStagiaire);
-    	this.ajouter(nouveauStagiaire);
+    public static void modifier(Stagiaire ancienStagiaire, Stagiaire nouveauStagiaire) {
+    	ArbreStagiaire.supprimer(ancienStagiaire);
+    	ArbreStagiaire.ajouter(nouveauStagiaire);
     }
 //	********************************************************************	
 	@Override

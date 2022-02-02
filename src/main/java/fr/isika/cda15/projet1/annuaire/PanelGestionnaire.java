@@ -3,20 +3,34 @@
  */
 package fr.isika.cda15.projet1.annuaire;
 
+import fr.isika.cda15.projet1.annuaire.ArbreStagiaire;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -26,11 +40,16 @@ import javafx.stage.Stage;
 
 public class PanelGestionnaire extends BorderPane {
 	TableView<Stagiaire> table = new TableView<Stagiaire>();
+	static ObservableList<Stagiaire> data;
 	
 	public PanelGestionnaire (final Stage stage) throws Exception {
 		try {
 					
-					ObservableList<Stagiaire> data = getStagiaireList();
+//					data = getStagiaireList();
+					
+					ContextMenu contextMenu = new ContextMenu();										
+			        MenuItem itemModif = new MenuItem("Modifier");
+			        MenuItem itemSupp = new MenuItem("Supprimer");
 					
 					//Création de la table
 					table.setEditable(true);
@@ -66,7 +85,7 @@ public class PanelGestionnaire extends BorderPane {
 			        		new PropertyValueFactory<Stagiaire, String>("anneeEntree"));
 			        
 			        TableColumn<Stagiaire, String> departementCol = new TableColumn<Stagiaire, String>("Département");
-			        departementCol.setMinWidth(100);
+			        departementCol.setMinWidth(150);
 			        departementCol.setCellValueFactory(
 			        		new PropertyValueFactory<Stagiaire, String>("departement"));
 			                
@@ -80,7 +99,8 @@ public class PanelGestionnaire extends BorderPane {
 			            @Override
 			            public void handle(ActionEvent e) {
 			        		try {
-								new PanelAjoutStagiaire(stage);
+			        			Stagiaire stagiaire = new Stagiaire();
+								new PanelAjoutStagiaire(stage, stagiaire);
 							} catch (Exception e3) {
 								e3.printStackTrace();
 							}
@@ -99,23 +119,78 @@ public class PanelGestionnaire extends BorderPane {
 			            }
 			        });
 			        
+					table.setOnMouseClicked(evt -> {
+					    if (evt.getButton() == MouseButton.SECONDARY) {
+					        Set<Node> rows = table.lookupAll(".table-row-cell");
+					        Optional<Cell> n = rows.stream().map(r -> (Cell) r).filter(Cell::isSelected).findFirst();
+					
+					        if (n.isPresent()) {
+					            Optional<Node> node = n.get().getChildrenUnmodifiable().stream()
+					                    .filter(c -> c instanceof TableCell && ((TableCell) c).getTableColumn() == departementCol)
+					                    .findFirst();
+					
+					            if (node.isPresent()) {
+					                Node cell = node.get();
+					                Bounds b = cell.getLayoutBounds();
+					                contextMenu.show(cell, Side.BOTTOM, b.getWidth() / 2, b.getHeight() / -2);
+					            }
+					        }
+					    }
+					});
+					
+					Label contextMenuResultLbl = new Label();
+					
+					itemModif.setOnAction(new EventHandler<ActionEvent>() {
+						 
+			            @Override
+			            public void handle(ActionEvent event) {
+			            	//TODO Récuperation des infos de l'item selectionner
+			            	//TODO Passage au panel modification
+			            	Stagiaire stagiaireAModif = table.getSelectionModel().getSelectedItem();
+			            	try {
+								new PanelAjoutStagiaire(stage, stagiaireAModif);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+			            	contextMenuResultLbl.setText("Vous avez choisi de modifier la cellule" + table.getSelectionModel().getSelectedIndex());       
+			                
+			            }
+			        });
+			       
+			        itemSupp.setOnAction(new EventHandler<ActionEvent>() {
+			 
+			            @Override
+			            public void handle(ActionEvent event) {
+			            	//TODO Recupération des infos de l'item slectionner
+			            	//TODO appel de la fonction suppression 	
+			            	Stagiaire stagiaireASupp = table.getSelectionModel().getSelectedItem();
+			            	ArbreStagiaire.supprimer(stagiaireASupp);
+			            	data.remove(stagiaireASupp);
+			            	contextMenuResultLbl.setText("Vous avez choisi de supprimer la cellule " + stagiaireASupp);
+			               
+			            }
+			        });
+			        		        
+			        contextMenu.getItems().addAll(itemModif, itemSupp);
+			        
 			        BorderPane root = new BorderPane();
 			        HBox hbox = new HBox();
-			    	hbox.getChildren().addAll(button, button1);
+			    	hbox.getChildren().addAll(button, button1, contextMenuResultLbl);
 
 			        //On place le label, la table et la zone de modification dans une VBox
 			        VBox vbox = new VBox();
 			        vbox.setSpacing(5);
 			        vbox.setPadding(new Insets(10, 10, 10, 10));
 			        vbox.getChildren().addAll(label, table, hbox);
-			        PanelFiltre monPanelFiltre = new PanelFiltre(stage, table);
+			        PanelFiltre monPanelFiltre = new PanelFiltre(stage, this);
 			        this.setCenter(vbox);
 			        this.setRight(monPanelFiltre);
 					Scene scene = new Scene(this,400,400);
 //					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+					
 					stage.setTitle("Annuaire");
-					stage.setWidth(500);
-					stage.setHeight(700);
+					stage.setWidth(730);
+					stage.setHeight(500);
 					stage.setScene(scene);
 					stage.show();
 				} catch(Exception e) {
@@ -124,15 +199,31 @@ public class PanelGestionnaire extends BorderPane {
 		
 	}
 	
-	private ObservableList<Stagiaire> getStagiaireList() {
-		
-		ArbreStagiaire monArbre = new ArbreStagiaire();
-		monArbre.initArbre();
-    	
-    	List<Stagiaire> maList = new ArrayList<>();
-    	maList = Recherche.parcoursStagiaire(monArbre);
-		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maList);
-	    return list;
-	  }
+//	private ObservableList<Stagiaire> getStagiaireList() {
+//		
+//		ArbreStagiaire monArbre = new ArbreStagiaire();
+//		monArbre.initArbre();
+//    	
+//    	List<Stagiaire> maList = new ArrayList<>();
+//    	maList = Recherche.parcoursStagiaire(monArbre);
+//		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maList);
+//	    return list;
+//	  }
+
+	public TableView<Stagiaire> getTable() {
+		return table;
+	}
+
+	public void setTable(TableView<Stagiaire> table) {
+		this.table = table;
+	}
+
+	public static ObservableList<Stagiaire> getData() {
+		return data;
+	}
+
+	public static void setData(ObservableList<Stagiaire> data) {
+		PanelGestionnaire.data = data;
+	}
 	
 }

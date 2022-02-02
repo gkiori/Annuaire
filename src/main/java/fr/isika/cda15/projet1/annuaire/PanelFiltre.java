@@ -1,5 +1,6 @@
 package fr.isika.cda15.projet1.annuaire;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,14 +59,21 @@ public class PanelFiltre extends BorderPane{
 		affichageResultat.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
             public void handle(ActionEvent e) {
-				Map<String, String> listeRecherche = new HashMap<String, String>();
-        		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
-        		if(menuDepartement.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
-        		if(menuAnneeEntree.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
-        		
-        		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche, monArbre);
-        		ObservableList<Stagiaire> vueResultatRecherche = FXCollections.observableArrayList(resultatRecherche);
+				
+        		try {
+        			Map<String, String> listeRecherche = new HashMap<String, String>();
+            		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
+            		if(menuDepartement.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
+            		if(menuAnneeEntree.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
+            		PanelGestionnaire.setData(updatePanelGestionnaire(listeRecherche, monArbre));
+					new PanelGestionnaire(stage);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+//        		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche, monArbre);
+//        		ObservableList<Stagiaire> vueResultatRecherche = FXCollections.observableArrayList(resultatRecherche);
         		//System.out.println(vueResultatRecherche);
+        		
             }
 		});
 		VBox orgVbox = new VBox();
@@ -75,5 +83,15 @@ public class PanelFiltre extends BorderPane{
 		this.setBottom(affichageResultat);
 		Scene scene = new Scene(this);
 		stage.setScene(scene);
+	}
+	
+	private static ObservableList<Stagiaire> updatePanelGestionnaire(Map<String, String> listeRecherche, ArbreStagiaire monArbre) {
+    	
+    	List<Stagiaire> maList = new ArrayList<>();
+    	maList =  Recherche.chercherMultiCle(listeRecherche, monArbre);
+		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maList);
+		System.out.println(maList);
+	    return list;
+		
 	}
 }

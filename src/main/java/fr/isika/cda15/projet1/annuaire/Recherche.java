@@ -18,7 +18,7 @@ public class Recherche {
 	 * @return List<Stagiaire> : listInfixe
 	 */
 	public static List<Stagiaire> parcoursStagiaire(ArbreStagiaire arbre){
-		Noeud racine = arbre.getRacine();
+		Noeud racine = ArbreStagiaire.getRacine();
 		List<Stagiaire> listStagiaire = new ArrayList<Stagiaire>();
 		return parcoursStagiaire(racine, listStagiaire);
 	}
@@ -68,7 +68,7 @@ public class Recherche {
 	 */
 	public static List<Stagiaire> chercherDepartement(String cle, ArbreStagiaire arbre) {
 		List<Stagiaire> listRechDep = new ArrayList<>();
-		return chercherDepartement(cle, arbre.getRacine(),listRechDep);
+		return chercherDepartement(cle, ArbreStagiaire.getRacine(),listRechDep);
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class Recherche {
 	 */
 	public static List<Stagiaire> chercherNom(String cle, ArbreStagiaire arbre) {
 		List<Stagiaire> listRechNom = new ArrayList<>();
-		return chercherNom(cle, arbre.getRacine(), listRechNom);
+		return chercherNom(cle, ArbreStagiaire.getRacine(), listRechNom);
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public class Recherche {
 	 */
 	public static List<Stagiaire> chercherAnneeEntree(String cle, ArbreStagiaire arbre) {
 		List<Stagiaire> listRechAnnee = new ArrayList<>();
-		return chercherAnneeEntree(cle, arbre.getRacine(), listRechAnnee);
+		return chercherAnneeEntree(cle, ArbreStagiaire.getRacine(), listRechAnnee);
 	}
 	
 	/**
@@ -165,7 +165,7 @@ public class Recherche {
 	 */
 	public static List<Stagiaire> chercherPromotion(String cle, ArbreStagiaire arbre) {
 		List<Stagiaire> listRechPromo = new ArrayList<>();
-		return chercherPromotion(cle, arbre.getRacine(), listRechPromo);
+		return chercherPromotion(cle, ArbreStagiaire.getRacine(), listRechPromo);
 	}
 	
 	/**
@@ -198,7 +198,7 @@ public class Recherche {
 	 */
 	public static List<Stagiaire> chercherPromotionFull(String cle, ArbreStagiaire arbre) {
 		List<Stagiaire> listRechPromo = new ArrayList<>();
-		return chercherPromotionFull(cle, arbre.getRacine(), listRechPromo);
+		return chercherPromotionFull(cle, ArbreStagiaire.getRacine(), listRechPromo);
 	}
 	
 	/**
@@ -443,10 +443,10 @@ public class Recherche {
 	 * @param arbre
 	 */
 	public static void ajouterNoeud(Stagiaire x, ArbreStagiaire arbre) {
-		if (arbre.getRacine() == null) {
+		if (ArbreStagiaire.getRacine() == null) {
 			arbre.setRacine(new Noeud(x));
 		}
-		ajouterNoeud(x, arbre.getRacine());
+		ajouterNoeud(x, ArbreStagiaire.getRacine());
 	}
 	
 	/**

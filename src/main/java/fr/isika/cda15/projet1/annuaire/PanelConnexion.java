@@ -3,7 +3,11 @@ package fr.isika.cda15.projet1.annuaire;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -61,6 +65,7 @@ public class PanelConnexion extends BorderPane{
 			@Override
 			public void handle(ActionEvent arg0) {
 				try {
+					PanelGestionnaire.setData(initPanelGestionnaire());
 					new PanelGestionnaire(stage);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -102,4 +107,14 @@ public class PanelConnexion extends BorderPane{
 		stage.show();
 	}
 	
+	private static ObservableList<Stagiaire> initPanelGestionnaire() {
+		ArbreStagiaire monArbre = new ArbreStagiaire();
+		monArbre.initArbre();
+    	
+    	List<Stagiaire> maList = new ArrayList<>();
+    	maList = Recherche.parcoursStagiaire(monArbre);
+		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maList);
+	    return list;
+		
+	}
 }
