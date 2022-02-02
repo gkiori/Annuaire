@@ -2,6 +2,9 @@ package fr.isika.cda15.projet1.annuaire;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
+
+//import org.controlsfx.control.CheckComboBox;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +14,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -34,7 +36,6 @@ public class PanelFiltre extends BorderPane{
 	
 	public PanelFiltre(final Stage stage) throws Exception{
 		ArbreStagiaire monArbre = new ArbreStagiaire();
-		System.out.println(monArbre);
 		
 		vuePromo.addAll(Recherche.getListePromo(monArbre));
 		vueDepartement.addAll(Recherche.getListeDepartement(monArbre));
@@ -58,7 +59,6 @@ public class PanelFiltre extends BorderPane{
 			nouvelleCheckBox.setHideOnClick(false);
 			listeAnneeEntree.add(nouvelleCheckBox);
 		}
-		
 		menuPromo.getItems().addAll(listePromo);
 		menuDepartement.getItems().addAll(listeDepartement);
 		menuAnneeEntree.getItems().addAll(listeAnneeEntree);
