@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-//import java.util.List;
 
 public class ArbreStagiaire {
 	
@@ -14,19 +13,16 @@ public class ArbreStagiaire {
 	 * Définition des attributs
 	 * A voir l'intérêt
 	 */
-	static final int NOM_LONG = 25;
-	static final int PRENOM_LONG = 20;
-	static final int DEPARTEMENT_LONG = 3;
-	static final int PROMO_LONG = 15;
-	static final int ANNEE_ENTREE_LONG = 4;
-	static final int STAGIAIRE_LONG = 142;
-	static final int FILS_GAUCHE_LONG = 134;
-	static final int FILS_DROIT_LONG = 138;
+	static final int NOM = 25;
+	static final int PRENOM = 20;
+	static final int DEPARTEMENT = 3;
+	static final int PROMO = 15;
+	static final int ANNEE_ENTREE = 4;
 	static final String PATH_FILE_BIN = "src/main/resources/stagiaires.bin";
 	static final String PATH_FILE_DON = "src/main/resources/STAGIAIRES.DON";
 	private Noeud racine;
 	private static RandomAccessFile raf;
-
+	
 	/**
 	 * Constructeur vide 
 	 * @TODO A voir l'intérêt
@@ -52,9 +48,7 @@ public class ArbreStagiaire {
 	}
 
 //************************* Manipulation fichiers binaires ************************** //
-	/**
-	 * Initialisation de l'arbre stagiaire à partir du fichier .BIN ou .DON
-	 */
+	
 	public void initArbre() {
 		File monFichierBin = new File(PATH_FILE_BIN);
 		File monFichierDon = new File(PATH_FILE_DON);
@@ -64,7 +58,7 @@ public class ArbreStagiaire {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			initLectureBin();
+			initArbreFichierBin();
 		}
 		else if(monFichierDon.exists()) {
 			try {
@@ -73,20 +67,16 @@ public class ArbreStagiaire {
 				e.printStackTrace();
 			}
 			initLectureDon(monFichierDon);
-			initLectureBin();
 		}
 	}
+
+//	************************** Initialisation de l'arbre à partir d'un fichier bin ************************** //
 	
-	/**
-	 * Méthode permettant de lire le fichier d'extention *.DON
-	 * @param monFichier
-	 */
 	private void initLectureDon(File monFichier) {
 		String nom = "", prenom = "", departement = "", nomPromo = "", anneeEntree = "";
 		try {
 			FileReader fr = new FileReader(monFichier);
 			BufferedReader br = new BufferedReader(fr);
-			int i = 0;
 			while (br.ready()) {
 				nom = br.readLine();
 				prenom = br.readLine();
@@ -94,8 +84,7 @@ public class ArbreStagiaire {
 				nomPromo = br.readLine();
 				anneeEntree = br.readLine();
 				br.readLine();
-				this.ajouterNoeud(new Stagiaire(nom, prenom, departement, nomPromo, anneeEntree), i, true);
-				i++;
+				this.ajouter(new Stagiaire(nom, prenom, departement, nomPromo, anneeEntree));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -103,97 +92,90 @@ public class ArbreStagiaire {
 		}
 	}
 	
-	/**
-	 * Méthode permettant de lire le fichier d'extenrion *.BIN
-	 */
-	private void initLectureBin() {
-		try {
-			int endOfFile = (int)raf.length();
-			int i = 0;
-			while (raf.getFilePointer() < endOfFile) {
-				this.ajouterNoeud(lectureStagiaire(i), i, false);
-				i++;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void initArbreFichierBin() {
+		this.setRacine(new Noeud(lectureStagiaire(0), 0)); 
+		this.initArbreFichierBin(racine);
 	}
 	
-	/**
-	 * Méthode permettant d'écrire les information d'un objet de type Noeud 
-	 * dans un fichier
-	 * @param noeudCourant
-	 * @param indexPere
-	 */
-	private static void ecritureNoeudFichier(Noeud noeudCourant, int indexPere) {
+	private Noeud initArbreFichierBin(Noeud courant) {
+		if (lectureIndexFilsG(courant.getIndex()) != -1) {
+			courant.setGauche(this.initArbreFichierBin(new Noeud(lectureStagiaire(lectureIndexFilsG(courant.getIndex())), lectureIndexFilsG(courant.getIndex()))));	
+		}
+		if (lectureIndexFilsD(courant.getIndex()) != -1) {
+			courant.setDroit(this.initArbreFichierBin(new Noeud(lectureStagiaire(lectureIndexFilsD(courant.getIndex())), lectureIndexFilsD(courant.getIndex()))));
+		}
+		return courant;	
+	}
+	
+//	************************** Méthodes pour la lecture et l'écriture dans le fichier ************************** //
+	
+	private static Noeud ecritureNoeudFichier(Stagiaire x, int indexPere) {
+		int index = 0;
 		try {
 			if(indexPere!=-1) {
-				if (noeudCourant.getStagiaire().compareTo(lectureStagiaire(indexPere)) < 0) {
-					raf.seek((indexPere * STAGIAIRE_LONG) + FILS_GAUCHE_LONG);
+				if (x.compareTo(lectureStagiaire(indexPere)) < 0) {
+					raf.seek((indexPere * 142) + 134);
 				} else {
-					raf.seek((indexPere * STAGIAIRE_LONG) + FILS_DROIT_LONG);
+					raf.seek((indexPere * 142) + 138);
 				}
-				raf.writeInt((int) raf.length() / STAGIAIRE_LONG);
-			}
-			raf.seek(raf.length());
-			raf.writeChars(noeudCourant.getStagiaire().getNom());
-			for (int i = noeudCourant.getStagiaire().getNom().length(); i < NOM_LONG; i++) {
+				index = (int)raf.length() / 142;
+				raf.writeInt(index);
+				raf.seek(raf.length());
+			}else raf.seek(0); // si indexPere = -1, la racine change
+			raf.writeChars(x.getNom());
+			for (int i = x.getNom().length(); i < 25; i++) {
 				raf.writeChars("*");
 			}
-			raf.writeChars(noeudCourant.getStagiaire().getPrenom());
-			for (int i = noeudCourant.getStagiaire().getPrenom().length(); i < PRENOM_LONG; i++) {
+			raf.writeChars(x.getPrenom());
+			for (int i = x.getPrenom().length(); i < 20; i++) {
 				raf.writeChars("*");
 			}
-			raf.writeChars(noeudCourant.getStagiaire().getDepartement());
-			for (int i = noeudCourant.getStagiaire().getDepartement().length(); i < DEPARTEMENT_LONG; i++) {
+			raf.writeChars(x.getDepartement());
+			for (int i = x.getDepartement().length(); i < 3; i++) {
 				raf.writeChars("*");
 			}
-			raf.writeChars(noeudCourant.getStagiaire().getPromo());
-			for (int i = noeudCourant.getStagiaire().getPromo().length(); i < PROMO_LONG; i++) {
+			raf.writeChars(x.getPromo());
+			for (int i = x.getPromo().length(); i < 15; i++) {
 				raf.writeChars("*");
 			}
-			raf.writeChars(noeudCourant.getStagiaire().getAnneeEntree());
-			for (int i = noeudCourant.getStagiaire().getAnneeEntree().length(); i < ANNEE_ENTREE_LONG; i++) {
+			raf.writeChars(x.getAnneeEntree());
+			for (int i = x.getAnneeEntree().length(); i < 4; i++) {
 				raf.writeChars("*");
 			}
 			raf.writeInt(-1);
-			raf.writeInt(-1);		
+			raf.writeInt(-1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return new Noeud(x, index);
 	}
 	
-	/**
-	 * Méthode permettant d'obtenir les informations d'un pbjet Stagiaire à partir de son index
-	 * @param index
-	 * @return un objet de type Stagiaire
-	 */
 	private static Stagiaire lectureStagiaire(int index) {
 		Stagiaire stagiaireTemporaire = new Stagiaire("", "", "", "", "");
 		String motTemporaire = "";
 		try {
-			raf.seek(index*STAGIAIRE_LONG);
-			for (int i = 0; i < NOM_LONG; i++) {
+			raf.seek(index*142);
+			for (int i = 0; i < 25; i++) {
 				motTemporaire += raf.readChar();
 			}
 			stagiaireTemporaire.setNom(motTemporaire.replace("*", ""));
 			motTemporaire = "";
-			for (int i = 0; i < PRENOM_LONG; i++) {
+			for (int i = 0; i < 20; i++) {
 				motTemporaire += raf.readChar();
 			}
 			stagiaireTemporaire.setPrenom(motTemporaire.replace("*", ""));
 			motTemporaire = "";
-			for (int i = 0; i < DEPARTEMENT_LONG; i++) {
+			for (int i = 0; i < 3; i++) {
 				motTemporaire += raf.readChar();
 			}
 			stagiaireTemporaire.setDepartement(motTemporaire.replace("*", ""));
 			motTemporaire = "";
-			for (int i = 0; i < PROMO_LONG; i++) {
+			for (int i = 0; i < 15; i++) {
 				motTemporaire += raf.readChar();
 			}
 			stagiaireTemporaire.setPromo(motTemporaire.replace("*", ""));
 			motTemporaire = "";
-			for (int i = 0; i < ANNEE_ENTREE_LONG; i++) {
+			for (int i = 0; i < 4; i++) {
 				motTemporaire += raf.readChar();
 			}
 			stagiaireTemporaire.setAnneeEntree(motTemporaire.replace("*", ""));
@@ -206,53 +188,178 @@ public class ArbreStagiaire {
 		return stagiaireTemporaire;
 	}
 	
-//	************************** Méthodes pour ajout de Noeud ************************** //	
-	/**
-	 * Méthode permettant de rajouter un objet de type Noeud dans un arbre
-	 * @param x
-	 * @param index
-	 * @param inscrireDansFichier
-	 */
-	public void ajouterNoeud(Stagiaire x, int index, boolean inscrireDansFichier) {
-		if (this.racine == null) {
-			Noeud nouveauNoeud = new Noeud(x, index);
-			if(inscrireDansFichier) ecritureNoeudFichier(nouveauNoeud, -1);
-			this.racine = nouveauNoeud; // 0, -1, -1
+	private int lectureIndexFilsG(int index) {
+		int retour = 0;
+		try {
+			raf.seek((index*142)+134);
+			retour = raf.readInt();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		ajouterNoeud(x, racine, index, racine.getIndex(), inscrireDansFichier);
+		return retour;
 	}
 	
-	/**
-	 * Méthode pertmettant de parcourir l'arbre afin de réaliser l'ajout du nouvel objet de type Noeud
-	 * @param x
-	 * @param courant
-	 * @param index
-	 * @param indexPere
-	 * @param inscrireDansFichier
-	 * @return un objet de type noeud
-	 */
-	private Noeud ajouterNoeud(Stagiaire x, Noeud courant, int index, int indexPere, boolean inscrireDansFichier) {
+	private int lectureIndexFilsD(int index) {
+		int retour = 0;
+		try {
+			raf.seek((index*142)+138);
+			retour = raf.readInt();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return retour;
+	}
+	
+	private void ecrireIndexFilsG(int index, int nouveauIndex) {
+		try {
+			raf.seek((index*142)+134);
+			raf.writeInt(nouveauIndex);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void ecrireIndexFilsD(int index, int nouveauIndex) {
+		try {
+			raf.seek((index*142)+138);
+			raf.writeInt(nouveauIndex);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void nouvelleRacine(Stagiaire x, int filsG, int filsD) {
+		ecritureNoeudFichier(x, -1);
+		try {
+			raf.seek(134);
+			raf.writeInt(filsG);
+			raf.seek(138);
+			raf.writeInt(filsD);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+//	************************** Méthodes pour ajout de Noeud ************************** //	
+	
+	public void ajouter(Stagiaire x) {
+		if (this.racine == null) {
+			this.racine = ecritureNoeudFichier(x, -1); 
+		}
+		ajouterNoeud(x, racine, -1);
+	}
+	
+	private Noeud ajouterNoeud(Stagiaire x, Noeud courant, int indexPere) {
 		if(courant == null) {
-			Noeud nouveauNoeud = new Noeud(x, index);
-			if(inscrireDansFichier) ecritureNoeudFichier(nouveauNoeud, indexPere);
-			return nouveauNoeud;
+			return ecritureNoeudFichier(x, indexPere);
 		}
 		if (x.compareTo(courant.getStagiaire()) < 0) {
-			courant.setGauche(this.ajouterNoeud(x, courant.getGauche(), index, indexPere, inscrireDansFichier));
+			courant.setGauche(this.ajouterNoeud(x, courant.getGauche(), courant.getIndex()));
 		}
 		if (x.compareTo(courant.getStagiaire()) > 0) {
-			courant.setDroit(ajouterNoeud(x, courant.getDroit(), index, indexPere, inscrireDansFichier));
+			courant.setDroit(ajouterNoeud(x, courant.getDroit(), courant.getIndex()));
 		}
 		return courant;	
 	}
+	
+//	************************** Méthodes pour suppression de Noeud ************************** //	
+	
+	public void supprimer(Stagiaire x) {
+		Noeud racineAvant = new Noeud(this.racine.getStagiaire(), 0);
+		this.racine = supprimerNoeud(x, this.racine);
+		if(racineAvant != this.racine && this.racine != null) {
+			nouvelleRacine(this.racine.getStagiaire(), lectureIndexFilsG(this.racine.getIndex()), lectureIndexFilsD(this.racine.getIndex()));
+			this.racine.setIndex(0);
+		}
+	}
+	
+	private Noeud supprimerNoeud(Stagiaire x, Noeud courant) {
+        if (courant == null)
+            return courant;
+        if (courant.getStagiaire().compareTo(x) == 0) {
+            return supprimerRacine(courant);
+        }else if (courant.getStagiaire().compareTo(x) > 0) {
+            courant.setGauche(supprimerNoeud(x, courant.getGauche()));
+            if(courant.getGauche() == null) ecrireIndexFilsG(courant.getIndex(), -1);
+            else ecrireIndexFilsG(courant.getIndex(), courant.getGauche().getIndex());
+        }else {
+        	courant.setDroit(supprimerNoeud(x, courant.getDroit()));
+        	if(courant.getDroit() == null) ecrireIndexFilsD(courant.getIndex(), -1);
+        	else ecrireIndexFilsD(courant.getIndex(), courant.getDroit().getIndex());
+        }
+        return courant;
+    }
+	
+	private Noeud supprimerRacine(Noeud courant) {
+		if (courant.getGauche() == null && courant.getDroit() == null) {
+			return null;
+		}else if (courant.getGauche() == null) {
+			ecrireIndexFilsD(courant.getIndex(), courant.getDroit().getIndex());
+            return courant.getDroit();
+        }else if (courant.getDroit() == null) {
+        	ecrireIndexFilsG(courant.getIndex(), courant.getGauche().getIndex());
+            return courant.getGauche();
+        }else {
+        	Noeud dernierDescendant = dernierDescendant(courant.getGauche());
+        	
+        	courant.setStagiaire(dernierDescendant.getStagiaire());
+        	courant.setIndex(dernierDescendant.getIndex());
+        	
+        	if(courant.getIndex() != courant.getDroit().getIndex()) ecrireIndexFilsD(courant.getIndex(), courant.getDroit().getIndex());
+        	else ecrireIndexFilsD(courant.getIndex(), -1);
+        	if(courant.getIndex() != courant.getGauche().getIndex()) ecrireIndexFilsG(courant.getIndex(), courant.getGauche().getIndex());
+        	else ecrireIndexFilsG(courant.getIndex(), -1);
+        	
+        	courant.setGauche(supprimerNoeud(dernierDescendant.getStagiaire(), courant.getGauche()));
+        }
+        return courant;
+    }
 
-//	********************************************************************
-	/**
-	 * Retour console String
-	 */
+    private Noeud dernierDescendant(Noeud courant) {
+        if (courant.getDroit() == null)
+            return courant;
+        return dernierDescendant(courant.getDroit());
+    }
+
+//	************************** Méthodes pour modification de Noeud ************************** //
+    
+    public void modifierNom(Stagiaire stagiaire, String nouveauNom) {
+    	Stagiaire ancienStagiaire = stagiaire;
+    	stagiaire.setNom(nouveauNom);
+    	modifier(ancienStagiaire, stagiaire); 	
+    }
+    
+    public void modifierPrenom(Stagiaire stagiaire, String nouveauPrenom) {
+    	Stagiaire ancienStagiaire = stagiaire;
+    	stagiaire.setPrenom(nouveauPrenom);
+    	modifier(ancienStagiaire, stagiaire); 	
+    }
+    
+    public void modifierDepartement(Stagiaire stagiaire, String nouveauDepartement) {
+    	Stagiaire ancienStagiaire = stagiaire;
+    	stagiaire.setDepartement(nouveauDepartement);
+    	modifier(ancienStagiaire, stagiaire); 	
+    }
+    
+    public void modifierPromo(Stagiaire stagiaire, String nouvellePromo) {
+    	Stagiaire ancienStagiaire = stagiaire;
+    	stagiaire.setPromo(nouvellePromo);
+    	modifier(ancienStagiaire, stagiaire); 	
+    }
+    
+    public void modifierAnneeEntree(Stagiaire stagiaire, String nouvelleAnneeEntree) {
+    	Stagiaire ancienStagiaire = stagiaire;
+    	stagiaire.setAnneeEntree(nouvelleAnneeEntree);
+    	modifier(ancienStagiaire, stagiaire); 	
+    }
+    
+    public void modifier(Stagiaire ancienStagiaire, Stagiaire nouveauStagiaire) {
+    	this.supprimer(ancienStagiaire);
+    	this.ajouter(nouveauStagiaire);
+    }
+//	********************************************************************	
 	@Override
 	public String toString() {
 		return racine + " ";
 	}
-	
 }

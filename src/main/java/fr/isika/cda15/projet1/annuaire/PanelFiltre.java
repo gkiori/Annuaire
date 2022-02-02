@@ -40,7 +40,7 @@ public class PanelFiltre extends BorderPane{
 	TreeSet<String> vueDepartement = new TreeSet<String>();
 	TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 	
-	public PanelFiltre(final Stage stage, TableView<Stagiaire> table) throws Exception{
+	public PanelFiltre(final Stage stage, BorderPane Parent) throws Exception{
 		ArbreStagiaire monArbre = new ArbreStagiaire();
 		monArbre.initArbre();
 		
@@ -69,6 +69,9 @@ public class PanelFiltre extends BorderPane{
         		listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
         		listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
         		listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
+        		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche, monArbre);
+        		ObservableList<Stagiaire> vueResultatRecherche = FXCollections.observableArrayList(resultatRecherche);
+        		//parent.setData = vueResultatRecherche;
             }
 		});
 		VBox orgVbox = new VBox();
