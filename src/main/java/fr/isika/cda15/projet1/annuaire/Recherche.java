@@ -1,9 +1,9 @@
 package fr.isika.cda15.projet1.annuaire;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.TreeSet;
 
 public class Recherche {
 	
@@ -267,6 +267,17 @@ public class Recherche {
 	
 //************************ Méthodes de recherche avec multicritère (2 mots clé)  ************************
 	
+//	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche, ArbreStagiaire arbre){
+//		List<Stagiaire> resultatRecherche = new ArrayList<Stagiaire>();
+//		ArbreStagiaire miniArbre = new ArbreStagiaire();
+//		Map.Entry<String, String> premierElement = listeRecherche.entrySet();
+//		String premiereCle = listeRecherche.entrySet().getKey();
+//		for(Map.Entry<String, String> recherche : listeRecherche.entrySet()) {
+//			resultatRecherche = chercherMultiCle(recherche.getKey(), recherche.getValue(), , arbre);
+//		}
+//		return resultatRecherche;
+//	}
+	
 	/**
 	 * 
 	 * @param cle1
@@ -434,27 +445,27 @@ public class Recherche {
 		return courant;	
 	}
 	
-	public static Set<String> getListePromo(ArbreStagiaire monArbre) {
+	public static TreeSet<String> getListePromo(ArbreStagiaire monArbre) {
 		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
-		Set<String> listePromo = new HashSet<String>();
+		TreeSet<String> listePromo = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listePromo.add(stagiaire.getPromo());
 		};
 		return listePromo;
 	}
 	
-	public static Set<String> getListeDepartement(ArbreStagiaire monArbre) {
+	public static TreeSet<String> getListeDepartement(ArbreStagiaire monArbre) {
 		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
-		Set<String> listeDepartement = new HashSet<String>();
+		TreeSet<String> listeDepartement = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listeDepartement.add(stagiaire.getDepartement());
 		};
 		return listeDepartement;
 	}
 	
-	public static Set<String> getListeAnneeEntree(ArbreStagiaire monArbre) {
+	public static TreeSet<String> getListeAnneeEntree(ArbreStagiaire monArbre) {
 		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
-		Set<String> listeAnneeEntree = new HashSet<String>();
+		TreeSet<String> listeAnneeEntree = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listeAnneeEntree.add(stagiaire.getAnneeEntree());
 		};

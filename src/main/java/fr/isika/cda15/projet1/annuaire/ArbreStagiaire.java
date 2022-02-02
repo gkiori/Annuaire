@@ -32,7 +32,6 @@ public class ArbreStagiaire {
 	 * @TODO A voir l'intérêt
 	 */
 	public ArbreStagiaire() {
-		initArbre();
 	}
 
 //	************************** Méthodes Getter & Setter  ************************** //
