@@ -34,7 +34,7 @@ public class PanelFiltre extends BorderPane{
 	TreeSet<String> vueDepartement = new TreeSet<String>();
 	TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 	
-	public PanelFiltre(final Stage stage, PanelGestionnaire borderPaneParent) throws Exception{
+	public PanelFiltre(final Stage stage) throws Exception{
 		ArbreStagiaire monArbre = new ArbreStagiaire();
 		monArbre.initArbre();
 		
