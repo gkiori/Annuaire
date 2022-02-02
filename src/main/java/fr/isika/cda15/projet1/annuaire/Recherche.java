@@ -267,38 +267,40 @@ public class Recherche {
 	
 //************************ Méthodes de recherche avec multicritère (2 mots clé)  ************************
 	
-	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche, ArbreStagiaire arbre){
+	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche, ArbreStagiaire arbre) {
 		List<Stagiaire> resultatRecherche = new ArrayList<Stagiaire>();
 		ArbreStagiaire miniArbre = arbre;
-		for(Map.Entry<String, String> recherche : listeRecherche.entrySet()){
-		    String cle = recherche.getKey().replace("[", "").replace("]", "");
-		    //String[] cles = 
-		    String type = recherche.getValue();
-		    int key = keyValue(type);
-		    switch (key) {
-		    case 1:
-		    	resultatRecherche = chercherNom(cle, miniArbre);
-		    	break;
+		for (Map.Entry<String, String> recherche : listeRecherche.entrySet()) {
+			List<Stagiaire> resultatRechercheIntermediaire = new ArrayList<Stagiaire>();
+			String cleNonSepare = recherche.getKey().replace("[", "").replace("]", "");
+			String[] cles = cleNonSepare.split(", ");
+			String type = recherche.getValue();
+			int key = keyValue(type);
+			switch (key) {
+			case 1:
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherNom(cle, miniArbre));
+				break;
 			case 2:
-				resultatRecherche = chercherAnneeEntree(cle, miniArbre);
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherAnneeEntree(cle, miniArbre));
 				break;
 			case 3:
-				resultatRecherche = chercherPromotion(cle, miniArbre);
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherPromotion(cle, miniArbre));
 				break;
 			case 4:
-				resultatRecherche = chercherDepartement(cle, miniArbre);
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherDepartement(cle, miniArbre));
 				break;
 			default:
 				System.out.println("No Results founded");
 				resultatRecherche = new ArrayList<Stagiaire>();
 				break;
-		    }
+			}
+			resultatRecherche = resultatRechercheIntermediaire;
 			miniArbre = new ArbreStagiaire();
 			ajouterNoeudAll(resultatRecherche, miniArbre);
 		}
-		return resultatRecherche;  
+		return resultatRecherche;
 	}
-	
+
 	/**
 	 * 
 	 * @param cle1
