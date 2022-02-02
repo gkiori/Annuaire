@@ -267,16 +267,37 @@ public class Recherche {
 	
 //************************ Méthodes de recherche avec multicritère (2 mots clé)  ************************
 	
-//	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche, ArbreStagiaire arbre){
-//		List<Stagiaire> resultatRecherche = new ArrayList<Stagiaire>();
-//		ArbreStagiaire miniArbre = new ArbreStagiaire();
-//		Map.Entry<String, String> premierElement = listeRecherche.entrySet();
-//		String premiereCle = listeRecherche.entrySet().getKey();
-//		for(Map.Entry<String, String> recherche : listeRecherche.entrySet()) {
-//			resultatRecherche = chercherMultiCle(recherche.getKey(), recherche.getValue(), , arbre);
-//		}
-//		return resultatRecherche;
-//	}
+	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche, ArbreStagiaire arbre){
+		List<Stagiaire> resultatRecherche = new ArrayList<Stagiaire>();
+		ArbreStagiaire miniArbre = arbre;
+		for(Map.Entry<String, String> recherche : listeRecherche.entrySet()){
+		    String cle = recherche.getKey().replace("[", "").replace("]", "");
+		    //String[] cles = 
+		    String type = recherche.getValue();
+		    int key = keyValue(type);
+		    switch (key) {
+		    case 1:
+		    	resultatRecherche = chercherNom(cle, miniArbre);
+		    	break;
+			case 2:
+				resultatRecherche = chercherAnneeEntree(cle, miniArbre);
+				break;
+			case 3:
+				resultatRecherche = chercherPromotion(cle, miniArbre);
+				break;
+			case 4:
+				resultatRecherche = chercherDepartement(cle, miniArbre);
+				break;
+			default:
+				System.out.println("No Results founded");
+				resultatRecherche = new ArrayList<Stagiaire>();
+				break;
+		    }
+			miniArbre = new ArbreStagiaire();
+			ajouterNoeudAll(resultatRecherche, miniArbre);
+		}
+		return resultatRecherche;  
+	}
 	
 	/**
 	 * 

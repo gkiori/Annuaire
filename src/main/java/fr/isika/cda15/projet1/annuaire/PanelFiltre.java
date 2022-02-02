@@ -1,11 +1,8 @@
 package fr.isika.cda15.projet1.annuaire;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.controlsfx.control.CheckComboBox;
@@ -15,11 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -40,7 +33,7 @@ public class PanelFiltre extends BorderPane{
 	TreeSet<String> vueDepartement = new TreeSet<String>();
 	TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 	
-	public PanelFiltre(final Stage stage, BorderPane Parent) throws Exception{
+	public PanelFiltre(final Stage stage, PanelGestionnaire borderPaneParent) throws Exception{
 		ArbreStagiaire monArbre = new ArbreStagiaire();
 		monArbre.initArbre();
 		
@@ -62,16 +55,17 @@ public class PanelFiltre extends BorderPane{
 		menuAnneeEntree.getItems().addAll(listeAnneeEntree);
 		menuAnneeEntree.setTitle("Année d'entrée");
 		
-		Map<String, String> listeRecherche = new HashMap<String, String>();
 		affichageResultat.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
             public void handle(ActionEvent e) {
-        		listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
-        		listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
-        		listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
+				Map<String, String> listeRecherche = new HashMap<String, String>();
+        		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
+        		if(menuDepartement.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
+        		if(menuAnneeEntree.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
+        		
         		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche, monArbre);
         		ObservableList<Stagiaire> vueResultatRecherche = FXCollections.observableArrayList(resultatRecherche);
-        		//parent.setData = vueResultatRecherche;
+        		//System.out.println(vueResultatRecherche);
             }
 		});
 		VBox orgVbox = new VBox();
