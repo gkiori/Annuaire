@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-//import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.CheckComboBox;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

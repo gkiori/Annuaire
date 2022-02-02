@@ -133,7 +133,6 @@ public class PanelGestionnaire extends BorderPane {
     	List<Stagiaire> maList = new ArrayList<>();
     	maList = Recherche.parcoursStagiaire(monArbre);
 		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maList);
-		System.out.println(maList);
 	    return list;
 	  }
 	
