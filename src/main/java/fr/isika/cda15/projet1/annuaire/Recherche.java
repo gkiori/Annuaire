@@ -66,9 +66,9 @@ public class Recherche {
 	 * @param cle
 	 * @return List<Stagiaire> : listRechDep
 	 */
-	public static List<Stagiaire> chercherDepartement(String cle, ArbreStagiaire arbre) {
+	public static List<Stagiaire> chercherDepartement(String cle, MiniArbre arbre) {
 		List<Stagiaire> listRechDep = new ArrayList<>();
-		return chercherDepartement(cle, ArbreStagiaire.getRacine(),listRechDep);
+		return chercherDepartement(cle, arbre.getRacine(),listRechDep);
 	}
 	
 	/**
@@ -98,9 +98,9 @@ public class Recherche {
 	 * @param arbre
 	 * @return
 	 */
-	public static List<Stagiaire> chercherNom(String cle, ArbreStagiaire arbre) {
+	public static List<Stagiaire> chercherNom(String cle, MiniArbre arbre) {
 		List<Stagiaire> listRechNom = new ArrayList<>();
-		return chercherNom(cle, ArbreStagiaire.getRacine(), listRechNom);
+		return chercherNom(cle, arbre.getRacine(), listRechNom);
 	}
 	
 	/**
@@ -130,9 +130,9 @@ public class Recherche {
 	 * @param arbre
 	 * @return
 	 */
-	public static List<Stagiaire> chercherAnneeEntree(String cle, ArbreStagiaire arbre) {
+	public static List<Stagiaire> chercherAnneeEntree(String cle, MiniArbre arbre) {
 		List<Stagiaire> listRechAnnee = new ArrayList<>();
-		return chercherAnneeEntree(cle, ArbreStagiaire.getRacine(), listRechAnnee);
+		return chercherAnneeEntree(cle, arbre.getRacine(), listRechAnnee);
 	}
 	
 	/**
@@ -163,9 +163,9 @@ public class Recherche {
 	 * @param arbre
 	 * @return
 	 */
-	public static List<Stagiaire> chercherPromotion(String cle, ArbreStagiaire arbre) {
+	public static List<Stagiaire> chercherPromotion(String cle, MiniArbre arbre) {
 		List<Stagiaire> listRechPromo = new ArrayList<>();
-		return chercherPromotion(cle, ArbreStagiaire.getRacine(), listRechPromo);
+		return chercherPromotion(cle, arbre.getRacine(), listRechPromo);
 	}
 	
 	/**
@@ -196,9 +196,9 @@ public class Recherche {
 	 * @param arbre
 	 * @return
 	 */
-	public static List<Stagiaire> chercherPromotionFull(String cle, ArbreStagiaire arbre) {
+	public static List<Stagiaire> chercherPromotionFull(String cle, MiniArbre arbre) {
 		List<Stagiaire> listRechPromo = new ArrayList<>();
-		return chercherPromotionFull(cle, ArbreStagiaire.getRacine(), listRechPromo);
+		return chercherPromotionFull(cle, arbre.getRacine(), listRechPromo);
 	}
 	
 	/**
@@ -229,7 +229,7 @@ public class Recherche {
 	 * @param arbre
 	 * @return
 	 */
-	public static List<Stagiaire> chercherCle(String cle, String type, ArbreStagiaire arbre) {
+	public static List<Stagiaire> chercherCle(String cle, String type, MiniArbre arbre) {
 		attributeType01 = type;
 		int key = keyValue(attributeType01);
 		List<Stagiaire> listRech = new ArrayList<>();
@@ -244,7 +244,7 @@ public class Recherche {
 	 * @param listResult
 	 * @return
 	 */
-	private static List<Stagiaire> chercherCle(String cle, int key, ArbreStagiaire arbre, List<Stagiaire> listResult) {
+	private static List<Stagiaire> chercherCle(String cle, int key, MiniArbre arbre, List<Stagiaire> listResult) {
 		switch (key) {
 		case 1:
 			listResult = chercherNom(cle, arbre);
@@ -269,7 +269,7 @@ public class Recherche {
 	
 	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche, ArbreStagiaire arbre) {
 		List<Stagiaire> resultatRecherche = new ArrayList<Stagiaire>();
-		ArbreStagiaire miniArbre = arbre;
+		Recherche.MiniArbre miniArbre = new Recherche().new MiniArbre(parcoursStagiaire(arbre));
 		for (Map.Entry<String, String> recherche : listeRecherche.entrySet()) {
 			List<Stagiaire> resultatRechercheIntermediaire = new ArrayList<Stagiaire>();
 			String cleNonSepare = recherche.getKey().replace("[", "").replace("]", "");
@@ -281,13 +281,19 @@ public class Recherche {
 				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherNom(cle, miniArbre));
 				break;
 			case 2:
-				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherAnneeEntree(cle, miniArbre));
+				for(String cle : cles) {
+					resultatRechercheIntermediaire.addAll(chercherAnneeEntree(cle, miniArbre));
+				}
 				break;
 			case 3:
-				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherPromotion(cle, miniArbre));
+				for(String cle : cles) {
+					resultatRechercheIntermediaire.addAll(chercherPromotion(cle, miniArbre));
+				}
 				break;
 			case 4:
-				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherDepartement(cle, miniArbre));
+				for(String cle : cles) {
+					resultatRechercheIntermediaire.addAll(chercherDepartement(cle, miniArbre));
+				}
 				break;
 			default:
 				System.out.println("No Results founded");
@@ -295,178 +301,136 @@ public class Recherche {
 				break;
 			}
 			resultatRecherche = resultatRechercheIntermediaire;
-			miniArbre = new ArbreStagiaire();
-			ajouterNoeudAll(resultatRecherche, miniArbre);
+			miniArbre = new Recherche().new MiniArbre(resultatRecherche);
 		}
 		return resultatRecherche;
 	}
 
-	/**
-	 * 
-	 * @param cle1
-	 * @param type1
-	 * @param cle2
-	 * @param type2
-	 * @param arbre
-	 * @return
-	 */
-	public static List<Stagiaire> chercherMultiCle(String cle1, String type1, String cle2, String type2, 
-			ArbreStagiaire arbre) { 
-		attributeType01 = type1;
-		attributeType02 = type2;
-		int key1 = keyValue(attributeType01);
-		int key2 = keyValue(attributeType02);
-		List<Stagiaire> listRechMulti = new ArrayList<>();
-		return chercherMultiCle(cle1, key1, cle2, key2, arbre, listRechMulti);
-	}
-	
-	/**
-	 * Creer un ficher temporaire ou stocker le miniArbre pour la creation de celui-ci
-	 * @param cle1
-	 * @param key1
-	 * @param cle2
-	 * @param key2
-	 * @param arbre
-	 * @param listResult
-	 * @return
-	 * @throws lecture fichier 
-	 */
-	private static List<Stagiaire> chercherMultiCle(String cle1, int key1, String cle2, int key2, 
-			ArbreStagiaire arbre, List<Stagiaire> listResult) {
-		List<Stagiaire> listInter = new ArrayList<Stagiaire>();
-		switch (key1) {
-		case 1:
-			listInter = chercherNom(cle1, arbre);
-			ArbreStagiaire miniArbreNom = new ArbreStagiaire();
-			ajouterNoeudAll(listInter,miniArbreNom);
-			switch (key2) {
-				case 2:
-					listResult = chercherAnneeEntree(cle2, miniArbreNom);
-					break;
-				case 3:
-					listResult = chercherPromotion(cle2, miniArbreNom);			
-					break;
-				case 4:
-					listResult = chercherDepartement(cle2, miniArbreNom);
-					break;
-				default:
-					System.out.println("No Results founded");
-					listResult = new ArrayList<Stagiaire>();
-					break;
-			}
-			break;
-		case 2:
-			listInter = chercherAnneeEntree(cle1, arbre);
-			ArbreStagiaire miniArbreAE = new ArbreStagiaire();
-			ajouterNoeudAll(listInter, miniArbreAE);
-			switch (key2) {
-				case 1:
-					listResult = chercherNom(cle2, miniArbreAE);
-					break;
-				case 3:
-					listResult = chercherPromotion(cle2, miniArbreAE);
-					break;
-				case 4:
-					listResult = chercherDepartement(cle2, miniArbreAE);
-					break;
-				default:
-					System.out.println("No Results founded");
-					listResult = new ArrayList<Stagiaire>();
-					break;
-			}	
-			break;
-		case 3:
-			listInter = chercherPromotion(cle1, arbre);
-			ArbreStagiaire miniArbrePromo = new ArbreStagiaire();
-			ajouterNoeudAll(listInter,miniArbrePromo);
-			System.out.println("Résultat");
-			System.out.println(miniArbrePromo);
-			switch (key2) {
-				case 1:
-					listResult = chercherNom(cle2, miniArbrePromo);
-					break;
-				case 2:
-					listResult = chercherAnneeEntree(cle2, miniArbrePromo);			
-					break;
-				case 4:
-					listResult = chercherDepartement(cle2, miniArbrePromo);
-					break;
-				default:
-					System.out.println("No Results founded");
-					listResult = new ArrayList<Stagiaire>();
-					break;
-			}
-			break;
-		case 4:
-			listInter = chercherDepartement(cle1, arbre);
-			ArbreStagiaire miniArbreDep = new ArbreStagiaire();
-			ajouterNoeudAll(listInter, miniArbreDep);
-			switch (key2) {
-				case 1:
-					listResult = chercherNom(cle2, miniArbreDep);
-					break;
-				case 2:
-					listResult = chercherAnneeEntree(cle2, miniArbreDep);		
-					break;
-				case 3:
-					listResult = chercherPromotion(cle2, miniArbreDep);
-					break;
-				default:
-					System.out.println("No Results founded");
-					listResult = new ArrayList<Stagiaire>();
-					break;
-			}
-			break;
-		default:
-			System.out.println("No Results founded");
-			listResult = new ArrayList<Stagiaire>();
-			break;
-		}
-		return listResult;
-	}
-
-	//************************ Méthhode d'ajout pour la création de mini-arbre ************************
-	
-	/**
-	 * 
-	 * @param listStagiaire
-	 * @param arbre
-	 */
-	public static void ajouterNoeudAll(List<Stagiaire> listStagiaire, ArbreStagiaire arbre) {
-		for (Stagiaire stagiaire : listStagiaire) {
-			ajouterNoeud(stagiaire, arbre);
-		}
-	}
-	/**
-	 * 
-	 * @param x
-	 * @param arbre
-	 */
-	public static void ajouterNoeud(Stagiaire x, ArbreStagiaire arbre) {
-		if (ArbreStagiaire.getRacine() == null) {
-			arbre.setRacine(new Noeud(x));
-		}
-		ajouterNoeud(x, ArbreStagiaire.getRacine());
-	}
-	
-	/**
-	 * 
-	 * @param x
-	 * @param courant
-	 * @return
-	 */
-	private static Noeud ajouterNoeud(Stagiaire x, Noeud courant) {
-		if(courant == null) {
-			return new Noeud(x);
-		}
-		if (x.getNom().compareTo(courant.getStagiaire().getNom()) < 0) {
-			courant.setGauche(ajouterNoeud(x, courant.getGauche()));
-		}
-		if (x.getNom().compareTo(courant.getStagiaire().getNom()) > 0) {
-				courant.setDroit(ajouterNoeud(x, courant.getDroit()));		
-		}	
-		return courant;	
-	}
+//	/**
+//	 * 
+//	 * @param cle1
+//	 * @param type1
+//	 * @param cle2
+//	 * @param type2
+//	 * @param arbre
+//	 * @return
+//	 */
+//	public static List<Stagiaire> chercherMultiCle(String cle1, String type1, String cle2, String type2,
+//			ArbreStagiaire arbre) {
+//		attributeType01 = type1;
+//		attributeType02 = type2;
+//		int key1 = keyValue(attributeType01);
+//		int key2 = keyValue(attributeType02);
+//		List<Stagiaire> listRechMulti = new ArrayList<>();
+//		return chercherMultiCle(cle1, key1, cle2, key2, arbre, listRechMulti);
+//	}
+//
+//	/**
+//	 * Creer un ficher temporaire ou stocker le miniArbre pour la creation de
+//	 * celui-ci
+//	 * 
+//	 * @param cle1
+//	 * @param key1
+//	 * @param cle2
+//	 * @param key2
+//	 * @param arbre
+//	 * @param listResult
+//	 * @return
+//	 * @throws lecture fichier
+//	 */
+//	private static List<Stagiaire> chercherMultiCle(String cle1, int key1, String cle2, int key2, ArbreStagiaire arbre,
+//			List<Stagiaire> listResult) {
+//		List<Stagiaire> listInter = new ArrayList<Stagiaire>();
+//		switch (key1) {
+//		case 1:
+//			listInter = chercherNom(cle1, arbre);
+//			ArbreStagiaire miniArbreNom = new ArbreStagiaire();
+//			ajouterNoeudAll(listInter, miniArbreNom);
+//			switch (key2) {
+//			case 2:
+//				listResult = chercherAnneeEntree(cle2, miniArbreNom);
+//				break;
+//			case 3:
+//				listResult = chercherPromotion(cle2, miniArbreNom);
+//				break;
+//			case 4:
+//				listResult = chercherDepartement(cle2, miniArbreNom);
+//				break;
+//			default:
+//				System.out.println("No Results founded");
+//				listResult = new ArrayList<Stagiaire>();
+//				break;
+//			}
+//			break;
+//		case 2:
+//			listInter = chercherAnneeEntree(cle1, arbre);
+//			ArbreStagiaire miniArbreAE = new ArbreStagiaire();
+//			ajouterNoeudAll(listInter, miniArbreAE);
+//			switch (key2) {
+//			case 1:
+//				listResult = chercherNom(cle2, miniArbreAE);
+//				break;
+//			case 3:
+//				listResult = chercherPromotion(cle2, miniArbreAE);
+//				break;
+//			case 4:
+//				listResult = chercherDepartement(cle2, miniArbreAE);
+//				break;
+//			default:
+//				System.out.println("No Results founded");
+//				listResult = new ArrayList<Stagiaire>();
+//				break;
+//			}
+//			break;
+//		case 3:
+//			listInter = chercherPromotion(cle1, arbre);
+//			ArbreStagiaire miniArbrePromo = new ArbreStagiaire();
+//			ajouterNoeudAll(listInter, miniArbrePromo);
+//			System.out.println("Résultat");
+//			System.out.println(miniArbrePromo);
+//			switch (key2) {
+//			case 1:
+//				listResult = chercherNom(cle2, miniArbrePromo);
+//				break;
+//			case 2:
+//				listResult = chercherAnneeEntree(cle2, miniArbrePromo);
+//				break;
+//			case 4:
+//				listResult = chercherDepartement(cle2, miniArbrePromo);
+//				break;
+//			default:
+//				System.out.println("No Results founded");
+//				listResult = new ArrayList<Stagiaire>();
+//				break;
+//			}
+//			break;
+//		case 4:
+//			listInter = chercherDepartement(cle1, arbre);
+//			ArbreStagiaire miniArbreDep = new ArbreStagiaire();
+//			ajouterNoeudAll(listInter, miniArbreDep);
+//			switch (key2) {
+//			case 1:
+//				listResult = chercherNom(cle2, miniArbreDep);
+//				break;
+//			case 2:
+//				listResult = chercherAnneeEntree(cle2, miniArbreDep);
+//				break;
+//			case 3:
+//				listResult = chercherPromotion(cle2, miniArbreDep);
+//				break;
+//			default:
+//				System.out.println("No Results founded");
+//				listResult = new ArrayList<Stagiaire>();
+//				break;
+//			}
+//			break;
+//		default:
+//			System.out.println("No Results founded");
+//			listResult = new ArrayList<Stagiaire>();
+//			break;
+//		}
+//		return listResult;
+//	}
 	
 	public static TreeSet<String> getListePromo(ArbreStagiaire monArbre) {
 		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
@@ -494,5 +458,46 @@ public class Recherche {
 		};
 		return listeAnneeEntree;
 	}
+	
+	public class MiniArbre {
+		private Noeud racine;
+		
+		public MiniArbre(List<Stagiaire> maList) {
+			ajouterNoeudAll(maList);
+				
+		}
+		
+		private void ajouterNoeudAll(List<Stagiaire> listStagiaire) {
+			for (Stagiaire stagiaire : listStagiaire) {
+				ajouterNoeud(stagiaire);
+			}
+		}
+		
+		private void ajouterNoeud(Stagiaire x) {
+			if (this.racine == null) {
+				this.racine = new Noeud(x);
+			}
+			ajouterNoeud(x, this.racine);
+		}
+		
+		private Noeud ajouterNoeud(Stagiaire x, Noeud courant) {
+			if(courant == null) {
+				return new Noeud(x);
+			}
+			if (x.getNom().compareTo(courant.getStagiaire().getNom()) < 0) {
+				courant.setGauche(ajouterNoeud(x, courant.getGauche()));
+			}
+			if (x.getNom().compareTo(courant.getStagiaire().getNom()) > 0) {
+				courant.setDroit(ajouterNoeud(x, courant.getDroit()));		
+			}	
+			return courant;	
+		}
+		
+		public Noeud getRacine() {
+			return this.racine;
+		}
+	}
 }
+
+
 

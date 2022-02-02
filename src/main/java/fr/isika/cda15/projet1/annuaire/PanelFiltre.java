@@ -49,11 +49,11 @@ public class PanelFiltre extends BorderPane{
 		ObservableList<String> listeAnneeEntree = FXCollections.observableArrayList();
 		for(String anneeEntree : vueAnneeEntree) listeAnneeEntree.add(anneeEntree);
 		
-		menuPromo.getItems().addAll(listePromo);
+		menuPromo.getItems().addAll(vuePromo);
 		menuPromo.setTitle("Promotion");
-		menuDepartement.getItems().addAll(listeDepartement);
+		menuDepartement.getItems().addAll(vueDepartement);
 		menuDepartement.setTitle("Département");
-		menuAnneeEntree.getItems().addAll(listeAnneeEntree);
+		menuAnneeEntree.getItems().addAll(vueAnneeEntree);
 		menuAnneeEntree.setTitle("Année d'entrée");
 		
 		affichageResultat.setOnAction(new EventHandler<ActionEvent>(){
@@ -65,15 +65,12 @@ public class PanelFiltre extends BorderPane{
             		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
             		if(menuDepartement.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
             		if(menuAnneeEntree.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
-            		PanelGestionnaire.setData(updatePanelGestionnaire(listeRecherche, monArbre));
-					new PanelGestionnaire(stage);
+            		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche, monArbre);
+					PanelGestionnaire.data.clear();
+					PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRecherche));
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-//        		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche, monArbre);
-//        		ObservableList<Stagiaire> vueResultatRecherche = FXCollections.observableArrayList(resultatRecherche);
-        		//System.out.println(vueResultatRecherche);
-        		
             }
 		});
 		VBox orgVbox = new VBox();
@@ -83,15 +80,5 @@ public class PanelFiltre extends BorderPane{
 		this.setBottom(affichageResultat);
 		Scene scene = new Scene(this);
 		stage.setScene(scene);
-	}
-	
-	private static ObservableList<Stagiaire> updatePanelGestionnaire(Map<String, String> listeRecherche, ArbreStagiaire monArbre) {
-    	
-    	List<Stagiaire> maList = new ArrayList<>();
-    	maList =  Recherche.chercherMultiCle(listeRecherche, monArbre);
-		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maList);
-		System.out.println(maList);
-	    return list;
-		
 	}
 }
