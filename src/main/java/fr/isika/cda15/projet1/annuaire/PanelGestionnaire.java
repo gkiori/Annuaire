@@ -39,6 +39,7 @@ import javafx.stage.Stage;
 
 
 public class PanelGestionnaire extends BorderPane {
+	
 	TableView<Stagiaire> table = new TableView<Stagiaire>();
 	static ObservableList<Stagiaire> data;
 	
@@ -54,8 +55,8 @@ public class PanelGestionnaire extends BorderPane {
 					//Création de la table
 					table.setEditable(true);
 					
-			        Label label = new Label("Liste des stagiaires");
-			        label.setFont(new Font("Arial", 20));
+			        Label titreLbl = new Label("Liste des stagiaires");
+			        titreLbl.setFont(new Font("Arial", 20));
 			 
 			        //Création des cinq colonnes
 			        TableColumn<Stagiaire, String> prenomCol = 
@@ -103,18 +104,6 @@ public class PanelGestionnaire extends BorderPane {
 								new PanelAjoutStagiaire(stage, stagiaire);
 							} catch (Exception e3) {
 								e3.printStackTrace();
-							}
-			            }
-			        });
-			        
-			        Button button1 = new Button("Deconnexion");
-			        button1.setOnAction(new EventHandler<ActionEvent>() {
-			            @Override
-			            public void handle(ActionEvent e) {
-			            	try {
-			            		new PanelConnexion(stage);
-							} catch (Exception e2) {
-								e2.printStackTrace();
 							}
 			            }
 			        });
@@ -172,24 +161,29 @@ public class PanelGestionnaire extends BorderPane {
 			        });
 			        		        
 			        contextMenu.getItems().addAll(itemModif, itemSupp);
+			        HBox hbTop = new HBox();
+			        hbTop.getChildren().addAll(titreLbl, button);
+			        hbTop.setSpacing(325);
 			        
 			        BorderPane root = new BorderPane();
 			        HBox hbox = new HBox();
-			    	hbox.getChildren().addAll(button, button1, contextMenuResultLbl);
+			    	hbox.getChildren().addAll( contextMenuResultLbl);
 
 			        //On place le label, la table et la zone de modification dans une VBox
 			        VBox vbox = new VBox();
 			        vbox.setSpacing(5);
 			        vbox.setPadding(new Insets(10, 10, 10, 10));
-			        vbox.getChildren().addAll(label, table, hbox);
-			        PanelFiltre monPanelFiltre = new PanelFiltre(stage, this);
+			        vbox.getChildren().addAll(hbTop, table, hbox);
+			        PanelFiltre monPanelFiltre = new PanelFiltre(stage);
+			        PanelGeneralInfos monPanelInfos = new PanelGeneralInfos(stage);
 			        this.setCenter(vbox);
 			        this.setRight(monPanelFiltre);
-					Scene scene = new Scene(this,400,400);
+			        this.setLeft(monPanelInfos);
+					Scene scene = new Scene(this,600,400);
 //					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 					
 					stage.setTitle("Annuaire");
-					stage.setWidth(730);
+					stage.setWidth(950);
 					stage.setHeight(500);
 					stage.setScene(scene);
 					stage.show();

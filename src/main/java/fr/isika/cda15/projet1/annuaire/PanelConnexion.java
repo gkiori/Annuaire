@@ -107,7 +107,7 @@ public class PanelConnexion extends BorderPane{
 		stage.show();
 	}
 	
-	private static ObservableList<Stagiaire> initPanelGestionnaire() {
+	public static ObservableList<Stagiaire> initPanelGestionnaire() {
 		ArbreStagiaire monArbre = new ArbreStagiaire();
 		monArbre.initArbre();
     	
