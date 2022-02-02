@@ -25,16 +25,14 @@ import javafx.stage.Stage;
 
 
 public class PanelGestionnaire extends BorderPane {
-
+	TableView<Stagiaire> table = new TableView<Stagiaire>();
 	
 	public PanelGestionnaire (final Stage stage) throws Exception {
-		
 		try {
 					
 					ObservableList<Stagiaire> data = getStagiaireList();
 					
 					//Création de la table
-					TableView<Stagiaire> table = new TableView<Stagiaire>();
 					table.setEditable(true);
 					
 			        Label label = new Label("Liste des stagiaires");
@@ -110,7 +108,7 @@ public class PanelGestionnaire extends BorderPane {
 			        vbox.setSpacing(5);
 			        vbox.setPadding(new Insets(10, 10, 10, 10));
 			        vbox.getChildren().addAll(label, table, hbox);
-			        PanelFiltre monPanelFiltre = new PanelFiltre(stage);
+			        PanelFiltre monPanelFiltre = new PanelFiltre(stage, table);
 			        this.setCenter(vbox);
 			        this.setRight(monPanelFiltre);
 					Scene scene = new Scene(this,400,400);
@@ -129,6 +127,7 @@ public class PanelGestionnaire extends BorderPane {
 	private ObservableList<Stagiaire> getStagiaireList() {
 		
 		ArbreStagiaire monArbre = new ArbreStagiaire();
+		monArbre.initArbre();
     	
     	List<Stagiaire> maList = new ArrayList<>();
     	maList = Recherche.parcoursStagiaire(monArbre);
