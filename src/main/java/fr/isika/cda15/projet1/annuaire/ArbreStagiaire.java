@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArbreStagiaire {
 	
@@ -20,59 +22,34 @@ public class ArbreStagiaire {
 	static final int ANNEE_ENTREE = 4;
 	static final String PATH_FILE_BIN = "src/main/resources/stagiaires.bin";
 	static final String PATH_FILE_DON = "src/main/resources/STAGIAIRES.DON";
-	private static Noeud racine;
+	private static int racine = -1;
 	private static RandomAccessFile raf;
-	
-	/**
-	 * Constructeur vide 
-	 * @TODO A voir l'intérêt
-	 */
-	public ArbreStagiaire() {
-	}
-
-//	************************** Méthodes Getter & Setter  ************************** //
-	/**
-	 * Retourne le noeud racine
-	 * @return
-	 */
-	public static Noeud getRacine() {
-		return racine;
-	}
-
-	/**
-	 * Modifie le noeud racine
-	 * @param racine
-	 */
-	public void setRacine(Noeud racine) {
-		this.racine = racine;
-	}
 
 //************************* Manipulation fichiers binaires ************************** //
 	
-	public void initArbre() {
+	public static void initArbre() {
 		File monFichierBin = new File(PATH_FILE_BIN);
 		File monFichierDon = new File(PATH_FILE_DON);
-		if(monFichierBin.exists()) {
-			try {
-				raf = new RandomAccessFile(PATH_FILE_BIN, "rw");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-			initArbreFichierBin();
-		}
-		else if(monFichierDon.exists()) {
+		if(!monFichierBin.exists()) {
 			try {
 				raf = new RandomAccessFile(PATH_FILE_BIN, "rw");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
 			initLectureDon(monFichierDon);
+		}else {
+			try {
+				raf = new RandomAccessFile(PATH_FILE_BIN, "rw");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			racine = 0;
 		}
 	}
 
 //	************************** Initialisation de l'arbre à partir d'un fichier bin ************************** //
 	
-	private void initLectureDon(File monFichier) {
+	private static void initLectureDon(File monFichier) {
 		String nom = "", prenom = "", departement = "", nomPromo = "", anneeEntree = "";
 		try {
 			FileReader fr = new FileReader(monFichier);
@@ -84,7 +61,7 @@ public class ArbreStagiaire {
 				nomPromo = br.readLine();
 				anneeEntree = br.readLine();
 				br.readLine();
-				this.ajouter(new Stagiaire(nom, prenom, departement, nomPromo, anneeEntree));
+				ajouter(new Stagiaire(nom, prenom, departement, nomPromo, anneeEntree));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -92,24 +69,9 @@ public class ArbreStagiaire {
 		}
 	}
 	
-	private void initArbreFichierBin() {
-		this.setRacine(new Noeud(lectureStagiaire(0), 0)); 
-		this.initArbreFichierBin(racine);
-	}
-	
-	private Noeud initArbreFichierBin(Noeud courant) {
-		if (lectureIndexFilsG(courant.getIndex()) != -1) {
-			courant.setGauche(this.initArbreFichierBin(new Noeud(lectureStagiaire(lectureIndexFilsG(courant.getIndex())), lectureIndexFilsG(courant.getIndex()))));	
-		}
-		if (lectureIndexFilsD(courant.getIndex()) != -1) {
-			courant.setDroit(this.initArbreFichierBin(new Noeud(lectureStagiaire(lectureIndexFilsD(courant.getIndex())), lectureIndexFilsD(courant.getIndex()))));
-		}
-		return courant;	
-	}
-	
 //	************************** Méthodes pour la lecture et l'écriture dans le fichier ************************** //
 	
-	private static Noeud ecritureNoeudFichier(Stagiaire x, int indexPere) {
+	private static void ecritureNoeudFichier(Stagiaire x, int indexPere) {
 		int index = 0;
 		try {
 			if(indexPere!=-1) {
@@ -147,7 +109,6 @@ public class ArbreStagiaire {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Noeud(x, index);
 	}
 	
 	private static Stagiaire lectureStagiaire(int index) {
@@ -243,121 +204,137 @@ public class ArbreStagiaire {
 //	************************** Méthodes pour ajout de Noeud ************************** //	
 	
 	public static void ajouter(Stagiaire x) {
-		if (ArbreStagiaire.racine == null) {
-			ArbreStagiaire.racine = ecritureNoeudFichier(x, -1); 
-		}
 		ajouterNoeud(x, racine, -1);
 	}
 	
-	private static Noeud ajouterNoeud(Stagiaire x, Noeud courant, int indexPere) {
-		if(courant == null) {
-			return ecritureNoeudFichier(x, indexPere);
+	private static void ajouterNoeud(Stagiaire x, int courant, int indexPere) {
+		if(courant == -1) {
+			ecritureNoeudFichier(x, indexPere);
+			racine = 0;
+		}else if (x.compareTo(lectureStagiaire(courant)) < 0) {
+			ajouterNoeud(x, lectureIndexFilsG(courant), courant);
+		}else if (x.compareTo(lectureStagiaire(courant)) > 0) {
+			ajouterNoeud(x, lectureIndexFilsD(courant), courant);
 		}
-		if (x.compareTo(courant.getStagiaire()) < 0) {
-			courant.setGauche(ajouterNoeud(x, courant.getGauche(), courant.getIndex()));
-		}
-		if (x.compareTo(courant.getStagiaire()) > 0) {
-			courant.setDroit(ajouterNoeud(x, courant.getDroit(), courant.getIndex()));
-		}
-		return courant;	
 	}
 	
 //	************************** Méthodes pour suppression de Noeud ************************** //	
 	
 	public static void supprimer(Stagiaire x) {
-		Noeud racineAvant = new Noeud(ArbreStagiaire.racine.getStagiaire(), 0);
-		ArbreStagiaire.racine = supprimerNoeud(x, ArbreStagiaire.racine);
-		if(racineAvant != ArbreStagiaire.racine && ArbreStagiaire.racine != null) {
-			nouvelleRacine(ArbreStagiaire.racine.getStagiaire(), lectureIndexFilsG(ArbreStagiaire.racine.getIndex()), lectureIndexFilsD(ArbreStagiaire.racine.getIndex()));
-			ArbreStagiaire.racine.setIndex(0);
+		int racineAvant = racine;
+		racine = supprimerNoeud(x, racine);
+		if(racineAvant != racine && racine != -1) {
+			nouvelleRacine(lectureStagiaire(racine), lectureIndexFilsG(racine), lectureIndexFilsD(racine));
+			racine = 0;
 		}
 	}
 	
-	private static Noeud supprimerNoeud(Stagiaire x, Noeud courant) {
-        if (courant == null)
-            return courant;
-        if (courant.getStagiaire().compareTo(x) == 0) {
-            return supprimerRacine(courant);
-        }else if (courant.getStagiaire().compareTo(x) > 0) {
-            courant.setGauche(supprimerNoeud(x, courant.getGauche()));
-            if(courant.getGauche() == null) ecrireIndexFilsG(courant.getIndex(), -1);
-            else ecrireIndexFilsG(courant.getIndex(), courant.getGauche().getIndex());
+	private static int supprimerNoeud(Stagiaire x, int courant) {
+        if (courant == -1)
+            return 0;
+        if (lectureStagiaire(courant).compareTo(x) == 0) {
+            return supprimerRacine(x, courant);
+        }else if (lectureStagiaire(courant).compareTo(x) > 0) {
+            ecrireIndexFilsG(supprimerNoeud(x, lectureIndexFilsG(courant)), courant);
+            if(lectureIndexFilsG(courant) == -1) ecrireIndexFilsG(courant, -1);
+            else ecrireIndexFilsG(courant, lectureIndexFilsG(courant));
         }else {
-        	courant.setDroit(supprimerNoeud(x, courant.getDroit()));
-        	if(courant.getDroit() == null) ecrireIndexFilsD(courant.getIndex(), -1);
-        	else ecrireIndexFilsD(courant.getIndex(), courant.getDroit().getIndex());
+        	ecrireIndexFilsG(supprimerNoeud(x, lectureIndexFilsD(courant)), courant);
+        	if(lectureIndexFilsG(courant) == -1) ecrireIndexFilsD(courant, -1);
+        	else ecrireIndexFilsD(courant, lectureIndexFilsG(courant));
         }
         return courant;
     }
 	
-	private static Noeud supprimerRacine(Noeud courant) {
-		if (courant.getGauche() == null && courant.getDroit() == null) {
-			return null;
-		}else if (courant.getGauche() == null) {
-			ecrireIndexFilsD(courant.getIndex(), courant.getDroit().getIndex());
-            return courant.getDroit();
-        }else if (courant.getDroit() == null) {
-        	ecrireIndexFilsG(courant.getIndex(), courant.getGauche().getIndex());
-            return courant.getGauche();
+	private static int supprimerRacine(Stagiaire x, int courant) {
+		if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsG(courant) == -1) {
+			return -1;
+		}else if (lectureIndexFilsG(courant) == -1) {
+			ecrireIndexFilsD(courant, lectureIndexFilsD(courant));
+            return lectureIndexFilsD(courant);
+        }else if (lectureIndexFilsD(courant) == -1) {
+        	ecrireIndexFilsG(courant, lectureIndexFilsG(courant));
+            return lectureIndexFilsG(courant);
         }else {
-        	Noeud dernierDescendant = dernierDescendant(courant.getGauche());
+        	int dernierDescendant = dernierDescendant(lectureIndexFilsG(courant));
         	
-        	courant.setStagiaire(dernierDescendant.getStagiaire());
-        	courant.setIndex(dernierDescendant.getIndex());
+        	ecritureNoeudFichier(lectureStagiaire(dernierDescendant), courant);
+        	courant = dernierDescendant;
         	
-        	if(courant.getIndex() != courant.getDroit().getIndex()) ecrireIndexFilsD(courant.getIndex(), courant.getDroit().getIndex());
-        	else ecrireIndexFilsD(courant.getIndex(), -1);
-        	if(courant.getIndex() != courant.getGauche().getIndex()) ecrireIndexFilsG(courant.getIndex(), courant.getGauche().getIndex());
-        	else ecrireIndexFilsG(courant.getIndex(), -1);
+        	if(courant != lectureIndexFilsD(courant)) ecrireIndexFilsD(courant, lectureIndexFilsD(courant));
+        	else ecrireIndexFilsD(courant, -1);
+        	if(courant != lectureIndexFilsG(courant)) ecrireIndexFilsG(courant, lectureIndexFilsG(courant));
+        	else ecrireIndexFilsG(courant, -1);
         	
-        	courant.setGauche(supprimerNoeud(dernierDescendant.getStagiaire(), courant.getGauche()));
+        	ecrireIndexFilsG(supprimerNoeud(lectureStagiaire(dernierDescendant), lectureIndexFilsG(courant)), courant);
         }
         return courant;
     }
 
-    private static Noeud dernierDescendant(Noeud courant) {
-        if (courant.getDroit() == null)
+    private static int dernierDescendant(int courant) {
+        if (lectureIndexFilsD(courant) == -1)
             return courant;
-        return dernierDescendant(courant.getDroit());
+        return dernierDescendant(lectureIndexFilsD(courant));
     }
 
 //	************************** Méthodes pour modification de Noeud ************************** //
     
-    public void modifierNom(Stagiaire stagiaire, String nouveauNom) {
+    public static void modifierNom(Stagiaire stagiaire, String nouveauNom) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setNom(nouveauNom);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
-    public void modifierPrenom(Stagiaire stagiaire, String nouveauPrenom) {
+    public static void modifierPrenom(Stagiaire stagiaire, String nouveauPrenom) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setPrenom(nouveauPrenom);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
-    public void modifierDepartement(Stagiaire stagiaire, String nouveauDepartement) {
+    public static void modifierDepartement(Stagiaire stagiaire, String nouveauDepartement) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setDepartement(nouveauDepartement);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
-    public void modifierPromo(Stagiaire stagiaire, String nouvellePromo) {
+    public static void modifierPromo(Stagiaire stagiaire, String nouvellePromo) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setPromo(nouvellePromo);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
-    public void modifierAnneeEntree(Stagiaire stagiaire, String nouvelleAnneeEntree) {
+    public static void modifierAnneeEntree(Stagiaire stagiaire, String nouvelleAnneeEntree) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setAnneeEntree(nouvelleAnneeEntree);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
     public static void modifier(Stagiaire ancienStagiaire, Stagiaire nouveauStagiaire) {
-    	ArbreStagiaire.supprimer(ancienStagiaire);
-    	ArbreStagiaire.ajouter(nouveauStagiaire);
+    	supprimer(ancienStagiaire);
+    	ajouter(nouveauStagiaire);
     }
-//	********************************************************************	
+    
+ // ******************* Création de la liste complète des stagiaire  *******************
+	
+ 	/**
+ 	 * Méthode de création de la liste complète des stagiaires présent dans l'arbre
+ 	 * @param ArbreStagiaire : arbre
+ 	 * @return List<Stagiaire> : listInfixe
+ 	 */
+ 	public static List<Stagiaire> parcoursStagiaire(){
+ 		List<Stagiaire> listStagiaire = new ArrayList<Stagiaire>();
+ 		return parcoursStagiaire(racine, listStagiaire);
+ 	}
+ 	
+ 	private static List<Stagiaire> parcoursStagiaire(int r, List<Stagiaire> listInfixe){
+ 		if(r == -1) return listInfixe;
+ 		
+ 		parcoursStagiaire(lectureIndexFilsG(r), listInfixe);
+ 		listInfixe.add(lectureStagiaire(r));
+ 		parcoursStagiaire(lectureIndexFilsD(r), listInfixe);
+ 		
+ 		return listInfixe;
+ 	}
 	@Override
 	public String toString() {
 		return racine + " ";

@@ -10,28 +10,7 @@ public class Recherche {
 	private static String attributeType01;
 	private static String attributeType02;
 
-// ******************* Création de la liste complète des stagiaire  *******************
-	
-	/**
-	 * Méthode de création de la liste complète des stagiaires présent dans l'arbre
-	 * @param ArbreStagiaire : arbre
-	 * @return List<Stagiaire> : listInfixe
-	 */
-	public static List<Stagiaire> parcoursStagiaire(ArbreStagiaire arbre){
-		Noeud racine = ArbreStagiaire.getRacine();
-		List<Stagiaire> listStagiaire = new ArrayList<Stagiaire>();
-		return parcoursStagiaire(racine, listStagiaire);
-	}
-	
-	private static List<Stagiaire> parcoursStagiaire(Noeud r, List<Stagiaire> listInfixe){
-		if(r == null) return listInfixe;
-		
-		parcoursStagiaire(r.getGauche(), listInfixe);
-		listInfixe.add(r.getStagiaire());
-		parcoursStagiaire(r.getDroit(), listInfixe);
-		
-		return listInfixe;
-	}
+
 	
 // ******************* Métthode pour le choix du type de recherhche  *******************
 	
@@ -267,9 +246,9 @@ public class Recherche {
 	
 //************************ Méthodes de recherche avec multicritère (2 mots clé)  ************************
 	
-	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche, ArbreStagiaire arbre) {
+	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche) {
 		List<Stagiaire> resultatRecherche = new ArrayList<Stagiaire>();
-		Recherche.MiniArbre miniArbre = new Recherche().new MiniArbre(parcoursStagiaire(arbre));
+		Recherche.MiniArbre miniArbre = new Recherche().new MiniArbre(ArbreStagiaire.parcoursStagiaire());
 		for (Map.Entry<String, String> recherche : listeRecherche.entrySet()) {
 			List<Stagiaire> resultatRechercheIntermediaire = new ArrayList<Stagiaire>();
 			String cleNonSepare = recherche.getKey().replace("[", "").replace("]", "");
@@ -306,8 +285,8 @@ public class Recherche {
 		return resultatRecherche;
 	}
 	
-	public static TreeSet<String> getListePromo(ArbreStagiaire monArbre) {
-		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
+	public static TreeSet<String> getListePromo() {
+		List<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
 		TreeSet<String> listePromo = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listePromo.add(stagiaire.getPromo());
@@ -315,8 +294,8 @@ public class Recherche {
 		return listePromo;
 	}
 	
-	public static TreeSet<String> getListeDepartement(ArbreStagiaire monArbre) {
-		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
+	public static TreeSet<String> getListeDepartement() {
+		List<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
 		TreeSet<String> listeDepartement = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listeDepartement.add(stagiaire.getDepartement());
@@ -324,8 +303,8 @@ public class Recherche {
 		return listeDepartement;
 	}
 	
-	public static TreeSet<String> getListeAnneeEntree(ArbreStagiaire monArbre) {
-		List<Stagiaire> stagiaires = parcoursStagiaire(monArbre);
+	public static TreeSet<String> getListeAnneeEntree() {
+		List<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
 		TreeSet<String> listeAnneeEntree = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listeAnneeEntree.add(stagiaire.getAnneeEntree());
@@ -369,6 +348,65 @@ public class Recherche {
 		
 		public Noeud getRacine() {
 			return this.racine;
+		}
+	}
+	public class Noeud {
+		private Stagiaire stagiaire;
+		private Noeud gauche;
+		private Noeud droit;
+		
+		public Noeud(Stagiaire stagiaire) {
+			this.stagiaire = stagiaire;
+			this.gauche = null;
+			this.droit = null;
+		}
+		
+		/**
+		 * Retourne le noeud Parent stagiaire
+		 * @return the stagiaire
+		 */
+		public Stagiaire getStagiaire() {
+			return stagiaire;
+		}
+
+		/**
+		 * Retourne le noeud enfant gauche
+		 * @return gauche
+		 */
+		public Noeud getGauche() {
+			return gauche;
+		}
+
+		/**
+		 * Retourne le noeud enfant droit
+		 * @return
+		 */
+		public Noeud getDroit() {
+			return droit;
+		}
+
+		/**
+		 * Moodifie le noeud parent stagiaire 
+		 * @param stagiaire
+		 */
+		public void setStagiaire(Stagiaire stagiaire) {
+			this.stagiaire = stagiaire;
+		}
+
+		/**
+		 * Modifie le noeud enfant gauche
+		 * @param gauche
+		 */
+		public void setGauche(Noeud gauche) {
+			this.gauche = gauche;
+		}
+
+		/**
+		 * Modifie le noeud enfant droit
+		 * @param droit
+		 */
+		public void setDroit(Noeud droit) {
+			this.droit = droit;
 		}
 	}
 }
