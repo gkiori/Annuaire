@@ -17,20 +17,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 public class PanelConnexion extends BorderPane{
 	
-	private final String fichierLoginPath = "src/resources/loginFile.bin";
+	private final String fichierLoginPath = "src/main/resources/loginFile.bin";
 	private File fichierLogin = new File(fichierLoginPath);
 	
 	private String mdpCheck, nomCheck;
 	
+	private Label labelIncrip = new Label("Inscription");
+	private Label labelQuestion = new Label("Vous n'avez pas de compte ?");
 	private Label labelUserName = new Label("Identifiant : ");
 	private Label labelPassword = new Label("Mot de passe : ");
 	private Button boutonLogin = new Button("Connexion");
@@ -39,26 +47,45 @@ public class PanelConnexion extends BorderPane{
 	private final PasswordField mdpChamp = new PasswordField();
 	private final Label labelMessage = new Label();
 
-	private HBox panelTitre = new HBox();
+	private VBox titreLabel = new VBox();
+	private HBox questionLabel = new HBox();
 	private BorderPane borderCenter = new BorderPane();
 	private GridPane gridPane = new GridPane();
-	private Text titre = new Text("Gestion Annuaire");
+	
+	private Text titre = new Text("Connexion");
 	private BorderPane panelPrincipal = this;
 	
 	public PanelConnexion(final Stage stage) throws Exception {
 		
-		panelTitre.getChildren().add(titre);
-		panelTitre.setAlignment(Pos.CENTER);
-		panelTitre.setMinHeight(USE_PREF_SIZE);
+		questionLabel.getChildren().addAll(labelQuestion, labelIncrip);
+		questionLabel.setSpacing(10);
+		titreLabel.getChildren().addAll(titre, questionLabel);
 		
 		gridPane.setAlignment(Pos.CENTER);
 		borderCenter.setCenter(gridPane);
 		borderCenter.setMinHeight(USE_PREF_SIZE);
 		
-		panelPrincipal.setTop(panelTitre);
 		panelPrincipal.setCenter(borderCenter);
 		
 		titre.setFont(Font.font("Verdana", 35));
+		labelIncrip.setTextFill(Color.RED);
+		labelIncrip.setUnderline(true);
+		
+		labelIncrip.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					try {
+						PanelInscription01.PanelInscription01();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}
+		});
 		
 		boutonLogin.setOnAction(new EventHandler<ActionEvent>() {
 			
@@ -75,14 +102,7 @@ public class PanelConnexion extends BorderPane{
 			}
 		});
 		
-		if(fichierLogin.exists()) {
-			// Le fichier contenant les identifiant et les mdp
-			FileReader fr = new FileReader(fichierLogin);
-			BufferedReader br = new BufferedReader(fr);
-			br.close();
-		}else {
-			//Si le fichier n'existe pas. Creer le fichier
-		}
+		
 		panelPrincipal.setPadding(new Insets(10, 50, 50, 50));
 		gridPane.setPadding(new Insets(7));
 		gridPane.setHgap(7);
@@ -91,12 +111,14 @@ public class PanelConnexion extends BorderPane{
 		labelUserName.setFont(Font.font("Arial", 15));
 		labelPassword.setFont(Font.font("Arial", 15));
 		
-		gridPane.add(labelUserName, 0, 0);
-		gridPane.add(txtUserName, 1, 0);
-		gridPane.add(labelPassword, 0, 1);
-		gridPane.add(mdpChamp, 1, 1);
-		gridPane.add(boutonLogin, 1, 3);
-		gridPane.add(labelMessage, 1, 5);
+//		gridPane.add(titreLabel, 0, 0);
+		gridPane.add(titreLabel, 0, 0, 2, 1);
+		gridPane.add(labelUserName, 0, 2);
+		gridPane.add(txtUserName, 1, 2);
+		gridPane.add(labelPassword, 0, 4);
+		gridPane.add(mdpChamp, 1, 4);
+		gridPane.add(boutonLogin, 1, 6);
+		gridPane.add(labelMessage, 1, 8);
 		boutonLogin.setFont(Font.font(null, 15));
 		gridPane.setMinWidth(100);
 		boutonLogin.setPrefSize(100, 15);
@@ -108,11 +130,11 @@ public class PanelConnexion extends BorderPane{
 	}
 	
 	public static ObservableList<Stagiaire> initPanelGestionnaire() {
-		ArbreStagiaire monArbre = new ArbreStagiaire();
-		monArbre.initArbre();
+//		ArbreStagiaire monArbre = new ArbreStagiaire();
+		ArbreStagiaire.initArbre();
     	
     	List<Stagiaire> maList = new ArrayList<>();
-    	maList = Recherche.parcoursStagiaire(monArbre);
+    	maList = ArbreStagiaire.parcoursStagiaire();
 		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maList);
 	    return list;
 		
