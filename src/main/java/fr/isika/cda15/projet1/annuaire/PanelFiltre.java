@@ -38,9 +38,9 @@ public class PanelFiltre extends BorderPane{
 		ArbreStagiaire monArbre = new ArbreStagiaire();
 		monArbre.initArbre();
 		
-		vuePromo.addAll(Recherche.getListePromo(monArbre));
-		vueDepartement.addAll(Recherche.getListeDepartement(monArbre));
-		vueAnneeEntree.addAll(Recherche.getListeAnneeEntree(monArbre));
+		vuePromo.addAll(Recherche.getListePromo());
+		vueDepartement.addAll(Recherche.getListeDepartement());
+		vueAnneeEntree.addAll(Recherche.getListeAnneeEntree());
 		
 		ObservableList<String> listePromo = FXCollections.observableArrayList();
 		for(String promo : vuePromo) listePromo.add(promo);
@@ -65,7 +65,7 @@ public class PanelFiltre extends BorderPane{
             		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
             		if(menuDepartement.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
             		if(menuAnneeEntree.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
-            		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche, monArbre);
+            		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche);
 					PanelGestionnaire.data.clear();
 					PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRecherche));
 				} catch (Exception e1) {

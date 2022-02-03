@@ -38,6 +38,7 @@ public class PanelGeneralInfos extends BorderPane {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
+					//Direction vers le panale filtre
 //					new PanelFiltre(stage);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
