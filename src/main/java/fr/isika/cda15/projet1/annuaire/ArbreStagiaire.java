@@ -83,7 +83,18 @@ public class ArbreStagiaire {
 				index = (int)raf.length() / 142;
 				raf.writeInt(index);
 				raf.seek(raf.length());
-			}else raf.seek(0); // si indexPere = -1, la racine change
+			}else index = 0; // si indexPere = -1, la racine change
+			ecraser(index, x);
+			raf.writeInt(-1);
+			raf.writeInt(-1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void ecraser(int index, Stagiaire x) {
+		try {
+			raf.seek(index*142);
 			raf.writeChars(x.getNom());
 			for (int i = x.getNom().length(); i < 25; i++) {
 				raf.writeChars("*");
@@ -104,8 +115,6 @@ public class ArbreStagiaire {
 			for (int i = x.getAnneeEntree().length(); i < 4; i++) {
 				raf.writeChars("*");
 			}
-			raf.writeInt(-1);
-			raf.writeInt(-1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -224,6 +233,8 @@ public class ArbreStagiaire {
 		int racineAvant = racine;
 		racine = supprimerNoeud(x, racine);
 		if(racineAvant != racine && racine != -1) {
+			System.out.println(lectureIndexFilsG(racine));
+			System.out.println(lectureIndexFilsD(racine));
 			nouvelleRacine(lectureStagiaire(racine), lectureIndexFilsG(racine), lectureIndexFilsD(racine));
 			racine = 0;
 		}
@@ -233,42 +244,34 @@ public class ArbreStagiaire {
         if (courant == -1)
             return 0;
         if (lectureStagiaire(courant).compareTo(x) == 0) {
-            return supprimerRacine(x, courant);
+            return supprimerRacine(courant);
         }else if (lectureStagiaire(courant).compareTo(x) > 0) {
-            ecrireIndexFilsG(supprimerNoeud(x, lectureIndexFilsG(courant)), courant);
-            if(lectureIndexFilsG(courant) == -1) ecrireIndexFilsG(courant, -1);
-            else ecrireIndexFilsG(courant, lectureIndexFilsG(courant));
+        	int valeurRetour = supprimerNoeud(x, lectureIndexFilsG(courant));
+        	if(valeurRetour == -1) ecrireIndexFilsG(courant, -1);
+            else ecrireIndexFilsG(courant, valeurRetour);
         }else {
-        	ecrireIndexFilsG(supprimerNoeud(x, lectureIndexFilsD(courant)), courant);
-        	if(lectureIndexFilsG(courant) == -1) ecrireIndexFilsD(courant, -1);
-        	else ecrireIndexFilsD(courant, lectureIndexFilsG(courant));
+        	int valeurRetour = supprimerNoeud(x, lectureIndexFilsD(courant));
+        	if(valeurRetour == -1) ecrireIndexFilsD(courant, -1);
+            else ecrireIndexFilsD(courant, valeurRetour);
         }
         return courant;
     }
 	
-	private static int supprimerRacine(Stagiaire x, int courant) {
-		if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsG(courant) == -1) {
+	private static int supprimerRacine(int courant) {
+		if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1) {
 			return -1;
 		}else if (lectureIndexFilsG(courant) == -1) {
-			ecrireIndexFilsD(courant, lectureIndexFilsD(courant));
             return lectureIndexFilsD(courant);
         }else if (lectureIndexFilsD(courant) == -1) {
-        	ecrireIndexFilsG(courant, lectureIndexFilsG(courant));
             return lectureIndexFilsG(courant);
         }else {
         	int dernierDescendant = dernierDescendant(lectureIndexFilsG(courant));
         	
-        	ecritureNoeudFichier(lectureStagiaire(dernierDescendant), courant);
-        	courant = dernierDescendant;
+        	ecraser(courant, lectureStagiaire(dernierDescendant));
         	
-        	if(courant != lectureIndexFilsD(courant)) ecrireIndexFilsD(courant, lectureIndexFilsD(courant));
-        	else ecrireIndexFilsD(courant, -1);
-        	if(courant != lectureIndexFilsG(courant)) ecrireIndexFilsG(courant, lectureIndexFilsG(courant));
-        	else ecrireIndexFilsG(courant, -1);
-        	
-        	ecrireIndexFilsG(supprimerNoeud(lectureStagiaire(dernierDescendant), lectureIndexFilsG(courant)), courant);
+        	ecrireIndexFilsG(courant, supprimerNoeud(lectureStagiaire(courant), lectureIndexFilsG(courant)));
+        	return courant;
         }
-        return courant;
     }
 
     private static int dernierDescendant(int courant) {
