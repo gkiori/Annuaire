@@ -40,8 +40,8 @@ import javafx.stage.Stage;
 
 public class PanelGestionnaire extends BorderPane {
 	
-	TableView<Stagiaire> table = new TableView<Stagiaire>();
-	static ObservableList<Stagiaire> data;
+	private static TableView<Stagiaire> table = new TableView<Stagiaire>();
+	protected static ObservableList<Stagiaire> data;
 	
 	public PanelGestionnaire (final Stage stage) throws Exception {
 		try {
@@ -101,7 +101,7 @@ public class PanelGestionnaire extends BorderPane {
 			            public void handle(ActionEvent e) {
 			        		try {
 			        			Stagiaire stagiaire = new Stagiaire();
-								new PanelAjoutStagiaire(stage, stagiaire);
+			        			PanelAjoutStagiaire.PanelAjoutStagiaire(stagiaire);
 							} catch (Exception e3) {
 								e3.printStackTrace();
 							}
@@ -137,7 +137,7 @@ public class PanelGestionnaire extends BorderPane {
 			            	//TODO Passage au panel modification
 			            	Stagiaire stagiaireAModif = table.getSelectionModel().getSelectedItem();
 			            	try {
-								new PanelAjoutStagiaire(stage, stagiaireAModif);
+			            		PanelAjoutStagiaire.PanelAjoutStagiaire(stagiaireAModif);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -204,7 +204,7 @@ public class PanelGestionnaire extends BorderPane {
 //	    return list;
 //	  }
 
-	public TableView<Stagiaire> getTable() {
+	public static TableView<Stagiaire> getTable() {
 		return table;
 	}
 

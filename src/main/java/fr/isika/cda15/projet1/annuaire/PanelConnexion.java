@@ -67,7 +67,7 @@ public class PanelConnexion extends BorderPane{
 		
 		panelPrincipal.setCenter(borderCenter);
 		
-		titre.setFont(Font.font("Verdana", 35));
+		titre.setFont(Font.font("Verdana", FontWeight.BOLD, 35)); //, FontPosture.ITALIC
 		labelIncrip.setTextFill(Color.RED);
 		labelIncrip.setUnderline(true);
 		
@@ -126,6 +126,8 @@ public class PanelConnexion extends BorderPane{
 		Scene scene = new Scene(panelPrincipal, 800, 550);
 		stage.setTitle("Annuaire des stagiaires");
 		stage.setScene(scene);
+		stage.setWidth(1200);
+        stage.setHeight(720);
 		stage.show();
 	}
 	
