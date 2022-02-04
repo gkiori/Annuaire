@@ -7,30 +7,8 @@ public abstract class Compte { // Public ? private ?
 	 */
 	protected String nom;
 	protected String prenom;
-	private String idCompte;
-	private String mdpCompte;
-	
-	
-	public Compte () {
-		
-	}
+	public Compte () {};
 
-	/**
-	 * Constructeur surchargé
-	 * Défnition de l'objet Compte à partir de tous ses attributs
-	 * @param nom
-	 * @param prenom
-	 * @param idCompte
-	 * @param mdpCompte
-	 */
-	public Compte (String nom, String prenom, String idCompte, String mdpCompte) {
-		this.nom = nom;
-		this.prenom = prenom;
-		this.idCompte = idCompte;
-		this.mdpCompte = mdpCompte;
-
-	}
-	
 	/**
 	 * Constructeur surchargé
 	 * Définition de l'objet Compte à partir des attributs : nom & prenom
@@ -42,7 +20,7 @@ public abstract class Compte { // Public ? private ?
 		this.prenom = prenom;
 
 	}
-	
+
 	/**
 	 * Retourne l'attribut nom
 	 * @return nom
@@ -75,35 +53,5 @@ public abstract class Compte { // Public ? private ?
 		this.prenom = prenom;
 	}
 
-	/**
-	 * Retourne l'attribut IdCompte
-	 * @return
-	 */
-	public String getIdCompte() {
-		return idCompte;
-	}
 
-	/**
-	 * Modifie l'attribut IdCompte
-	 * @param idCompte
-	 */
-	public void setIdCompte(String idCompte) {
-		this.idCompte = idCompte;
-	}
-
-	/**
-	 * Retourne l'attribut MdpCompte
-	 * @return
-	 */
-	public String getMdpCompte() {
-		return mdpCompte;
-	}
-
-	/**
-	 * Modifie l'attribut MdpCompte
-	 * @param mdpCompte
-	 */
-	public void setMdpCompte(String mdpCompte) {
-		this.mdpCompte = mdpCompte;
-	}
 }

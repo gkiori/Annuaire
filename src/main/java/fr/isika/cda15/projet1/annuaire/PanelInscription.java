@@ -1,5 +1,13 @@
 package fr.isika.cda15.projet1.annuaire;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,6 +31,50 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class PanelInscription extends Application{
+
+	static final String PATH_FILE_INSCRIPTION = "src/main/resources/fichierInscription"; // chemin vers le fichier texte dans lequel on écrit les informations de l'user
+	
+	
+	private void addLine(TextField champsNom, TextField champsPrenom,TextField champsEmail,  TextField champsMdp, ToggleGroup profilUser ) { // méthode pour récupérer la valeur des champs d'information
+		String line = champsNom.getText() + "," + champsPrenom.getText() + "," + champsEmail.getText() + "," + champsMdp.getText() + "," +  ((RadioButton)profilUser.getSelectedToggle()).getText() + "\n" ;  // ce qui va être ajouté est de type String le nom de cet "objet" est line
+	
+		File fichierInscription = new File (PATH_FILE_INSCRIPTION); // création d'un objet de type File qui s'appelle "fichierInscription" et qui prend en arguments (caractéristiques) le chemin vers le fichier
+		try { // méthode try if 
+			if (fichierInscription.exists()) { 
+				System.out.println("fichier créer");
+				FileWriter fichierW = new FileWriter (PATH_FILE_INSCRIPTION, true);
+				BufferedWriter buffered_Writer = new BufferedWriter (fichierW);
+				buffered_Writer.write(line);
+				buffered_Writer.close();
+				
+				FileReader fr = new FileReader(fichierInscription);
+				BufferedReader br = new BufferedReader(fr);
+				String infoInscription = "";
+			
+				while (br.ready()) {
+					infoInscription += br.readLine();
+					infoInscription += "\n";
+				}
+				br.close();
+				fr.close();
+				System.out.println(infoInscription);
+				String [] splitInfoInscription = infoInscription.split(",");
+				for (String s : splitInfoInscription) {
+					System.out.println(s);
+					
+				}
+			}
+			else {
+				System.out.println("Fichier pas crée");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 	@Override 
 	public void start (Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Inscription");
@@ -86,7 +138,7 @@ public class PanelInscription extends Application{
 		PasswordField champsMdp = new PasswordField ();	
 		champsMdp.setPrefHeight(40);
 		theGridPane.add(champsMdp, 1, 4);
-		
+
 		Label profil = new Label ("Votre profil : ");
 		theGridPane.add(profil, 0, 5);
 		RadioButton userEnseignant = new RadioButton ("Enseignant");
@@ -101,6 +153,7 @@ public class PanelInscription extends Application{
 		btn.setPrefHeight(40);
 		btn.setDefaultButton(true);
 		btn.setPrefWidth(100);
+		
 
 		theGridPane.add(btn, 0, 7, 3, 2);
 		GridPane.setHalignment(btn, HPos.CENTER);
@@ -113,7 +166,7 @@ public class PanelInscription extends Application{
 					showAlert (Alert.AlertType.ERROR, theGridPane.getScene().getWindow(),"Erreur !", "veuillez entrer votre nom");
 					return;
 				}
-				
+
 				if (champsPrenom.getText().isEmpty()) {
 					showAlert (Alert.AlertType.ERROR, theGridPane.getScene().getWindow(),"Erreur !", "Veuillez entrer votre prénom");
 					return;
@@ -122,32 +175,41 @@ public class PanelInscription extends Application{
 				if(champsEmail.getText().isEmpty()) {
 					showAlert (Alert.AlertType.ERROR, theGridPane.getScene().getWindow(),"Erreur !", "veuillez entrer votre e-mail");
 					return;
-					}
-				
+				}
+
 				if(champsMdp.getText().isEmpty()) {
 					showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur !", "veuillez entrer votre mot de passe");
 					return;
-					
+
 				}
 				showAlert(Alert.AlertType.CONFIRMATION, theGridPane.getScene().getWindow(), "Inscription réussie", "bienvenue " + champsNom.getText());
+			
+				addLine ( champsNom,  champsPrenom, champsEmail,   champsMdp, profilUser);
 			}
 
 			private void showAlert (Alert.AlertType alertType, Window owner, String title, String message) {
+	
 				Alert alert = new Alert (alertType);
 				alert.setTitle(title);
 				alert.setHeaderText(null);
 				alert.setContentText(message);
 				alert.initOwner(owner);
 				alert.show();
+
 			}
 
+			
+
 		});
+		
+		
 
 
-	}
+		}
+
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		launch();
 	}
 

@@ -14,6 +14,7 @@ public class Stagiaire extends Compte implements Comparable<Stagiaire> {
 	 * Constructeur vide
 	 */
 	public Stagiaire () {
+		
 	}
 	
 	/**
