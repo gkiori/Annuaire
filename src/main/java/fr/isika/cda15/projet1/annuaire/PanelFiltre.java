@@ -25,6 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class PanelFiltre extends BorderPane{
+	
 	Label titre = new Label("Filtres");
 	TextField zoneRecherche = new TextField();
 	TextField zoneRechercheNom = new TextField();
