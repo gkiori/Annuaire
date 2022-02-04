@@ -143,6 +143,8 @@ public class PanelInscription01 extends GridPane {
 				@Override
 				public void handle(ActionEvent event) {
 					champsNom.setDisable(false);
+					champsNom.clear();
+					champsNom.requestFocus();
 				}
 			});
 			editPrenom.setVisible(true);
@@ -151,7 +153,8 @@ public class PanelInscription01 extends GridPane {
 				@Override
 				public void handle(ActionEvent event) {
 					champsPrenom.setDisable(false);
-					champsPrenom.selectAll();
+					champsPrenom.clear();
+					champsPrenom.requestFocus();
 				}
 			});
 			editEmail.setVisible(true);
@@ -160,6 +163,8 @@ public class PanelInscription01 extends GridPane {
 				@Override
 				public void handle(ActionEvent event) {
 					champsEmail.setDisable(false);
+					champsEmail.clear();
+					champsEmail.requestFocus();
 				}
 			});
 			editMdp.setVisible(true);
@@ -168,6 +173,8 @@ public class PanelInscription01 extends GridPane {
 				@Override
 				public void handle(ActionEvent event) {
 					champsMdp.setDisable(false);
+					champsMdp.clear();
+					champsMdp.requestFocus();
 				}
 			});
 			editProfil.setVisible(true);
@@ -181,22 +188,22 @@ public class PanelInscription01 extends GridPane {
 			});
 			champsNom.setText(monUser.getNom());
 			champsNom.setDisable(true);
-			champsNom.setOpacity(1);
+			champsNom.setOpacity(0.9);
 			champsPrenom.setText(monUser.getPrenom());
 			champsPrenom.setDisable(true);
-			champsPrenom.setOpacity(1);
+			champsPrenom.setOpacity(0.9);
 			champsEmail.setText(monUser.getIdCompte());
 			champsEmail.setDisable(true);
-			champsEmail.setOpacity(1);
+			champsEmail.setOpacity(0.9);
 			champsMdp.setText(monUser.getMdpCompte());
 			champsMdp.setDisable(true);
-			champsMdp.setOpacity(1);
+			champsMdp.setOpacity(0.9);
 			if(monUser.getProfil().equalsIgnoreCase("enseignant")) userEnseignant.setSelected(true);
 			else userStagiaire.setSelected(true);
 			userEnseignant.setDisable(true);
-			userEnseignant.setOpacity(1);
+			userEnseignant.setOpacity(0.9);
 			userStagiaire.setDisable(true);
-			userStagiaire.setOpacity(1);
+			userStagiaire.setOpacity(0.9);
 		}
 		
 		Button btn = new Button("Valider");
@@ -215,7 +222,11 @@ public class PanelInscription01 extends GridPane {
 				@Override
 				public void handle(ActionEvent event) {
 					modifyLine(champsNom, champsPrenom, champsEmail, champsMdp, profilUser, monUser);
+					PanelConnexion.setUser(new User(champsNom.getText(), champsPrenom.getText(), champsEmail.getText(), champsMdp.getText(), ((RadioButton)profilUser.getSelectedToggle()).getText()));
+					PanelGeneralInfos.setUserName(champsPrenom.getText(), champsNom.getText());
 					popUpInscription.close();
+					
+					
 				}
 			});
 		} else {
@@ -275,7 +286,6 @@ public class PanelInscription01 extends GridPane {
 			// et qui prend en arguments (caractéristiques) le chemin vers le fichier
 			File fichierInscription = new File (PATH_FILE_INSCRIPTION); 
 			if (fichierInscription.exists() || fichierInscription.createNewFile()) { 
-				System.out.println("fichier créer");
 				FileWriter fichierW = new FileWriter (PATH_FILE_INSCRIPTION, true);
 				BufferedWriter buffered_Writer = new BufferedWriter (fichierW);
 				buffered_Writer.write(line);
@@ -310,7 +320,7 @@ public class PanelInscription01 extends GridPane {
 		
 		try {
 			File inputFile = new File(PATH_FILE_INSCRIPTION);
-			File tempFile = new File("src/main/resources/fichierInscription");
+			File tempFile = new File("src/main/resources/fichierInscriptiontemp");
 	        BufferedReader bufRead = new BufferedReader(new FileReader(inputFile));
 	        BufferedWriter bufWrite = new BufferedWriter(new FileWriter(tempFile, true));
 	        String line = champsNom.getText()
@@ -332,6 +342,7 @@ public class PanelInscription01 extends GridPane {
 	        }
 	        bufRead.close();
 	        bufWrite.close();
+	        inputFile.delete();
 	        tempFile.renameTo(inputFile);
 	    } catch (Exception e) {
 	        System.out.println("Problem reading file.");

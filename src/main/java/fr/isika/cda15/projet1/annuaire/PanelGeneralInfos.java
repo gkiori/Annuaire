@@ -48,7 +48,7 @@ public class PanelGeneralInfos extends BorderPane {
 	private VBox vbUser = new VBox();
 	private ImageView imgUser = new ImageView();
 	private Label lblBienvenue = new Label("Bienvenue");
-	private Label lblUserName = new Label(PanelConnexion.getUser().getPrenom() + " " + PanelConnexion.getUser().getNom());
+	private static Label lblUserName = new Label(PanelConnexion.getUser().getPrenom() + " " + PanelConnexion.getUser().getNom());
 	
 	private VBox vbMiddle = new VBox();
 	private Button rechBtn = new Button("Rechercher");
@@ -255,4 +255,7 @@ public class PanelGeneralInfos extends BorderPane {
         return cell;
     }
 	
+    public static void setUserName(String nom, String prenom) {
+    	lblUserName.setText(prenom + " " + nom);
+    }
 }
