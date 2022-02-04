@@ -20,18 +20,20 @@ public class Recherche {
 	 * @return
 	 */
 	private static int keyValue(String attributeType) {
-		
 		if(attributeType.equalsIgnoreCase("nom")) {
 			return 1;
 		}
-		else if(attributeType.equalsIgnoreCase("anneeEntree")) {
+		else if(attributeType.equalsIgnoreCase("prenom")) {
 			return 2;
 		}
-		else if(attributeType.equalsIgnoreCase("promo")) {
+		else if(attributeType.equalsIgnoreCase("anneeEntree")) {
 			return 3;
 		}
-		else if(attributeType.equalsIgnoreCase("departement")) {
+		else if(attributeType.equalsIgnoreCase("promo")) {
 			return 4;
+		}
+		else if(attributeType.equalsIgnoreCase("departement")) {
+			return 5;
 		}
 		else {
 			return 0;
@@ -94,7 +96,7 @@ public class Recherche {
 			return listResult;
 		}
 		chercherNom(cle, r.getGauche(), listResult);
-		if (cle.compareTo(r.getStagiaire().getNom()) == 0){
+		if (r.getStagiaire().getNom().toLowerCase().contains(cle.toLowerCase())){
 			listResult.add(r.getStagiaire());
 //			System.out.println(r.getStagiaire() + " ");
 		}
@@ -102,6 +104,39 @@ public class Recherche {
 		chercherNom(cle, r.getDroit(), listResult);
 		return listResult;
 	}
+	
+	// ************************ Méthodes de recherche par prenom ************************
+	
+		/**
+		 * 
+		 * @param cle
+		 * @param arbre
+		 * @return
+		 */
+		public static List<Stagiaire> chercherPrenom(String cle, MiniArbre arbre) {
+			List<Stagiaire> listRechPrenom = new ArrayList<>();
+			return chercherPrenom(cle, arbre.getRacine(), listRechPrenom);
+		}
+		
+		/**
+		 * 
+		 * @param cle
+		 * @param r
+		 * @param listResult
+		 * @return
+		 */
+		private static List<Stagiaire> chercherPrenom(String cle, Noeud r, List<Stagiaire> listResult) {
+			if (r == null){
+				return listResult;
+			}
+			chercherPrenom(cle, r.getGauche(), listResult);
+			if (r.getStagiaire().getPrenom().toLowerCase().contains(cle.toLowerCase())){
+				listResult.add(r.getStagiaire());
+			}
+			chercherPrenom(cle, r.getDroit(), listResult);
+			return listResult;
+		}
+		
 //************************ Méthodes de recherche par année d'entrée ************************
 	/**
 	 * 
@@ -128,9 +163,7 @@ public class Recherche {
 		chercherAnneeEntree(cle, r.getGauche(), listResult);
 		if (cle.compareTo(r.getStagiaire().getAnneeEntree()) == 0){
 			listResult.add(r.getStagiaire());
-//			System.out.println(r.getStagiaire() + " ");
 		}
-//		System.out.println(r.getStagiaire().getDepartement() + " ");
 		chercherAnneeEntree(cle, r.getDroit(), listResult);
 		return listResult;
 	}
@@ -161,7 +194,6 @@ public class Recherche {
 		chercherPromotion(cle, r.getGauche(), listResult);
 		if (cle.compareTo(r.getStagiaire().getPromo()) == 0 ){
 			listResult.add(r.getStagiaire());
-//			System.out.println(r.getStagiaire() + " ");
 		}
 		chercherPromotion(cle, r.getDroit(), listResult);
 		return listResult;
@@ -194,7 +226,6 @@ public class Recherche {
 		chercherPromotionFull(cle, r.getGauche(), listResult);
 		if (cle.compareTo(r.getStagiaire().getPromo()) == -3 ){ 
 			listResult.add(r.getStagiaire());
-//			System.out.println(r.getStagiaire() + " ");
 		}
 		chercherPromotionFull(cle, r.getDroit(), listResult);
 		return listResult;
@@ -229,12 +260,15 @@ public class Recherche {
 			listResult = chercherNom(cle, arbre);
 			break;
 		case 2:
-			listResult = chercherAnneeEntree(cle, arbre);
+			listResult = chercherPrenom(cle, arbre);
 			break;
 		case 3:
-			listResult = chercherPromotion(cle, arbre);
+			listResult = chercherAnneeEntree(cle, arbre);
 			break;
 		case 4:
+			listResult = chercherPromotion(cle, arbre);
+			break;
+		case 5:
 			listResult = chercherDepartement(cle, arbre);
 			break;
 		default:
@@ -260,19 +294,16 @@ public class Recherche {
 				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherNom(cle, miniArbre));
 				break;
 			case 2:
-				for(String cle : cles) {
-					resultatRechercheIntermediaire.addAll(chercherAnneeEntree(cle, miniArbre));
-				}
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherPrenom(cle, miniArbre));
 				break;
 			case 3:
-				for(String cle : cles) {
-					resultatRechercheIntermediaire.addAll(chercherPromotion(cle, miniArbre));
-				}
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherAnneeEntree(cle, miniArbre));
 				break;
 			case 4:
-				for(String cle : cles) {
-					resultatRechercheIntermediaire.addAll(chercherDepartement(cle, miniArbre));
-				}
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherPromotion(cle, miniArbre));
+				break;
+			case 5:
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherDepartement(cle, miniArbre));
 				break;
 			default:
 				System.out.println("No Results founded");

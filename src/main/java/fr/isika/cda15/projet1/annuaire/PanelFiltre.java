@@ -7,12 +7,17 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.controlsfx.control.CheckComboBox;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -23,8 +28,8 @@ public class PanelFiltre extends BorderPane{
 	Label titre = new Label("Filtres");
 	TextField zoneRecherche = new TextField("Recherche");
 	TextField zoneRechercheNom = new TextField("Nom");
-	TextField zoneRecherchePrenom = new TextField("Prénom");
-	Button affichageResultat = new Button("Afficher les résultats");
+	TextField zoneRecherchePrenom = new TextField("Prenom");//----------
+	Button reinitialisationFiltre = new Button("Réinitialiser les filtres");//----------
 	
 	CheckComboBox<String> menuPromo = new CheckComboBox<String>();
 	CheckComboBox<String> menuDepartement = new CheckComboBox<String>();
@@ -35,8 +40,6 @@ public class PanelFiltre extends BorderPane{
 	TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 	
 	public PanelFiltre(final Stage stage) throws Exception{
-		ArbreStagiaire monArbre = new ArbreStagiaire();
-		monArbre.initArbre();
 		
 		vuePromo.addAll(Recherche.getListePromo());
 		vueDepartement.addAll(Recherche.getListeDepartement());
@@ -56,29 +59,74 @@ public class PanelFiltre extends BorderPane{
 		menuAnneeEntree.getItems().addAll(vueAnneeEntree);
 		menuAnneeEntree.setTitle("Année d'entrée");
 		
-		affichageResultat.setOnAction(new EventHandler<ActionEvent>(){
+		//________________________________________________________________________
+		zoneRecherche.setOnMouseClicked(clic -> { zoneRecherche.clear();});
+		zoneRechercheNom.setOnMouseClicked(clic -> { zoneRechercheNom.clear();});
+		zoneRecherchePrenom.setOnMouseClicked(clic -> { zoneRecherchePrenom.clear();});
+		
+		ChangeListener<String> changementZoneEcriture = new ChangeListener<String>(){
 			@Override
-            public void handle(ActionEvent e) {
-				
-        		try {
-        			Map<String, String> listeRecherche = new HashMap<String, String>();
-            		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
-            		if(menuDepartement.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
-            		if(menuAnneeEntree.getCheckModel().getCheckedItems().toString() != "[]") listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
-            		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche);
-					PanelGestionnaire.data.clear();
-					PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRecherche));
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-            }
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				changementRecherche();
+			}
+			
+		};
+		zoneRecherche.textProperty().addListener(changementZoneEcriture);
+		zoneRechercheNom.textProperty().addListener(changementZoneEcriture);
+		zoneRecherchePrenom.textProperty().addListener(changementZoneEcriture);
+		
+		ListChangeListener<String> changementComboBox = new ListChangeListener<String>() {
+			@Override
+			public void onChanged(ListChangeListener.Change<? extends String> c) {
+				changementRecherche();
+			}
+		};
+		menuPromo.getCheckModel().getCheckedItems().addListener(changementComboBox);
+		menuDepartement.getCheckModel().getCheckedItems().addListener(changementComboBox);
+		menuAnneeEntree.getCheckModel().getCheckedItems().addListener(changementComboBox);
+		
+		reinitialisationFiltre.setOnAction(new EventHandler<ActionEvent>(){
+			
+			@Override
+			public void handle(ActionEvent event) {
+				menuPromo.getCheckModel().clearChecks();
+				menuDepartement.getCheckModel().clearChecks();
+				menuAnneeEntree.getCheckModel().clearChecks();
+			}
 		});
+		
+		//________________________________________________________________________
+		
 		VBox orgVbox = new VBox();
 		orgVbox.getChildren().addAll(zoneRecherche, menuPromo, menuDepartement, menuAnneeEntree, zoneRechercheNom, zoneRecherchePrenom);
 		this.setTop(titre);
 		this.setCenter(orgVbox);
-		this.setBottom(affichageResultat);
+		this.setBottom(reinitialisationFiltre);
 		Scene scene = new Scene(this);
 		stage.setScene(scene);
 	}
+	
+	//________________________________________________________________________
+	public void changementRecherche() {
+		Map<String, String> listeRecherche = new HashMap<String, String>();
+		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") 
+			listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
+		if(menuDepartement.getCheckModel().getCheckedItems().toString() != "[]") 
+			listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
+		if(menuAnneeEntree.getCheckModel().getCheckedItems().toString() != "[]") 
+			listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
+		if(!zoneRechercheNom.getText().equalsIgnoreCase("nom"))
+			listeRecherche.put(zoneRechercheNom.getText(), "nom");
+		if(!zoneRecherchePrenom.getText().equalsIgnoreCase("prenom"))
+			listeRecherche.put(zoneRecherchePrenom.getText(), "prenom");
+		if(!listeRecherche.isEmpty()) {
+			List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche);
+			PanelGestionnaire.data.clear();
+			PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRecherche));
+		}else {
+			PanelGestionnaire.data.clear();
+			PanelGestionnaire.data.addAll(PanelConnexion.initPanelGestionnaire());
+		}
+	}
+	//________________________________________________________________________
 }
