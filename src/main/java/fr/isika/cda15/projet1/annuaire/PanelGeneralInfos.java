@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.File;
-import java.awt.Desktop;
+//import java.awt.Desktop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +76,9 @@ public class PanelGeneralInfos extends BorderPane {
 			public void handle(ActionEvent event) {
 				// Appel la fonction d'initialisation
 				try {
-					PanelGestionnaire.setData(PanelConnexion.initPanelGestionnaire());
-					new PanelGestionnaire(stage);
+					PanelGestionnaire.data.clear();
+					PanelGestionnaire.data.addAll(PanelConnexion.initPanelGestionnaire());
+//					new PanelGestionnaire(stage);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -166,12 +167,12 @@ public class PanelGeneralInfos extends BorderPane {
 					writer.close();
 					
 					
-					File pdfFile = new File(PDF_PATH);
-					if (Desktop.isDesktopSupported()) {
-							Desktop.getDesktop().open(pdfFile);
-					} else {
-							System.out.println("Awt Desktop is not supported!");
-					}
+//					File pdfFile = new File(PDF_PATH);
+//					if (Desktop.isDesktopSupported()) {
+//							Desktop.getDesktop().open(pdfFile);
+//					} else {
+//							System.out.println("Awt Desktop is not supported!");
+//					}
 					
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -26,9 +26,9 @@ import javafx.stage.Stage;
 
 public class PanelFiltre extends BorderPane{
 	Label titre = new Label("Filtres");
-	TextField zoneRecherche = new TextField("Recherche");
-	TextField zoneRechercheNom = new TextField("Nom");
-	TextField zoneRecherchePrenom = new TextField("Prenom");//----------
+	TextField zoneRecherche = new TextField();
+	TextField zoneRechercheNom = new TextField();
+	TextField zoneRecherchePrenom = new TextField();//----------
 	Button reinitialisationFiltre = new Button("Réinitialiser les filtres");//----------
 	
 	CheckComboBox<String> menuPromo = new CheckComboBox<String>();
@@ -40,6 +40,10 @@ public class PanelFiltre extends BorderPane{
 	TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 	
 	public PanelFiltre(final Stage stage) throws Exception{
+		
+		zoneRecherche.setPromptText("Recherche");
+		zoneRechercheNom.setPromptText("Nom");
+		zoneRecherchePrenom.setPromptText("Prenom");
 		
 		vuePromo.addAll(Recherche.getListePromo());
 		vueDepartement.addAll(Recherche.getListeDepartement());

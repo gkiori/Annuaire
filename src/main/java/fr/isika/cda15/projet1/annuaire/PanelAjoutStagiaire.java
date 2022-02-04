@@ -86,6 +86,8 @@ public class PanelAjoutStagiaire extends BorderPane{
 								Stagiaire newStagiaire = new Stagiaire(nomTxt.getText(), prenomTxt.getText(), 
 								departementTxt.getText(), promoTxt.getText(), anneeEntreeTxt.getText());
 								ArbreStagiaire.ajouter(newStagiaire);
+								PanelGestionnaire.data.clear();
+								PanelGestionnaire.data.addAll(PanelConnexion.initPanelGestionnaire());
 								popUpStagiaire.close();
 //								new PanelGestionnaire(stage);
 							} catch (Exception e) {

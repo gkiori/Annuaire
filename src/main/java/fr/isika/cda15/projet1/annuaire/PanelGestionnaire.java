@@ -35,6 +35,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 
@@ -56,7 +57,7 @@ public class PanelGestionnaire extends BorderPane {
 					table.setEditable(true);
 					
 			        Label titreLbl = new Label("Liste des stagiaires");
-			        titreLbl.setFont(new Font("Arial", 20));
+			        titreLbl.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
 			 
 			        //Création des cinq colonnes
 			        TableColumn<Stagiaire, String> prenomCol = 
@@ -183,8 +184,8 @@ public class PanelGestionnaire extends BorderPane {
 //					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 					
 					stage.setTitle("Annuaire");
-					stage.setWidth(950);
-					stage.setHeight(500);
+					stage.setWidth(1200);
+			        stage.setHeight(720);
 					stage.setScene(scene);
 					stage.show();
 				} catch(Exception e) {
