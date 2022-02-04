@@ -1,5 +1,12 @@
 package fr.isika.cda15.projet1.annuaire;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -26,6 +33,8 @@ import javafx.stage.Window;
 public class PanelInscription01 extends GridPane {
 	
 	private static Stage popUpInscription;
+	// chemin vers le fichier texte dans lequel on écrit les informations de l'user
+	static final String PATH_FILE_INSCRIPTION = "src/main/resources/fichierInscription"; 
 	
 	public static void PanelInscription01() throws Exception {
 		
@@ -130,7 +139,8 @@ public class PanelInscription01 extends GridPane {
 					showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur", "Veuillez entrer votre mot de passe");
 					return;
 				}
-//				showAlert(AlertType.CONFIRMATION, theGridPane.getScene().getWindow(), "Inscription réussie", "Bienvenue " + champsPrenom.getText());
+				showAlert(AlertType.CONFIRMATION, theGridPane.getScene().getWindow(), "Inscription réussie", "Bienvenue " + champsPrenom.getText());
+				addLine ( champsNom, champsPrenom, champsEmail, champsMdp, profilUser);
 				popUpInscription.close();
 			}
 			
@@ -146,4 +156,47 @@ public class PanelInscription01 extends GridPane {
 		});
 	}
 	
+	private static void addLine(TextField champsNom, TextField champsPrenom,TextField champsEmail,  TextField champsMdp, ToggleGroup profilUser ) { // méthode pour récupérer la valeur des champs d'information
+		// ce qui va être ajouté est de type String le nom de cet "objet" est line
+		String line = champsNom.getText() 
+				+ "," + champsPrenom.getText() 
+				+ "," + champsEmail.getText() 
+				+ "," + champsMdp.getText() 
+				+ "," +  ((RadioButton)profilUser.getSelectedToggle()).getText() + "\n" ;
+		
+		try { // méthode try if 
+			// création d'un objet de type File qui s'appelle "fichierInscription" 
+			// et qui prend en arguments (caractéristiques) le chemin vers le fichier
+			File fichierInscription = new File (PATH_FILE_INSCRIPTION); 
+			if (fichierInscription.exists() || fichierInscription.createNewFile()) { 
+				System.out.println("fichier créer");
+				FileWriter fichierW = new FileWriter (PATH_FILE_INSCRIPTION, true);
+				BufferedWriter buffered_Writer = new BufferedWriter (fichierW);
+				buffered_Writer.write(line);
+				buffered_Writer.close();
+				
+				FileReader fr = new FileReader(fichierInscription);
+				BufferedReader br = new BufferedReader(fr);
+				String infoInscription = "";
+			
+				while (br.ready()) {
+					infoInscription += br.readLine();
+					infoInscription += "\n";
+				}
+				br.close();
+				fr.close();
+//				System.out.println(infoInscription);
+				String [] splitInfoInscription = infoInscription.split(",");
+//				for (String s : splitInfoInscription) {
+//					System.out.println(s);
+//					
+//				}
+			}
+			else {
+				System.out.println("Fichier pas crée");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
