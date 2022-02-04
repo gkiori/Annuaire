@@ -27,23 +27,6 @@ public class PanelAjoutStagiaire extends BorderPane{
 	private static Stage popUpStagiaire;
 	
 	private BorderPane panelPrincipal = this;
-//	private Text titre = new Text("Ajout de stagiaire");
-//	private Button btnAjouter = new Button("OK");
-//	private Button btnAnnuler = new Button("Annuler");
-//	
-//	//Création de la zone éditable
-//    private TextField prenomTxt = new TextField();
-//    private TextField nomTxt = new TextField();
-//    private TextField promoTxt = new TextField();  
-//    private TextField anneeEntreeTxt = new TextField();  
-//    private TextField departementTxt = new TextField();
-//
-//	
-//    private HBox panelTitre = new HBox();
-//	private BorderPane borderCenter = new BorderPane();
-//	private GridPane gridPane = new GridPane();
-//	
-//	private HBox hbBtn = new HBox();  
 	
 	public static void PanelAjoutStagiaire(Stagiaire stagiaire) throws Exception {
 		PanelAjoutStagiaire.popUpStagiaire = new Stage();
