@@ -38,7 +38,7 @@ public class PanelConnexion extends BorderPane{
 	private File fichierInscription = new File(PATH_FILE_INSCRIPTION );
 
 	private String mdpCheck, IdCheck;
-	private User user;
+	private static User user;
 
 
 	private Label labelIncrip = new Label("Inscription");
@@ -173,6 +173,14 @@ public class PanelConnexion extends BorderPane{
 		stage.setWidth(1200);
 		stage.setHeight(720);
 		stage.show();
+	}
+	
+	public static User getUser() {
+		return user;
+	}
+
+	public static void setUser(User user) {
+		PanelConnexion.user = user;
 	}
 
 	public static ObservableList<Stagiaire> initPanelGestionnaire() {
