@@ -50,7 +50,7 @@ public class PanelGeneralInfos extends BorderPane {
 	private Button rechBtn = new Button("Rechercher");
 	private Button listBtn = new Button("Liste des stagiaires");
 	private Button imprBtn = new Button("Impression");
-	private Button infoBtn = new Button("Information");
+	private Button infoBtn = new Button("Information"); 
 	
 	private VBox vbOut = new VBox();
 	private Button helpBtn = new Button("Support");
