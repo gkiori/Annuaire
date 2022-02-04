@@ -1,6 +1,8 @@
 package fr.isika.cda15.projet1.annuaire;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -112,7 +114,6 @@ public class PanelFiltre extends BorderPane{
 		stage.setScene(scene);
 	}
 	
-	//________________________________________________________________________
 	public void changementRecherche() {
 		Map<String, String> listeRecherche = new HashMap<String, String>();
 		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") 
@@ -124,9 +125,9 @@ public class PanelFiltre extends BorderPane{
 		listeRecherche.put(zoneRechercheNom.getText(), "nom");
 		listeRecherche.put(zoneRecherchePrenom.getText(), "prenom");
 		listeRecherche.put(zoneRecherche.getText(), "recherche");
-		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche);
+		HashSet<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche);
+		TreeSet<Stagiaire> resultatRechercheTrie = new TreeSet<Stagiaire>(resultatRecherche);
 		PanelGestionnaire.data.clear();
-		PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRecherche));
+		PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRechercheTrie));
 	}
-	//________________________________________________________________________
 }

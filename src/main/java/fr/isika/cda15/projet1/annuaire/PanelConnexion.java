@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -177,10 +179,11 @@ public class PanelConnexion extends BorderPane{
 		//		ArbreStagiaire monArbre = new ArbreStagiaire();
 		ArbreStagiaire.initArbre();
 
-		List<Stagiaire> maList = new ArrayList<>();
-		maList = ArbreStagiaire.parcoursStagiaire();
-		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maList);
-		return list;
+		HashSet<Stagiaire> maList = new HashSet<>();
+    	maList = ArbreStagiaire.parcoursStagiaire();
+    	TreeSet<Stagiaire> maListeTrie = new TreeSet<Stagiaire>(maList);
+		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maListeTrie);
+	    return list;
 
 	}
 }

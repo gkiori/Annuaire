@@ -1,8 +1,10 @@
 package fr.isika.cda15.projet1.annuaire;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 public class Recherche {
@@ -261,12 +263,11 @@ public class Recherche {
 	
 //************************ Méthodes de recherche avec multicritère (2 mots clé)  ************************
 	
-	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche) {
-		System.out.println(listeRecherche);
-		List<Stagiaire> resultatRecherche = new ArrayList<Stagiaire>();
+	public static HashSet<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche) {
+		HashSet<Stagiaire> resultatRecherche = new HashSet<Stagiaire>();
 		Recherche.MiniArbre miniArbre = new Recherche().new MiniArbre(ArbreStagiaire.parcoursStagiaire());
 		for (Map.Entry<String, String> recherche : listeRecherche.entrySet()) {
-			List<Stagiaire> resultatRechercheIntermediaire = new ArrayList<Stagiaire>();
+			HashSet<Stagiaire> resultatRechercheIntermediaire = new HashSet<Stagiaire>();
 			String cleNonSepare = recherche.getKey().replace("[", "").replace("]", "");
 			String[] cles = cleNonSepare.split(", ");
 			String type = recherche.getValue();
@@ -292,7 +293,7 @@ public class Recherche {
 				break;
 			default:
 				System.out.println("No Results founded");
-				resultatRecherche = new ArrayList<Stagiaire>();
+				resultatRecherche = new HashSet<Stagiaire>();
 				break;
 			}
 			resultatRecherche = resultatRechercheIntermediaire;
@@ -302,7 +303,7 @@ public class Recherche {
 	}
 	
 	public static TreeSet<String> getListePromo() {
-		List<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
+		HashSet<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
 		TreeSet<String> listePromo = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listePromo.add(stagiaire.getPromo());
@@ -311,7 +312,7 @@ public class Recherche {
 	}
 	
 	public static TreeSet<String> getListeDepartement() {
-		List<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
+		HashSet<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
 		TreeSet<String> listeDepartement = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listeDepartement.add(stagiaire.getDepartement());
@@ -320,7 +321,7 @@ public class Recherche {
 	}
 	
 	public static TreeSet<String> getListeAnneeEntree() {
-		List<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
+		HashSet<Stagiaire> stagiaires = ArbreStagiaire.parcoursStagiaire();
 		TreeSet<String> listeAnneeEntree = new TreeSet<String>();
 		for(Stagiaire stagiaire : stagiaires){
 			listeAnneeEntree.add(stagiaire.getAnneeEntree());
@@ -331,12 +332,12 @@ public class Recherche {
 	public class MiniArbre {
 		private Noeud racine;
 		
-		public MiniArbre(List<Stagiaire> maList) {
+		public MiniArbre(HashSet<Stagiaire> maList) {
 			ajouterNoeudAll(maList);
 				
 		}
 		
-		private void ajouterNoeudAll(List<Stagiaire> listStagiaire) {
+		private void ajouterNoeudAll(HashSet<Stagiaire> listStagiaire) {
 			for (Stagiaire stagiaire : listStagiaire) {
 				ajouterNoeud(stagiaire);
 			}
@@ -353,10 +354,10 @@ public class Recherche {
 			if(courant == null) {
 				return new Noeud(x);
 			}
-			if (x.getNom().compareTo(courant.getStagiaire().getNom()) < 0) {
+			if (x.compareTo(courant.getStagiaire()) < 0) {
 				courant.setGauche(ajouterNoeud(x, courant.getGauche()));
 			}
-			if (x.getNom().compareTo(courant.getStagiaire().getNom()) > 0) {
+			if (x.compareTo(courant.getStagiaire()) > 0) {
 				courant.setDroit(ajouterNoeud(x, courant.getDroit()));		
 			}	
 			return courant;	
@@ -377,50 +378,26 @@ public class Recherche {
 			this.droit = null;
 		}
 		
-		/**
-		 * Retourne le noeud Parent stagiaire
-		 * @return the stagiaire
-		 */
 		public Stagiaire getStagiaire() {
 			return stagiaire;
 		}
 
-		/**
-		 * Retourne le noeud enfant gauche
-		 * @return gauche
-		 */
 		public Noeud getGauche() {
 			return gauche;
 		}
 
-		/**
-		 * Retourne le noeud enfant droit
-		 * @return
-		 */
 		public Noeud getDroit() {
 			return droit;
 		}
 
-		/**
-		 * Moodifie le noeud parent stagiaire 
-		 * @param stagiaire
-		 */
 		public void setStagiaire(Stagiaire stagiaire) {
 			this.stagiaire = stagiaire;
 		}
 
-		/**
-		 * Modifie le noeud enfant gauche
-		 * @param gauche
-		 */
 		public void setGauche(Noeud gauche) {
 			this.gauche = gauche;
 		}
 
-		/**
-		 * Modifie le noeud enfant droit
-		 * @param droit
-		 */
 		public void setDroit(Noeud droit) {
 			this.droit = droit;
 		}

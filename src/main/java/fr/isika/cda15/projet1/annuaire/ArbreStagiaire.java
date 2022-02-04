@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class ArbreStagiaire {
@@ -324,19 +325,20 @@ public class ArbreStagiaire {
  	 * @param ArbreStagiaire : arbre
  	 * @return List<Stagiaire> : listInfixe
  	 */
- 	public static List<Stagiaire> parcoursStagiaire(){
- 		List<Stagiaire> listStagiaire = new ArrayList<Stagiaire>();
+ 	public static HashSet<Stagiaire> parcoursStagiaire(){
+ 		HashSet<Stagiaire> listStagiaire = new HashSet<Stagiaire>();
  		return parcoursStagiaire(racine, listStagiaire);
  	}
  	
- 	private static List<Stagiaire> parcoursStagiaire(int r, List<Stagiaire> listInfixe){
- 		if(r == -1) return listInfixe;
+ 	private static HashSet<Stagiaire> parcoursStagiaire(int r, HashSet<Stagiaire> listInfixe){
+ 		if(r == -1) return new HashSet<Stagiaire>(listInfixe);
  		
  		parcoursStagiaire(lectureIndexFilsG(r), listInfixe);
  		listInfixe.add(lectureStagiaire(r));
  		parcoursStagiaire(lectureIndexFilsD(r), listInfixe);
  		
- 		return listInfixe;
+ 		
+ 		return new HashSet<Stagiaire>(listInfixe);
  	}
 	@Override
 	public String toString() {
