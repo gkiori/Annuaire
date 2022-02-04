@@ -101,8 +101,7 @@ public class PanelGestionnaire extends BorderPane {
 			            public void handle(ActionEvent e) {
 			        		try {
 			        			Stagiaire stagiaire = new Stagiaire();
-			        			PanelAjoutStagiaire.PanelAjoutStagiaire(stagiaire);
-//								new PanelAjoutStagiaire(stage, stagiaire);
+								new PanelAjoutStagiaire(stage, stagiaire);
 							} catch (Exception e3) {
 								e3.printStackTrace();
 							}
@@ -138,8 +137,7 @@ public class PanelGestionnaire extends BorderPane {
 			            	//TODO Passage au panel modification
 			            	Stagiaire stagiaireAModif = table.getSelectionModel().getSelectedItem();
 			            	try {
-			            		PanelAjoutStagiaire.PanelAjoutStagiaire(stagiaireAModif);
-//								new PanelAjoutStagiaire(stage, stagiaireAModif);
+								new PanelAjoutStagiaire(stage, stagiaireAModif);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -222,9 +220,4 @@ public class PanelGestionnaire extends BorderPane {
 		PanelGestionnaire.data = data;
 	}
 	
-	public Scene swithToPanelDeconnxion() {
-		
-		
-		return null;	
-	}
 }
