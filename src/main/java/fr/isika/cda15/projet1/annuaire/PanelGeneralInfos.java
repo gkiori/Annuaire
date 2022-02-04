@@ -28,9 +28,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class PanelGeneralInfos extends BorderPane {
@@ -41,7 +44,7 @@ public class PanelGeneralInfos extends BorderPane {
 	private VBox vbUser = new VBox();
 	private ImageView imgUser = new ImageView();
 	private Label lblBienvenue = new Label("Bienvenue");
-	private Label lblUserName = new Label();
+	private Label lblUserName = new Label(PanelConnexion.getUser().getPrenom() + " " + PanelConnexion.getUser().getNom());
 	
 	private VBox vbMiddle = new VBox();
 	private Button rechBtn = new Button("Rechercher");
@@ -55,6 +58,24 @@ public class PanelGeneralInfos extends BorderPane {
 	
 	public PanelGeneralInfos(final Stage stage) {
 		
+		lblUserName.setTextFill(Color.BLUE);
+		lblUserName.setUnderline(true);
+		
+		lblUserName.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					try {
+						PanelInscription01.PanelInscription01(PanelConnexion.getUser());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
+		});
 		
 		rechBtn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -185,7 +206,7 @@ public class PanelGeneralInfos extends BorderPane {
 		hbUser.getChildren().addAll(imgUser, vbUser);
 		
 		vbMiddle.getChildren().addAll(rechBtn, listBtn, imprBtn, infoBtn);
-		
+		vbMiddle.setPadding(new Insets(20,20,20,10));
 		vbOut.getChildren().addAll(helpBtn, decoBtn);
 		
 		this.setPadding(new Insets(20,20,20,10));

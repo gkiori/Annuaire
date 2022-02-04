@@ -3,9 +3,17 @@ package fr.isika.cda15.projet1.annuaire;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.itextpdf.text.pdf.parser.Path;
+import com.itextpdf.text.pdf.parser.clipper.Paths;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +32,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
@@ -36,7 +45,7 @@ public class PanelInscription01 extends GridPane {
 	// chemin vers le fichier texte dans lequel on écrit les informations de l'user
 	static final String PATH_FILE_INSCRIPTION = "src/main/resources/fichierInscription"; 
 	
-	public static void PanelInscription01() throws Exception {
+	public static void PanelInscription01(User monUser) throws Exception {
 		
 		PanelInscription01.popUpInscription = new Stage();
 		
@@ -44,7 +53,7 @@ public class PanelInscription01 extends GridPane {
 		
 		popUpInscription.setTitle("Inscription");
 		GridPane theGridPane = inscriptionGrid();
-		addUIControls(theGridPane);
+		addUIControls(theGridPane, monUser);
 		Scene theScene = new Scene (theGridPane, 800,500);
 		popUpInscription.setScene(theScene);
 		popUpInscription.showAndWait();
@@ -65,7 +74,7 @@ public class PanelInscription01 extends GridPane {
 		return theGridPane;
 	}
 	
-	private static void addUIControls(GridPane theGridPane) {
+	private static void addUIControls(GridPane theGridPane, User monUser) {
 		Label header = new Label("Créer un compte utilisateur");
 		header.setFont(Font.font("Tahoma", FontWeight.BOLD, 24));
 		theGridPane.add(header, 0, 0, 2, 1);
@@ -100,6 +109,7 @@ public class PanelInscription01 extends GridPane {
 		champsMdp.setPrefHeight(40);
 		theGridPane.add(champsMdp, 1, 4);
 		
+		
 		Label profil = new Label("Votre profil : ");
 		theGridPane.add(profil, 0, 5);
 		RadioButton userEnseignant = new RadioButton("Enseignant");
@@ -110,6 +120,85 @@ public class PanelInscription01 extends GridPane {
 		theGridPane.add(userStagiaire, 1, 5);
 		theGridPane.add(userEnseignant, 1, 6);
 		
+		Button editNom = new Button("Editer");
+		theGridPane.add(editNom, 2, 1);
+		editNom.setVisible(false);
+		Button editPrenom = new Button("Editer");
+		theGridPane.add(editPrenom, 2, 2);
+		editPrenom.setVisible(false);
+		Button editEmail = new Button("Editer");
+		theGridPane.add(editEmail, 2, 3);
+		editEmail.setVisible(false);
+		Button editMdp = new Button("Editer");
+		theGridPane.add(editMdp, 2, 4);
+		editMdp.setVisible(false);
+		Button editProfil = new Button("Editer");
+		theGridPane.add(editProfil, 2, 6);
+		editProfil.setVisible(false);
+		
+		if(monUser != null) {
+			editNom.setVisible(true);
+			editNom.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					champsNom.setDisable(false);
+				}
+			});
+			editPrenom.setVisible(true);
+			editPrenom.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					champsPrenom.setDisable(false);
+					champsPrenom.selectAll();
+				}
+			});
+			editEmail.setVisible(true);
+			editEmail.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					champsEmail.setDisable(false);
+				}
+			});
+			editMdp.setVisible(true);
+			editMdp.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					champsMdp.setDisable(false);
+				}
+			});
+			editProfil.setVisible(true);
+			editProfil.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					userEnseignant.setDisable(false);
+					userStagiaire.setDisable(false);
+				}
+			});
+			champsNom.setText(monUser.getNom());
+			champsNom.setDisable(true);
+			champsNom.setOpacity(1);
+			champsPrenom.setText(monUser.getPrenom());
+			champsPrenom.setDisable(true);
+			champsPrenom.setOpacity(1);
+			champsEmail.setText(monUser.getIdCompte());
+			champsEmail.setDisable(true);
+			champsEmail.setOpacity(1);
+			champsMdp.setText(monUser.getMdpCompte());
+			champsMdp.setDisable(true);
+			champsMdp.setOpacity(1);
+			if(monUser.getProfil().equalsIgnoreCase("enseignant")) userEnseignant.setSelected(true);
+			else userStagiaire.setSelected(true);
+			userEnseignant.setDisable(true);
+			userEnseignant.setOpacity(1);
+			userStagiaire.setDisable(true);
+			userStagiaire.setOpacity(1);
+		}
+		
 		Button btn = new Button("Valider");
 		btn.setPrefHeight(40);
 		btn.setDefaultButton(true);
@@ -119,41 +208,58 @@ public class PanelInscription01 extends GridPane {
 		GridPane.setHalignment(btn, HPos.CENTER);
 		GridPane.setMargin(btn, new Insets(20, 0, 20, 0));
 		
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				if (champsNom.getText().isEmpty()) {
-					showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur", "Veuillez entrer votre nom");
-					return;
+		if (monUser != null) {
+			btn.setText("Valider");
+			btn.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					modifyLine(champsNom, champsPrenom, champsEmail, champsMdp, profilUser, monUser);
+					popUpInscription.close();
 				}
-				if (champsPrenom.getText().isEmpty()) {
-					showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur", "Veuillez entrer votre prénom");
-					return;
+			});
+		} else {
+			btn.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					if (champsNom.getText().isEmpty()) {
+						showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur",
+								"Veuillez entrer votre nom");
+						return;
+					}
+					if (champsPrenom.getText().isEmpty()) {
+						showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur",
+								"Veuillez entrer votre prénom");
+						return;
+					}
+					if (champsEmail.getText().isEmpty()) {
+						showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur",
+								"Veuillez entrer votre Email");
+						return;
+					}
+					if (champsMdp.getText().isEmpty()) {
+						showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur",
+								"Veuillez entrer votre mot de passe");
+						return;
+					}
+					showAlert(AlertType.CONFIRMATION, theGridPane.getScene().getWindow(), "Inscription réussie",
+							"Bienvenue " + champsPrenom.getText());
+					addLine(champsNom, champsPrenom, champsEmail, champsMdp, profilUser);
+					popUpInscription.close();
 				}
-				if (champsEmail.getText().isEmpty()) {
-					showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur", "Veuillez entrer votre Email");
-					return;
+
+				private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
+					Alert alert = new Alert(alertType);
+					alert.setTitle(title);
+					alert.setHeaderText(null);
+					alert.setContentText(message);
+					alert.initOwner(owner);
+					alert.show();
 				}
-				if (champsMdp.getText().isEmpty()) {
-					showAlert(Alert.AlertType.ERROR, theGridPane.getScene().getWindow(), "Erreur", "Veuillez entrer votre mot de passe");
-					return;
-				}
-				showAlert(AlertType.CONFIRMATION, theGridPane.getScene().getWindow(), "Inscription réussie", "Bienvenue " + champsPrenom.getText());
-				addLine ( champsNom, champsPrenom, champsEmail, champsMdp, profilUser);
-				popUpInscription.close();
-			}
-			
-			private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
-				Alert alert = new Alert(alertType);
-				alert.setTitle(title);
-				alert.setHeaderText(null);
-				alert.setContentText(message);
-				alert.initOwner(owner);
-				alert.show();
-			}
-			
-		});
+
+			});
+		}
 	}
 	
 	private static void addLine(TextField champsNom, TextField champsPrenom,TextField champsEmail,  TextField champsMdp, ToggleGroup profilUser ) { // méthode pour récupérer la valeur des champs d'information
@@ -198,5 +304,38 @@ public class PanelInscription01 extends GridPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void modifyLine(TextField champsNom, TextField champsPrenom,TextField champsEmail,  TextField champsMdp, ToggleGroup profilUser, User monUser ) {
+		
+		try {
+			File inputFile = new File(PATH_FILE_INSCRIPTION);
+			File tempFile = new File("src/main/resources/fichierInscription");
+	        BufferedReader bufRead = new BufferedReader(new FileReader(inputFile));
+	        BufferedWriter bufWrite = new BufferedWriter(new FileWriter(tempFile, true));
+	        String line = champsNom.getText()
+		    		+ "," + champsPrenom.getText()
+		    		+ "," + champsEmail.getText()
+		    		+ "," + champsMdp.getText()
+		    		+ "," + ((RadioButton)profilUser.getSelectedToggle()).getText();
+	        String line2 = monUser.getNom()
+		    		+ "," + monUser.getPrenom()
+		    		+ "," + monUser.getIdCompte()
+		    		+ "," + monUser.getMdpCompte()
+		    		+ "," + monUser.getProfil();
+	        String temp;
+            	
+	        while ((temp = bufRead.readLine()) != null) {
+	            String trimmedLine = temp.trim();
+	            if(trimmedLine.equals(line2)) bufWrite.write(line + System.getProperty("line.separator"));
+	            else bufWrite.write(temp + System.getProperty("line.separator"));
+	        }
+	        bufRead.close();
+	        bufWrite.close();
+	        tempFile.renameTo(inputFile);
+	    } catch (Exception e) {
+	        System.out.println("Problem reading file.");
+	    }
+		
 	}
 }
