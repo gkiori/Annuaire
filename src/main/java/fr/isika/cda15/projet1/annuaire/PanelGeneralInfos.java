@@ -25,6 +25,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
@@ -34,6 +36,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class PanelGeneralInfos extends BorderPane {
@@ -124,8 +128,15 @@ public class PanelGeneralInfos extends BorderPane {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					Document doc = new Document(); 
-					PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(PDF_PATH));  
+					
+					Document doc = new Document();
+					
+					FileChooser fileChooser = new FileChooser();
+					fileChooser.setTitle("Enregister");
+					fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf"));
+					File file = fileChooser.showSaveDialog(stage);
+					
+					PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(file.getPath()));  
 //					System.out.println("PDF created.");
 					
 					TableView<Stagiaire> tableView = new TableView<>();
