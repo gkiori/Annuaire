@@ -7,12 +7,7 @@ import java.util.TreeSet;
 
 public class Recherche {
 	
-	private static String attributeType01;
-	private static String attributeType02;
-
-
-	
-// ******************* Métthode pour le choix du type de recherhche  *******************
+// ******************* Méthode pour le choix du type de recherhche  *******************
 	
 	/**
 	 * 
@@ -34,6 +29,9 @@ public class Recherche {
 		}
 		else if(attributeType.equalsIgnoreCase("departement")) {
 			return 5;
+		}
+		else if(attributeType.equalsIgnoreCase("recherche")) {
+			return 6;
 		}
 		else {
 			return 0;
@@ -64,7 +62,7 @@ public class Recherche {
 			return listResult;
 		}
 		chercherDepartement(cle, r.getGauche(), listResult);
-		if (cle.compareTo(r.getStagiaire().getDepartement()) == 0){
+		if (r.getStagiaire().getDepartement().toLowerCase().contains(cle.toLowerCase())){
 			listResult.add(r.getStagiaire());
 //			System.out.println(r.getStagiaire() + " ");
 		}
@@ -161,7 +159,7 @@ public class Recherche {
 			return listResult;
 		}
 		chercherAnneeEntree(cle, r.getGauche(), listResult);
-		if (cle.compareTo(r.getStagiaire().getAnneeEntree()) == 0){
+		if (r.getStagiaire().getAnneeEntree().toLowerCase().contains(cle.toLowerCase())){
 			listResult.add(r.getStagiaire());
 		}
 		chercherAnneeEntree(cle, r.getDroit(), listResult);
@@ -192,7 +190,7 @@ public class Recherche {
 			return listResult;
 		}
 		chercherPromotion(cle, r.getGauche(), listResult);
-		if (cle.compareTo(r.getStagiaire().getPromo()) == 0 ){
+		if (r.getStagiaire().getPromo().toLowerCase().contains(cle.toLowerCase())){
 			listResult.add(r.getStagiaire());
 		}
 		chercherPromotion(cle, r.getDroit(), listResult);
@@ -239,11 +237,9 @@ public class Recherche {
 	 * @param arbre
 	 * @return
 	 */
-	public static List<Stagiaire> chercherCle(String cle, String type, MiniArbre arbre) {
-		attributeType01 = type;
-		int key = keyValue(attributeType01);
+	public static List<Stagiaire> chercherCle(String cle, MiniArbre arbre) {
 		List<Stagiaire> listRech = new ArrayList<>();
-		return chercherCle(cle, key, arbre, listRech);
+		return chercherCle(cle, arbre, listRech);
 	}
 	
 	/**
@@ -254,33 +250,19 @@ public class Recherche {
 	 * @param listResult
 	 * @return
 	 */
-	private static List<Stagiaire> chercherCle(String cle, int key, MiniArbre arbre, List<Stagiaire> listResult) {
-		switch (key) {
-		case 1:
-			listResult = chercherNom(cle, arbre);
-			break;
-		case 2:
-			listResult = chercherPrenom(cle, arbre);
-			break;
-		case 3:
-			listResult = chercherAnneeEntree(cle, arbre);
-			break;
-		case 4:
-			listResult = chercherPromotion(cle, arbre);
-			break;
-		case 5:
-			listResult = chercherDepartement(cle, arbre);
-			break;
-		default:
-			listResult = new ArrayList<Stagiaire>();
-			break;
-		}
+	private static List<Stagiaire> chercherCle(String cle, MiniArbre arbre, List<Stagiaire> listResult) {
+		listResult.addAll(chercherNom(cle, arbre));
+		listResult.addAll(chercherPrenom(cle, arbre));
+		listResult.addAll(chercherAnneeEntree(cle, arbre));
+		listResult.addAll(chercherPromotion(cle, arbre));
+		listResult.addAll(chercherDepartement(cle, arbre));
 		return listResult;
 	}
 	
 //************************ Méthodes de recherche avec multicritère (2 mots clé)  ************************
 	
 	public static List<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche) {
+		System.out.println(listeRecherche);
 		List<Stagiaire> resultatRecherche = new ArrayList<Stagiaire>();
 		Recherche.MiniArbre miniArbre = new Recherche().new MiniArbre(ArbreStagiaire.parcoursStagiaire());
 		for (Map.Entry<String, String> recherche : listeRecherche.entrySet()) {
@@ -304,6 +286,9 @@ public class Recherche {
 				break;
 			case 5:
 				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherDepartement(cle, miniArbre));
+				break;
+			case 6:
+				for(String cle : cles) resultatRechercheIntermediaire.addAll(chercherCle(cle, miniArbre));
 				break;
 			default:
 				System.out.println("No Results founded");

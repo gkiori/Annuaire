@@ -1,6 +1,5 @@
 package fr.isika.cda15.projet1.annuaire;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +14,9 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -29,8 +28,8 @@ public class PanelFiltre extends BorderPane{
 	Label titre = new Label("Filtres");
 	TextField zoneRecherche = new TextField();
 	TextField zoneRechercheNom = new TextField();
-	TextField zoneRecherchePrenom = new TextField();//----------
-	Button reinitialisationFiltre = new Button("Réinitialiser les filtres");//----------
+	TextField zoneRecherchePrenom = new TextField();
+	Button reinitialisationFiltre = new Button("Réinitialiser les filtres");
 	
 	CheckComboBox<String> menuPromo = new CheckComboBox<String>();
 	CheckComboBox<String> menuDepartement = new CheckComboBox<String>();
@@ -64,7 +63,6 @@ public class PanelFiltre extends BorderPane{
 		menuAnneeEntree.getItems().addAll(vueAnneeEntree);
 		menuAnneeEntree.setTitle("Année d'entrée");
 		
-		//________________________________________________________________________
 		zoneRecherche.setOnMouseClicked(clic -> { zoneRecherche.clear();});
 		zoneRechercheNom.setOnMouseClicked(clic -> { zoneRechercheNom.clear();});
 		zoneRecherchePrenom.setOnMouseClicked(clic -> { zoneRecherchePrenom.clear();});
@@ -97,13 +95,16 @@ public class PanelFiltre extends BorderPane{
 				menuPromo.getCheckModel().clearChecks();
 				menuDepartement.getCheckModel().clearChecks();
 				menuAnneeEntree.getCheckModel().clearChecks();
+				zoneRecherche.clear();
+				zoneRechercheNom.clear();
+				zoneRecherchePrenom.clear();
 			}
 		});
 		
-		//________________________________________________________________________
-		
 		VBox orgVbox = new VBox();
 		orgVbox.getChildren().addAll(zoneRecherche, menuPromo, menuDepartement, menuAnneeEntree, zoneRechercheNom, zoneRecherchePrenom);
+		orgVbox.setPadding(new Insets(20, 10, 20, 10));
+		orgVbox.setSpacing(10);
 		this.setTop(titre);
 		this.setCenter(orgVbox);
 		this.setBottom(reinitialisationFiltre);
@@ -120,18 +121,12 @@ public class PanelFiltre extends BorderPane{
 			listeRecherche.put(menuDepartement.getCheckModel().getCheckedItems().toString(), "departement");
 		if(menuAnneeEntree.getCheckModel().getCheckedItems().toString() != "[]") 
 			listeRecherche.put(menuAnneeEntree.getCheckModel().getCheckedItems().toString(), "anneeEntree");
-		if(!zoneRechercheNom.getText().equalsIgnoreCase("nom"))
-			listeRecherche.put(zoneRechercheNom.getText(), "nom");
-		if(!zoneRecherchePrenom.getText().equalsIgnoreCase("prenom"))
-			listeRecherche.put(zoneRecherchePrenom.getText(), "prenom");
-		if(!listeRecherche.isEmpty()) {
-			List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche);
-			PanelGestionnaire.data.clear();
-			PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRecherche));
-		}else {
-			PanelGestionnaire.data.clear();
-			PanelGestionnaire.data.addAll(PanelConnexion.initPanelGestionnaire());
-		}
+		listeRecherche.put(zoneRechercheNom.getText(), "nom");
+		listeRecherche.put(zoneRecherchePrenom.getText(), "prenom");
+		listeRecherche.put(zoneRecherche.getText(), "recherche");
+		List<Stagiaire> resultatRecherche = Recherche.chercherMultiCle(listeRecherche);
+		PanelGestionnaire.data.clear();
+		PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRecherche));
 	}
 	//________________________________________________________________________
 }
