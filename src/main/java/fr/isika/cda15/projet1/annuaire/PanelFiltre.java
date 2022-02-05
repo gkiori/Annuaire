@@ -27,19 +27,19 @@ import javafx.stage.Stage;
 
 public class PanelFiltre extends BorderPane{
 	
-	Label titre = new Label("Filtres");
-	TextField zoneRecherche = new TextField();
-	TextField zoneRechercheNom = new TextField();
-	TextField zoneRecherchePrenom = new TextField();
-	Button reinitialisationFiltre = new Button("Réinitialiser les filtres");
+	private Label titre = new Label("Filtres");
+	private static TextField zoneRecherche = new TextField();
+	private static TextField zoneRechercheNom = new TextField();
+	private static TextField zoneRecherchePrenom = new TextField();
+	private Button reinitialisationFiltre = new Button("Réinitialiser les filtres");
 	
-	CheckComboBox<String> menuPromo = new CheckComboBox<String>();
-	CheckComboBox<String> menuDepartement = new CheckComboBox<String>();
-	CheckComboBox<String> menuAnneeEntree = new CheckComboBox<String>();
+	private static CheckComboBox<String> menuPromo = new CheckComboBox<String>();
+	private static CheckComboBox<String> menuDepartement = new CheckComboBox<String>();
+	private static CheckComboBox<String> menuAnneeEntree = new CheckComboBox<String>();
 	
-	TreeSet<String> vuePromo = new TreeSet<String>();
-	TreeSet<String> vueDepartement = new TreeSet<String>();
-	TreeSet<String> vueAnneeEntree = new TreeSet<String>();
+	private TreeSet<String> vuePromo = new TreeSet<String>();
+	private TreeSet<String> vueDepartement = new TreeSet<String>();
+	private TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 	
 	public PanelFiltre(final Stage stage) throws Exception{
 		
@@ -114,7 +114,7 @@ public class PanelFiltre extends BorderPane{
 		stage.setScene(scene);
 	}
 	
-	public void changementRecherche() {
+	public static void changementRecherche() {
 		Map<String, String> listeRecherche = new HashMap<String, String>();
 		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") 
 			listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");

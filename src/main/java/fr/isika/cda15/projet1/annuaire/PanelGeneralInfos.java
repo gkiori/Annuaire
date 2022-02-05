@@ -55,6 +55,7 @@ public class PanelGeneralInfos extends BorderPane {
 	private Button listBtn = new Button("Liste des stagiaires");
 	private Button imprBtn = new Button("Impression");
 	private Button infoBtn = new Button("Information"); 
+	private Button CorbeilleBtn = new Button("Corbeille");
 	
 	private VBox vbOut = new VBox();
 	private Button helpBtn = new Button("Support");
@@ -213,10 +214,21 @@ public class PanelGeneralInfos extends BorderPane {
         	
         });
 		
+        CorbeilleBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	try {
+            		PanelCorbeille.PanelCorbeille();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+            }
+        });
+        
 		vbUser.getChildren().addAll(lblBienvenue, lblUserName);
 		hbUser.getChildren().addAll(imgUser, vbUser);
 		
-		vbMiddle.getChildren().addAll(rechBtn, listBtn, imprBtn, infoBtn);
+		vbMiddle.getChildren().addAll(rechBtn, listBtn, imprBtn, infoBtn, CorbeilleBtn);
 		vbMiddle.setPadding(new Insets(20,20,20,10));
 		vbOut.getChildren().addAll(helpBtn, decoBtn);
 		

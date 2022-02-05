@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 public class ArbreStagiaire {
 	
@@ -46,6 +44,7 @@ public class ArbreStagiaire {
 			}
 			racine = 0;
 		}
+		Corbeille.initCorbeille();
 	}
 
 //	************************** Initialisation de l'arbre à partir d'un fichier bin ************************** //
@@ -83,7 +82,6 @@ public class ArbreStagiaire {
 				}
 				index = (int)raf.length() / 142;
 				raf.writeInt(index);
-				raf.seek(raf.length());
 			}else index = 0; // si indexPere = -1, la racine change
 			ecraser(index, x);
 			raf.writeInt(-1);
@@ -234,11 +232,10 @@ public class ArbreStagiaire {
 		int racineAvant = racine;
 		racine = supprimerNoeud(x, racine);
 		if(racineAvant != racine && racine != -1) {
-			System.out.println(lectureIndexFilsG(racine));
-			System.out.println(lectureIndexFilsD(racine));
 			nouvelleRacine(lectureStagiaire(racine), lectureIndexFilsG(racine), lectureIndexFilsD(racine));
 			racine = 0;
 		}
+		Corbeille.ajoutCorbeille(x);
 	}
 	
 	private static int supprimerNoeud(Stagiaire x, int courant) {
