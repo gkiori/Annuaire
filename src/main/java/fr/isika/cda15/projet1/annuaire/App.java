@@ -22,11 +22,11 @@ public class App extends Application {
 
 		panelPrincipal.setCenter(connexion);
 
-		Scene scene = new Scene(panelPrincipal, 400, 350);
+		Scene scene = new Scene(panelPrincipal, 1050, 1259);
 		stage.setTitle("Gestion Annuaire");
 		stage.setScene(scene);
-		stage.setWidth(1200);
-        stage.setHeight(720);
+		stage.setWidth(1440);
+        stage.setHeight(1024);
 		stage.show();
 //    	
 //        var javaVersion = SystemInfo.javaVersion();

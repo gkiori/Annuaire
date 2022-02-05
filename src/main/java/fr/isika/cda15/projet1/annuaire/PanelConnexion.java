@@ -44,6 +44,7 @@ import javafx.stage.Stage;
 public class PanelConnexion extends BorderPane{
 
 	private final String PATH_FILE_INSCRIPTION  = "src/main/resources/fichierInscription";
+	private final String PATH_TO_CSSFILE = "src/main/resources/PanelConnexion.css";
 	private File fichierInscription = new File(PATH_FILE_INSCRIPTION );
 
 	private String mdpCheck, IdCheck;
@@ -58,32 +59,21 @@ public class PanelConnexion extends BorderPane{
 
 	private final TextField txtUserName = new TextField();
 	private final PasswordField mdpChamp = new PasswordField();
-	private final Label labelMessage = new Label();
 
 	private VBox titreLabel = new VBox();
 	private HBox questionLabel = new HBox();
 	private BorderPane borderCenter = new BorderPane();
 	private GridPane gridPane = new GridPane();
 
-	private Text titre = new Text("Connexion");
+	private Label titre = new Label("Connexion");
 	private BorderPane panelPrincipal = this;
 
+	@SuppressWarnings("exports")
 	public PanelConnexion(final Stage stage) throws Exception {
-
-		questionLabel.getChildren().addAll(labelQuestion, labelIncrip);
-		questionLabel.setSpacing(10);
-		titreLabel.getChildren().addAll(titre, questionLabel);
-
-		gridPane.setAlignment(Pos.CENTER);
-		borderCenter.setCenter(gridPane);
-		borderCenter.setMinHeight(USE_PREF_SIZE);
-
-		panelPrincipal.setCenter(borderCenter);
-
-		titre.setFont(Font.font("Verdana", FontWeight.BOLD, 35)); //, FontPosture.ITALIC
-		labelIncrip.setTextFill(Color.RED);
-		labelIncrip.setUnderline(true);
-
+		
+		/**
+		 * Label permettant d'accéder au panel d'incription
+		 */
 		labelIncrip.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -100,6 +90,10 @@ public class PanelConnexion extends BorderPane{
 			}
 		});
 
+		/**
+		 * Bouton permettant d'accéder au panel gestion
+		 * Il vérifie que les identifiant entrés sont correct
+		 */
 		boutonLogin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -132,45 +126,93 @@ public class PanelConnexion extends BorderPane{
 						 if (email.equals(IdCheck) && mdp.equals(mdpCheck)) {
 							 user = new User (nom, prenom, email, mdp, profil);
 							 PanelGestionnaire.setData(initPanelGestionnaire());
-								new PanelGestionnaire(stage);
-//								System.out.println("login successful");
+							 new PanelGestionnaire(stage);
 						 }						 
 					}				
 				} catch (Exception e) {
 					
 					e.printStackTrace();
 				}
-
 			}
 		});
+		
+		
+		labelQuestion.setStyle("-fx-text-fill : #0E4DA4;"
+				 			 + "-fx-font-weight : normal; "
+				 			 + "-fx-font-size: 15px; "
+				 			 + "-fx-font-family: Verdana;");
+		labelIncrip.setStyle("-fx-text-fill :  	#880000;"
+						   + "-fx-font-weight : normal; "
+						   + "-fx-font-size: 15px; "
+						   + "-fx-font-family: Verdana;");
+		questionLabel.getChildren().addAll(labelQuestion, labelIncrip);
+		questionLabel.setSpacing(12);
+		
+		
+		titre.setStyle("-fx-text-fill : #94A3B8;"
+					 + "-fx-font-weight : 900; "
+					 + "-fx-font-size: 36px; "
+					 + "-fx-font-family: Verdana;");
+		
+		titreLabel.getChildren().addAll(titre, questionLabel);
+		titreLabel.setSpacing(15);
+
+		gridPane.setAlignment(Pos.CENTER);
+		gridPane.setPadding(new Insets(15));
+		gridPane.setHgap(7);
+		gridPane.setVgap(7);
+		
+		borderCenter.setCenter(gridPane);
+		borderCenter.setPrefHeight(1259);
+		borderCenter.setPrefWidth(899);
+		borderCenter.setStyle("-fx-background-color : #EFF6FF;"); //-fx-border-radius: 111px; -fx-background-radius :
+		
+
+		panelPrincipal.setLeft(borderCenter);
+		panelPrincipal.setStyle("-fx-background-color : #94A3B8");
+
+		
+		labelIncrip.setTextFill(Color.RED);
+		labelIncrip.setUnderline(true);
 
 		mdpChamp.setSkin(new VisiblePasswordFieldSkin(mdpChamp));
 		
-		panelPrincipal.setPadding(new Insets(10, 50, 50, 50));
-		gridPane.setPadding(new Insets(7));
-		gridPane.setHgap(7);
-		gridPane.setVgap(7);
+//		panelPrincipal.setPadding(new Insets(10, 50, 50, 50));
 
 		labelUserName.setFont(Font.font("Arial", 15));
+		txtUserName.setPrefWidth(453);
+		txtUserName.setPrefHeight(56);
 		labelPassword.setFont(Font.font("Arial", 15));
+		mdpChamp.setPrefWidth(453);
+		mdpChamp.setPrefHeight(56);
+		
+		boutonLogin.setStyle("-fx-background-color: \n"
+				+ "        #000000,\n"
+				+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
+				+ "        linear-gradient(#426ab7, #263e75),\n"
+				+ "        linear-gradient(#395cab, #223768);\n"
+				+ "    -fx-background-insets: 0,1,2,3;\n"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: white;\n"
+				+ "    -fx-font-size: 14px;");
+		boutonLogin.setPrefSize(145, 44);
 
-		//		gridPane.add(titreLabel, 0, 0);
 		gridPane.add(titreLabel, 0, 0, 2, 1);
-		gridPane.add(labelUserName, 0, 2);
-		gridPane.add(txtUserName, 1, 2);
-		gridPane.add(labelPassword, 0, 4);
-		gridPane.add(mdpChamp, 1, 4);
-		gridPane.add(boutonLogin, 1, 6);
-		gridPane.add(labelMessage, 1, 8);
-		boutonLogin.setFont(Font.font(null, 15));
-		gridPane.setMinWidth(100);
-		boutonLogin.setPrefSize(100, 15);
-
-		Scene scene = new Scene(panelPrincipal, 800, 550);
+		
+		gridPane.add(labelUserName, 0, 5);
+		gridPane.add(txtUserName, 0, 6);
+		gridPane.add(labelPassword, 0, 11);
+		gridPane.add(mdpChamp, 0, 12);
+		gridPane.add(boutonLogin, 0, 17);	
+//		gridPane.setMinWidth(100);
+		
+		Scene scene = new Scene(panelPrincipal, 1050, 1259);
+//		scene.getStylesheets().add(PATH_TO_CSSFILE); 
 		stage.setTitle("Annuaire des stagiaires");
 		stage.setScene(scene);
-		stage.setWidth(1200);
-		stage.setHeight(720);
+		stage.setWidth(1440);
+		stage.setHeight(1024);
 		stage.show();
 	}
 	
