@@ -46,7 +46,6 @@ public class ArbreStagiaire {
 				e.printStackTrace();
 			}
 			racine = 0;
-			construireArbreEquilibre();
 		}
 		Corbeille.initCorbeille();
 	}
