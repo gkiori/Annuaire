@@ -17,12 +17,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class PanelFiltre extends BorderPane{
@@ -32,7 +34,7 @@ public class PanelFiltre extends BorderPane{
 	private static TextField zoneRechercheNom = new TextField();
 	private static TextField zoneRecherchePrenom = new TextField();
 	private Button reinitialisationFiltre = new Button("Réinitialiser les filtres");
-	
+
 	private static CheckComboBox<String> menuPromo = new CheckComboBox<String>();
 	private static CheckComboBox<String> menuDepartement = new CheckComboBox<String>();
 	private static CheckComboBox<String> menuAnneeEntree = new CheckComboBox<String>();
@@ -103,14 +105,27 @@ public class PanelFiltre extends BorderPane{
 			}
 		});
 		
+		titre.setPrefSize(282, 64);
+		titre.setTextAlignment(TextAlignment.CENTER);
+		titre.setStyle("-fx-background-color: #6989FE,\n"
+				+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
+				+ "        linear-gradient(#426ab7, #263e75),\n"
+				+ "        linear-gradient(#395cab, #223768);\n"
+				+ "    -fx-background-insets: 0,1,2,3;\n"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: white;\n"
+				+ "    -fx-font-size: 14px;");
+		
 		VBox orgVbox = new VBox();
 		orgVbox.getChildren().addAll(zoneRecherche, menuPromo, menuDepartement, menuAnneeEntree, zoneRechercheNom, zoneRecherchePrenom);
-		orgVbox.setPadding(new Insets(20, 10, 20, 10));
+		orgVbox.setPadding(new Insets(20,20,20,10));
 		orgVbox.setSpacing(10);
 		this.setTop(titre);
 		this.setCenter(orgVbox);
 		this.setBottom(reinitialisationFiltre);
-		Scene scene = new Scene(this);
+		this.setStyle("-fx-background-color: #EFF6FF");
+		Scene scene = new Scene(this, 314, 1024);
 		stage.setScene(scene);
 	}
 	

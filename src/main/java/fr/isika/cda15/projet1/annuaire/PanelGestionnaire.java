@@ -41,11 +41,13 @@ import javafx.stage.Stage;
 
 public class PanelGestionnaire extends BorderPane {
 	
-	private static TableView<Stagiaire> table = new TableView<Stagiaire>();
+//	private static TableView<Stagiaire> table = new TableView<Stagiaire>();
 	protected static ObservableList<Stagiaire> data;
 	
 	public PanelGestionnaire (final Stage stage) throws Exception {
 		try {
+			
+					TableView<Stagiaire> table = new TableView<Stagiaire>();
 					
 //					data = getStagiaireList();
 					
@@ -54,53 +56,75 @@ public class PanelGestionnaire extends BorderPane {
 			        MenuItem itemSupp = new MenuItem("Supprimer");
 					
 					//Création de la table
-					table.setEditable(true);
+					table.setEditable(false);
+					table.setStyle("-fx-background-color: #F8FBFF;\n"
+								 + "-fx-background-insets: 0;\n"
+								 + "-fx-padding: 10;");
+					table.setPrefHeight(850);
+					table.setPrefWidth(850);
+					table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+					
 					
 			        Label titreLbl = new Label("Liste des stagiaires");
-			        titreLbl.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
+			        titreLbl.setFont(Font.font("Verdana", FontWeight.BOLD, 32));
 			 
-			        //Création des cinq colonnes
 			        TableColumn<Stagiaire, String> prenomCol = 
 			        		new TableColumn<Stagiaire, String>("Prénom");
-			        prenomCol.setMinWidth(100);
-			        //specifier un "cell factory" pour cette colonne.
+			        prenomCol.setMinWidth(table.getPrefWidth()/5);
 			        prenomCol.setCellValueFactory(
 			                new PropertyValueFactory<Stagiaire, String>("prenom"));
 			        
 			        TableColumn<Stagiaire, String> nomCol = new TableColumn<Stagiaire, String>("Nom");
-			        nomCol.setMinWidth(100);
-			        //spécifier une préférence de tri pour cette colonne
+			        nomCol.setMinWidth(table.getPrefWidth()/5);
 			        nomCol.setSortType(TableColumn.SortType.ASCENDING);
-			      //specifier un "cell factory" pour cette colonne.
 			        nomCol.setCellValueFactory(
 			                new PropertyValueFactory<Stagiaire, String>("nom"));
 			        
 			        TableColumn<Stagiaire, String> promoCol = new TableColumn<Stagiaire, String>("Promotion");
-			        promoCol.setMinWidth(100);
-			      //specifier un "cell factory" pour cette colonne.
+			        promoCol.setMinWidth(table.getPrefWidth()/5);
 			        promoCol.setCellValueFactory(
 			                new PropertyValueFactory<Stagiaire, String>("promo"));
 			        
 			        TableColumn<Stagiaire, String> anneeEntreeCol = new TableColumn<Stagiaire, String>("Admission");
-			        anneeEntreeCol.setMinWidth(100);
+			        anneeEntreeCol.setMinWidth(table.getPrefWidth()/5-55);
 			        anneeEntreeCol.setCellValueFactory(
 			        		new PropertyValueFactory<Stagiaire, String>("anneeEntree"));
 			        
 			        TableColumn<Stagiaire, String> departementCol = new TableColumn<Stagiaire, String>("Département");
-			        departementCol.setMinWidth(150);
+			        departementCol.setMinWidth(table.getPrefWidth()/5);
 			        departementCol.setCellValueFactory(
 			        		new PropertyValueFactory<Stagiaire, String>("departement"));
 			                
 			        //On ajoute les trois colonnes à la table
-			        table.getColumns().addAll(prenomCol, nomCol, promoCol, anneeEntreeCol, departementCol);
+			        table.getColumns().addAll(nomCol, prenomCol, promoCol, anneeEntreeCol, departementCol);
 			        // TO DO remplir la table avec une liste observable
 			        table.setItems(data);
 			        
 			        Button button = new Button("Ajouter");
+			      
+			        String profilType = PanelConnexion.getUser().getProfil();
+        			if (profilType.compareTo("Apprenant") == 0 ) {
+						button.setDisable(true);
+						itemModif.setDisable(true);
+						itemSupp.setDisable(true);
+						
+					}
+        			button.setStyle("-fx-background-color: \n"
+        					+ "        #000000,\n"
+        					+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
+        					+ "        linear-gradient(#426ab7, #263e75),\n"
+        					+ "        linear-gradient(#395cab, #223768);\n"
+        					+ "    -fx-background-insets: 0,1,2,3;\n"
+        					+ "    -fx-background-radius: 6, 5;\n"
+        					+ "    -fx-padding: 12 30 12 30;\n"
+        					+ "    -fx-text-fill: white;\n"
+        					+ "    -fx-font-size: 14px;");
 			        button.setOnAction(new EventHandler<ActionEvent>() {
 			            @Override
 			            public void handle(ActionEvent e) {
 			        		try {
+			        			
 			        			Stagiaire stagiaire = new Stagiaire();
 			        			PanelAjoutStagiaire.PanelAjoutStagiaire(stagiaire);
 							} catch (Exception e3) {
@@ -109,6 +133,8 @@ public class PanelGestionnaire extends BorderPane {
 			            }
 			        });
 			        
+			        
+			        
 					table.setOnMouseClicked(evt -> {
 					    if (evt.getButton() == MouseButton.SECONDARY) {
 					        Set<Node> rows = table.lookupAll(".table-row-cell");
@@ -116,7 +142,7 @@ public class PanelGestionnaire extends BorderPane {
 					
 					        if (n.isPresent()) {
 					            Optional<Node> node = n.get().getChildrenUnmodifiable().stream()
-					                    .filter(c -> c instanceof TableCell && ((TableCell) c).getTableColumn() == departementCol)
+					                    .filter(c -> c instanceof TableCell && ((TableCell) c).getTableColumn() == prenomCol)
 					                    .findFirst();
 					
 					            if (node.isPresent()) {
@@ -162,9 +188,12 @@ public class PanelGestionnaire extends BorderPane {
 			        });
 			        		        
 			        contextMenu.getItems().addAll(itemModif, itemSupp);
+			        
 			        HBox hbTop = new HBox();
 			        hbTop.getChildren().addAll(titreLbl, button);
-			        hbTop.setSpacing(325);
+			        hbTop.setPadding(new Insets(20, 10, 40, 10));
+			        hbTop.setSpacing(450);
+			        hbTop.setStyle("-fx-background-color : #F8FBFF;");
 			        
 			        BorderPane root = new BorderPane();
 			        HBox hbox = new HBox();
@@ -174,18 +203,29 @@ public class PanelGestionnaire extends BorderPane {
 			        VBox vbox = new VBox();
 			        vbox.setSpacing(5);
 			        vbox.setPadding(new Insets(10, 10, 10, 10));
-			        vbox.getChildren().addAll(hbTop, table, hbox);
+			        vbox.getChildren().addAll(table, hbox);
+			        vbox.setStyle("-fx-background-color : #F8FBFF;");
+			        
 			        PanelFiltre monPanelFiltre = new PanelFiltre(stage);
 			        PanelGeneralInfos monPanelInfos = new PanelGeneralInfos(stage);
-			        this.setCenter(vbox);
-			        this.setRight(monPanelFiltre);
+			        
+			        BorderPane panelBottom = new BorderPane();
+			        panelBottom.setCenter(vbox);
+			        panelBottom.setRight(monPanelFiltre);
+			        
+			        BorderPane panelCentral = new BorderPane();
+			        panelCentral.setTop(hbTop);
+			        panelCentral.setCenter(panelBottom);
+			        
+			        this.setCenter(panelCentral);
+//			        this.setRight(monPanelFiltre);
 			        this.setLeft(monPanelInfos);
-					Scene scene = new Scene(this,600,400);
+					Scene scene = new Scene(this,1050, 1259);
 //					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 					
 					stage.setTitle("Annuaire");
-					stage.setWidth(1200);
-			        stage.setHeight(720);
+					stage.setWidth(1440);
+			        stage.setHeight(1024);
 					stage.setScene(scene);
 					stage.show();
 				} catch(Exception e) {
@@ -205,13 +245,13 @@ public class PanelGestionnaire extends BorderPane {
 //	    return list;
 //	  }
 
-	public static TableView<Stagiaire> getTable() {
-		return table;
-	}
-
-	public void setTable(TableView<Stagiaire> table) {
-		this.table = table;
-	}
+//	public static TableView<Stagiaire> getTable() {
+//		return table;
+//	}
+//
+//	public void setTable(TableView<Stagiaire> table) {
+//		this.table = table;
+//	}
 
 	public static ObservableList<Stagiaire> getData() {
 		return data;
@@ -220,5 +260,9 @@ public class PanelGestionnaire extends BorderPane {
 	public static void setData(ObservableList<Stagiaire> data) {
 		PanelGestionnaire.data = data;
 	}
+	
+//	public static void reInitTable() {
+//		table.getItems().clear();
+//	}
 	
 }

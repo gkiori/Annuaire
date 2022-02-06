@@ -1,6 +1,11 @@
 package fr.isika.cda15.projet1.annuaire;
 
+import java.util.HashSet;
+import java.util.TreeSet;
+
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -18,6 +23,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
     	
+    	PanelGestionnaire.setData(initPanelGestionnaire());
     	PanelConnexion connexion = new PanelConnexion(stage);
 
 		panelPrincipal.setCenter(connexion);
@@ -41,5 +47,17 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
+    
+    public static ObservableList<Stagiaire> initPanelGestionnaire() {
+		//		ArbreStagiaire monArbre = new ArbreStagiaire();
+		ArbreStagiaire.initArbre();
+
+		HashSet<Stagiaire> maList = new HashSet<>();
+    	maList = ArbreStagiaire.parcoursStagiaire();
+    	TreeSet<Stagiaire> maListeTrie = new TreeSet<Stagiaire>(maList);
+		ObservableList<Stagiaire> list = FXCollections.observableArrayList(maListeTrie);
+	    return list;
+
+	}
 
 }
