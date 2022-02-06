@@ -4,13 +4,17 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 /**
@@ -26,6 +30,14 @@ public class App extends Application {
     	PanelGestionnaire.setData(initPanelGestionnaire());
     	PanelConnexion connexion = new PanelConnexion(stage);
 
+    	stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+    	    @Override
+    	    public void handle(WindowEvent t) {
+    	    	ArbreStagiaire.construireArbreEquilibre();
+    	        Platform.exit();
+    	        System.exit(0);
+    	    }
+    	});
 		panelPrincipal.setCenter(connexion);
 
 		Scene scene = new Scene(panelPrincipal, 1050, 1259);

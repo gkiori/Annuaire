@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -72,6 +75,7 @@ public class ArbreStagiaire {
 			e.printStackTrace();
 		}
 		Collections.sort(listeStagiaire);
+		construireArbreEquilibre(listeStagiaire);
 	}
 	
 //	************************** Méthodes pour la lecture et l'écriture dans le fichier ************************** //
@@ -359,24 +363,27 @@ public class ArbreStagiaire {
     }
  
     public static void construireArbreEquilibre(){
-       	List<Stagiaire> listeStagiaire = new ArrayList<Stagiaire>();
+    	List<Stagiaire> listeStagiaire = new ArrayList<Stagiaire>();
         listeStagiaire.addAll(parcoursStagiaire());
         Collections.sort(listeStagiaire);
         try {
-			File monFichierBin = new File(PATH_FILE_BIN);
-			monFichierBin.delete();
-			raf = new RandomAccessFile(monFichierBin, "rw");
+//			raf.close();
+//			while(Files.deleteIfExists(Paths.get(PATH_FILE_BIN)) == false) {}
+//			raf = new RandomAccessFile(new File(PATH_FILE_BIN), "rw");
+//			while(Files.exists(Paths.get(PATH_FILE_BIN)) == false) {}
+        	FileWriter fw = new FileWriter(new File(PATH_FILE_BIN));
+        	fw.flush();
+        	raf.setLength(0);
+			racine = -1;
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
-        
         construireArbreEquilibreRec(listeStagiaire, 0, listeStagiaire.size() - 1);
     }
     
     private static void construireArbreEquilibre(List<Stagiaire> listeStagiaire){
         construireArbreEquilibreRec(listeStagiaire, 0, listeStagiaire.size() - 1);
     }
-//    
+
 // // ******************* Méthode de calcul de hauteur d'arbre  *******************
 //    
 //    public static int minimumDepth()
