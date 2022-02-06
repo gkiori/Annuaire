@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
@@ -71,6 +72,10 @@ public class PanelFiltre extends BorderPane{
 		zoneRechercheNom.setOnMouseClicked(clic -> { zoneRechercheNom.clear();});
 		zoneRecherchePrenom.setOnMouseClicked(clic -> { zoneRecherchePrenom.clear();});
 		
+		zoneRecherche.setStyle("-fx-background-color: #6989FE; -fx-text-fill: #ffffff;-fx-prompt-text-fill: #BAC8FA;");
+		zoneRechercheNom.setStyle("-fx-background-color: #6989FE; -fx-text-fill: #ffffff;-fx-prompt-text-fill: #BAC8FA;");
+		zoneRecherchePrenom.setStyle("-fx-background-color: #6989FE; -fx-text-fill: #ffffff;-fx-prompt-text-fill: #BAC8FA;");
+		
 		ChangeListener<String> changementZoneEcriture = new ChangeListener<String>(){
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -105,17 +110,34 @@ public class PanelFiltre extends BorderPane{
 			}
 		});
 		
+		menuPromo.setStyle("-fx-body-color: #6989FE;  -fx-selection-bar: #B7C8E0; "
+				+ "-fx-selection-bar-non-focused: #B7C8E0;\r\n"
+//				+ "-fx-border-color:#B7C8E0;\r\n"
+				+ "-fx-accent: #F1FDF7;\r\n");
+		
+		menuDepartement.setStyle("-fx-body-color: #6989FE;  -fx-selection-bar: #B7C8E0; "
+				+ "-fx-selection-bar-non-focused: #B7C8E0;\r\n"
+				+ "-fx-accent: #F1FDF7;\r\n");
+		
+		menuAnneeEntree.setStyle("-fx-body-color: #6989FE;  -fx-selection-bar: #B7C8E0; "
+				+ "-fx-selection-bar-non-focused: #B7C8E0;\r\n"
+				+ "-fx-accent: #F1FDF7;\r\n");
+		
+		
+	
+		
 		titre.setPrefSize(282, 64);
 		titre.setTextAlignment(TextAlignment.CENTER);
-		titre.setStyle("-fx-background-color: #6989FE,\n"
-				+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
-				+ "        linear-gradient(#426ab7, #263e75),\n"
-				+ "        linear-gradient(#395cab, #223768);\n"
+		titre.setStyle("-fx-background-color: #6989FE;"
+//				+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
+//				+ "        linear-gradient(#426ab7, #263e75),\n"
+//				+ "        linear-gradient(#395cab, #223768);\n"
 				+ "    -fx-background-insets: 0,1,2,3;\n"
 				+ "    -fx-background-radius: 6, 5;\n"
 				+ "    -fx-padding: 12 30 12 30;\n"
 				+ "    -fx-text-fill: white;\n"
-				+ "    -fx-font-size: 14px;");
+//				+ "		-fx-font-weight: bold;\n"
+				+ "    -fx-font-size: 16px;");
 		
 		VBox orgVbox = new VBox();
 		orgVbox.getChildren().addAll(zoneRecherche, menuPromo, menuDepartement, menuAnneeEntree, zoneRechercheNom, zoneRecherchePrenom);
@@ -124,7 +146,7 @@ public class PanelFiltre extends BorderPane{
 		this.setTop(titre);
 		this.setCenter(orgVbox);
 		this.setBottom(reinitialisationFiltre);
-		this.setStyle("-fx-background-color: #EFF6FF");
+		this.setStyle("-fx-background-color: #FBFDFF");
 		Scene scene = new Scene(this, 314, 1024);
 		stage.setScene(scene);
 	}

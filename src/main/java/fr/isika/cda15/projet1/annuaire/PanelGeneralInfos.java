@@ -49,7 +49,7 @@ public class PanelGeneralInfos extends BorderPane {
 	
 	private VBox vbMiddle = new VBox();
 	private Label rechBtn = new Label("Rechercher");
-	private Label listBtn = new Label("Liste des stagiaires");
+	private Label listBtn = new Label("Réinitialiser les filtres");
 	private Label imprBtn = new Label("Impression");
 	private Label infoBtn = new Label("Information");
 	private Label corbeilleBtn = new Label("Corbeille");
@@ -63,8 +63,8 @@ public class PanelGeneralInfos extends BorderPane {
 		
 		Image image = new Image(new FileInputStream(PATH_RESOURCES + "profil.png"));		
 		ImageView imgUser = new ImageView(image);
-		imgUser.setFitHeight(65); 
-		imgUser.setFitWidth(65);
+		imgUser.setFitHeight(70); 
+		imgUser.setFitWidth(70);
 		
 		lblUserName.setTextFill(Color.BLUE);
 		lblUserName.setUnderline(true);		
@@ -83,10 +83,13 @@ public class PanelGeneralInfos extends BorderPane {
 		});
 		
 		Image imageRech = new Image(new FileInputStream(PATH_RESOURCES + "imageRech.png"));
-		rechBtn.setGraphic(new ImageView(imageRech));
+		ImageView imageInterRech = new ImageView(imageRech);
+		imageInterRech.setFitWidth(70);
+		imageInterRech.setFitHeight(70);
+		rechBtn.setGraphic(imageInterRech);
 		rechBtn.setStyle("-fx-text-fill : #4E73F8;"
  			 		   + "-fx-font-weight : bold; "
- 			 		   + "-fx-font-size: 18px; "
+ 			 		   + "-fx-font-size: 14px; "
  			 		   + "-fx-font-family: Verdana;");
 //		rechBtn.setPrefHeight(24);
 //		rechBtn.setPrefWidth(154);
@@ -105,10 +108,14 @@ public class PanelGeneralInfos extends BorderPane {
 		});
 		
 		Image imageList = new Image(new FileInputStream(PATH_RESOURCES + "imageList.png"));
-		listBtn.setGraphic(new ImageView(imageList));
+		ImageView imageInter = new ImageView(imageList);
+		imageInter.setFitWidth(70);
+		imageInter.setFitHeight(70);
+		
+		listBtn.setGraphic(imageInter);
 		listBtn.setStyle("-fx-text-fill : #757D8A;"
 		 		   + "-fx-font-weight : bold; "
-		 		   + "-fx-font-size: 18px; "
+		 		   + "-fx-font-size: 14px; "
 		 		   + "-fx-font-family: Verdana;");
 		listBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			
@@ -129,10 +136,13 @@ public class PanelGeneralInfos extends BorderPane {
 		});
 		
 		Image imageDeco = new Image(new FileInputStream(PATH_RESOURCES + "imageDeco.png"));
-		decoBtn.setGraphic(new ImageView(imageDeco));
+		ImageView imageInterDeco = new ImageView(imageDeco);
+		imageInterDeco.setFitWidth(70);
+		imageInterDeco.setFitHeight(70);
+		decoBtn.setGraphic(imageInterDeco);
 		decoBtn.setStyle("-fx-text-fill : #757D8A;"
 		 		   + "-fx-font-weight : bold; "
-		 		   + "-fx-font-size: 18px; "
+		 		   + "-fx-font-size: 14px; "
 		 		   + "-fx-font-family: Verdana;");
         decoBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -152,10 +162,13 @@ public class PanelGeneralInfos extends BorderPane {
         });
         
         Image imageImpress = new Image(new FileInputStream(PATH_RESOURCES + "imageImpress.png"));
-        imprBtn.setGraphic(new ImageView(imageImpress));
+    	ImageView imageInterImpress = new ImageView(imageImpress);
+    	imageInterImpress.setFitWidth(70);
+    	imageInterImpress.setFitHeight(70);
+        imprBtn.setGraphic(imageInterImpress);
         imprBtn.setStyle("-fx-text-fill : #757D8A;"
 		 		   + "-fx-font-weight : bold; "
-		 		   + "-fx-font-size: 18px; "
+		 		   + "-fx-font-size: 14px; "
 		 		   + "-fx-font-family: Verdana;");
         imprBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -246,17 +259,23 @@ public class PanelGeneralInfos extends BorderPane {
         });
         
         Image imageInfo = new Image(new FileInputStream(PATH_RESOURCES + "imageInfo.png"));
-        infoBtn.setGraphic(new ImageView(imageInfo));
+    	ImageView imageInterInfo = new ImageView(imageInfo);
+    	imageInterInfo.setFitWidth(70);
+    	imageInterInfo.setFitHeight(70);
+        infoBtn.setGraphic(imageInterInfo);
         infoBtn.setStyle("-fx-text-fill : #757D8A;"
 		 		   + "-fx-font-weight : bold; "
-		 		   + "-fx-font-size: 18px; "
+		 		   + "-fx-font-size: 14px; "
 		 		   + "-fx-font-family: Verdana;");
         
-        Image imageSupport = new Image(new FileInputStream(PATH_RESOURCES + "imageSupport.png"));
-        helpBtn.setGraphic(new ImageView(imageSupport));
+        Image imageSupport = new Image(new FileInputStream(PATH_RESOURCES + "imageSupport.png")); 
+    	ImageView imageInterSupport = new ImageView(imageSupport);
+    	imageInterSupport.setFitWidth(70);
+    	imageInterSupport.setFitHeight(70);
+        helpBtn.setGraphic(imageInterSupport);
         helpBtn.setStyle("-fx-text-fill : #757D8A;"
 		 		   + "-fx-font-weight : bold; "
-		 		   + "-fx-font-size: 18px; "
+		 		   + "-fx-font-size: 14px; "
 		 		   + "-fx-font-family: Verdana;");
         
         lblBienvenue.setStyle("-fx-text-fill : #757D8A;"
@@ -266,14 +285,17 @@ public class PanelGeneralInfos extends BorderPane {
         
         lblUserName.setStyle("-fx-text-fill : #5A6474;"
 		 		   + "-fx-font-weight : bold; "
-		 		   + "-fx-font-size: 25px; "
+		 		   + "-fx-font-size: 20px; "
 		 		   + "-fx-font-family: Verdana;");
         
         Image imageTrash = new Image(new FileInputStream(PATH_RESOURCES + "imageTrash.png"));
-        corbeilleBtn.setGraphic(new ImageView(imageTrash));
+    	ImageView imageInterTrash = new ImageView(imageTrash);
+    	imageInterTrash.setFitWidth(70);
+    	imageInterTrash.setFitHeight(70);
+        corbeilleBtn.setGraphic(imageInterTrash);
         corbeilleBtn.setStyle("-fx-text-fill : #757D8A;"
 		 		   + "-fx-font-weight : bold; "
-		 		   + "-fx-font-size: 18px; "
+		 		   + "-fx-font-size: 14px; "
 		 		   + "-fx-font-family: Verdana;");
         corbeilleBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -293,6 +315,7 @@ public class PanelGeneralInfos extends BorderPane {
 
 		vbMiddle.getChildren().addAll(rechBtn, listBtn, imprBtn, infoBtn, corbeilleBtn);
 		vbMiddle.setSpacing(40);
+		// ajouter ici alignement 
 
 		vbMiddle.setPadding(new Insets(20,20,20,10));
 		vbOut.getChildren().addAll(helpBtn, decoBtn);

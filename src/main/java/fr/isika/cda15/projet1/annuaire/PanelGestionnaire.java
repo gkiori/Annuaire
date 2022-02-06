@@ -59,6 +59,7 @@ public class PanelGestionnaire extends BorderPane {
 					table.setEditable(false);
 					table.setStyle("-fx-background-color: #F8FBFF;\n"
 								 + "-fx-background-insets: 0;\n"
+								 + "-fx-text-fill: #0E4DA4;\n"
 								 + "-fx-padding: 10;");
 					table.setPrefHeight(850);
 					table.setPrefWidth(850);
@@ -110,16 +111,18 @@ public class PanelGestionnaire extends BorderPane {
 						itemSupp.setDisable(true);
 						
 					}
-        			button.setStyle("-fx-background-color: \n"
-        					+ "        #000000,\n"
-        					+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
-        					+ "        linear-gradient(#426ab7, #263e75),\n"
-        					+ "        linear-gradient(#395cab, #223768);\n"
+        			button.setStyle("-fx-background-color: #6EE7B7;\n"
+        			
+//        					+ "        #000000,\n"
+//        					+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
+//        					+ "        linear-gradient(#426ab7, #263e75),\n"
+//        					+ "        linear-gradient(#395cab, #223768);\n"
         					+ "    -fx-background-insets: 0,1,2,3;\n"
         					+ "    -fx-background-radius: 6, 5;\n"
         					+ "    -fx-padding: 12 30 12 30;\n"
-        					+ "    -fx-text-fill: white;\n"
-        					+ "    -fx-font-size: 14px;");
+        					+ "    -fx-text-fill: #047857;\n"
+        					+ "    -fx-font-size: 18px;"
+        					+ "		-fx-font-weight: bold;");
 			        button.setOnAction(new EventHandler<ActionEvent>() {
 			            @Override
 			            public void handle(ActionEvent e) {
