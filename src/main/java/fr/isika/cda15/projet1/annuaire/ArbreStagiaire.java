@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 public class ArbreStagiaire {
 	
@@ -43,6 +46,7 @@ public class ArbreStagiaire {
 				e.printStackTrace();
 			}
 			racine = 0;
+			construireArbreEquilibre();
 		}
 		Corbeille.initCorbeille();
 	}
@@ -51,6 +55,7 @@ public class ArbreStagiaire {
 	
 	private static void initLectureDon(File monFichier) {
 		String nom = "", prenom = "", departement = "", nomPromo = "", anneeEntree = "";
+		List<Stagiaire> listeStagiaire = new ArrayList<Stagiaire>();
 		try {
 			FileReader fr = new FileReader(monFichier);
 			BufferedReader br = new BufferedReader(fr);
@@ -61,12 +66,13 @@ public class ArbreStagiaire {
 				nomPromo = br.readLine();
 				anneeEntree = br.readLine();
 				br.readLine();
-				ajouter(new Stagiaire(nom, prenom, departement, nomPromo, anneeEntree));
+				listeStagiaire.add(new Stagiaire(nom, prenom, departement, nomPromo, anneeEntree));
 			}
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Collections.sort(listeStagiaire);
 	}
 	
 //	************************** Méthodes pour la lecture et l'écriture dans le fichier ************************** //
@@ -337,8 +343,90 @@ public class ArbreStagiaire {
  		
  		return new HashSet<Stagiaire>(listInfixe);
  	}
-	@Override
-	public String toString() {
-		return racine + " ";
-	}
+ 
+ 	 // ******************* Méthode d'équilibrage d'arbre  *******************
+ 	
+    private static void construireArbreEquilibreRec(List<Stagiaire> arbre, int debut, int fin){
+        if (debut > fin) {
+            return;
+        }
+ 
+        int milieu = (debut + fin) / 2;
+ 
+        ajouter(arbre.get(milieu));
+        
+        construireArbreEquilibreRec(arbre, debut, milieu - 1);
+        construireArbreEquilibreRec(arbre, milieu + 1, fin);
+    }
+ 
+    public static void construireArbreEquilibre(){
+       	List<Stagiaire> listeStagiaire = new ArrayList<Stagiaire>();
+        listeStagiaire.addAll(parcoursStagiaire());
+        Collections.sort(listeStagiaire);
+        try {
+			File monFichierBin = new File(PATH_FILE_BIN);
+			monFichierBin.delete();
+			raf = new RandomAccessFile(monFichierBin, "rw");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        construireArbreEquilibreRec(listeStagiaire, 0, listeStagiaire.size() - 1);
+    }
+    
+    private static void construireArbreEquilibre(List<Stagiaire> listeStagiaire){
+        construireArbreEquilibreRec(listeStagiaire, 0, listeStagiaire.size() - 1);
+    }
+//    
+// // ******************* Méthode de calcul de hauteur d'arbre  *******************
+//    
+//    public static int minimumDepth()
+//    {
+//        return minimumDepth(racine);
+//    }
+// 
+//    /* Function to calculate the minimum depth of the tree */
+//    public static int minimumDepth(int courant)
+//    {
+// 
+//        // Base case : Leaf Node. This accounts for height = 1.
+//        if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1)
+//            return 1;
+// 
+//        // If left subtree is NULL, recur for right subtree
+//        if (lectureIndexFilsG(courant) == -1)
+//            return minimumDepth(lectureIndexFilsD(courant)) + 1;
+// 
+//        // If right subtree is NULL, recur for left subtree
+//        if (lectureIndexFilsD(courant) == -1)
+//            return minimumDepth(lectureIndexFilsG(courant)) + 1;
+// 
+//        return Math.min( minimumDepth(lectureIndexFilsG(courant)),
+//                        minimumDepth(lectureIndexFilsD(courant))) + 1;
+//    }
+//    
+//    public static int maximumDepth()
+//    {
+//        return maximumDepth(racine);
+//    }
+// 
+//    /* Function to calculate the minimum depth of the tree */
+//    public static int maximumDepth(int courant)
+//    {
+// 
+//        // Base case : Leaf Node. This accounts for height = 1.
+//        if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1)
+//            return 1;
+// 
+//        // If left subtree is NULL, recur for right subtree
+//        if (lectureIndexFilsG(courant) == -1)
+//            return maximumDepth(lectureIndexFilsD(courant)) + 1;
+// 
+//        // If right subtree is NULL, recur for left subtree
+//        if (lectureIndexFilsD(courant) == -1)
+//            return maximumDepth(lectureIndexFilsG(courant)) + 1;
+// 
+//        return Math.max( maximumDepth(lectureIndexFilsG(courant)),
+//                        maximumDepth(lectureIndexFilsD(courant))) + 1;
+//    }
 }

@@ -108,7 +108,6 @@ public class Corbeille {
 	public static void retirerCorbeille(Stagiaire stagiaire) {
 		try {
 			for(int i = 0; i*134 < rafCorbeille.length(); i++) {
-				System.out.println(stagiaire.compareTo(lectureDansFichierStagiaire(i)) == 0);
 				if(stagiaire.compareTo(lectureDansFichierStagiaire(i)) == 0) {
 					rafCorbeille.seek(i*134);
 					for(int j = 0; j < 67; j++) {
