@@ -137,6 +137,7 @@ public class PanelInscription01 extends GridPane {
 		editProfil.setVisible(false);
 		
 		if(monUser != null) {
+			header.setText("Informations du compte");
 			editNom.setVisible(true);
 			editNom.setOnAction(new EventHandler<ActionEvent>() {
 
