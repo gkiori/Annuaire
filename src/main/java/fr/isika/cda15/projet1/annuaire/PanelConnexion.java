@@ -169,7 +169,7 @@ public class PanelConnexion extends BorderPane{
 		
 
 		panelPrincipal.setLeft(borderCenter);
-		panelPrincipal.setStyle("-fx-background-color : #94A3B8");
+		panelPrincipal.setStyle("-fx-background-image : url('src/main/resources/bantersnaps-pilh8f3eNSU-unsplash.jpg')");//-fx-background-color : #94A3B8
 
 		
 		labelIncrip.setTextFill(Color.RED);
