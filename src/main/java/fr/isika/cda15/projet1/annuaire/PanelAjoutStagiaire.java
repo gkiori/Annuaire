@@ -166,16 +166,48 @@ public class PanelAjoutStagiaire extends BorderPane{
 				});
 				
 				hbBtn.getChildren().addAll(btnAjouter, btnAnnuler);
-				hbBtn.setSpacing(3);
+				hbBtn.setSpacing(5);
+				
+				btnAjouter.setStyle("-fx-background-color: #6EE7B7;"
+						+ "    -fx-background-insets: 0,1,2,3;\n"
+						+ "    -fx-background-radius: 6, 5;\n"
+						+ "    -fx-padding: 12 30 12 30;\n"
+						+ "    -fx-text-fill: white;\n"
+						+ "    -fx-font-weight : bold;"
+						+ "    -fx-font-size: 12px;");
+				
+				btnAnnuler.setStyle("-fx-background-color: #F3C0A3;"
+						+ "    -fx-background-insets: 0,1,2,3;\n"
+						+ "    -fx-background-radius: 6, 5;\n"
+						+ "    -fx-padding: 12 30 12 30;\n"
+						+ "    -fx-text-fill: white;\n"
+						+ "    -fx-font-weight : bold;"
+						+ "    -fx-font-size: 12px;");
+				
+				gridPane.add(hbBtn, 0, 4);
+				//gridPane.add(btnAnnuler, 1, 4);
+				
+				
+				
 				gridPane.add(nomTxt, 0, 0);
-				gridPane.add(prenomTxt, 0, 1);
-				gridPane.add(promoTxt, 0, 2);
-				gridPane.add(departementTxt, 0, 4);
-				gridPane.add(anneeEntreeTxt, 0, 5);
+				gridPane.add(prenomTxt, 1, 0);
+				gridPane.add(promoTxt, 0, 1);
+				gridPane.add(departementTxt, 0, 2);
+				gridPane.add(anneeEntreeTxt, 1, 1);
+				gridPane.setVgap(5); 
+			    gridPane.setHgap(10);  
+			    gridPane.setPadding(new Insets(100));
+			       
+				
 				
 				panelTitre.getChildren().add(titre);
 				panelTitre.setAlignment(Pos.CENTER);
-				panelTitre.setMinHeight(50);
+				panelTitre.setMinHeight(100);
+				titre.setStyle("-fx-text-fill : green;"
+						 + "-fx-font-weight : 900; "
+						 + "-fx-font-size: 36px; "
+						 + "-fx-font-family: Verdana;");
+				
 		
 				gridPane.setAlignment(Pos.CENTER);
 				borderCenter.setCenter(gridPane);
@@ -183,7 +215,8 @@ public class PanelAjoutStagiaire extends BorderPane{
 		
 				principalBorder.setTop(panelTitre);
 				principalBorder.setCenter(borderCenter);
-				principalBorder.setBottom(hbBtn);
+			//	principalBorder.setBottom(hbBtn);
+				principalBorder.setStyle("-fx-background-color : #F1FDF7;");
 	}
 	
 	
