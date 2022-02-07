@@ -1,6 +1,8 @@
 package fr.isika.cda15.projet1.annuaire;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -135,4 +137,14 @@ public class Corbeille {
 		}
  		return listStagiaire;
  	}
+	
+	public static void viderCorbeille() {
+		FileWriter fw;
+		try {
+			fw = new FileWriter(new File(PATH_FILE_CORBEILLE));
+			fw.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

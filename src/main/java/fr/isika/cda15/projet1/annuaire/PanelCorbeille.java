@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -23,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -74,7 +77,6 @@ public class PanelCorbeille extends BorderPane {
 		table.getColumns().addAll(prenomCol, nomCol, promoCol, anneeEntreeCol, departementCol);
 
 		contenuCorbeille.addAll(Corbeille.parcoursStagiaire());
-		System.out.println(Corbeille.parcoursStagiaire());
 		table.setItems(contenuCorbeille);
 
 		Button boutonFermer = new Button("Fermer");
@@ -89,6 +91,16 @@ public class PanelCorbeille extends BorderPane {
 			}
 		});
 
+		Button boutonVider = new Button("Vider la corbeille");
+		boutonVider.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				Corbeille.viderCorbeille();
+				contenuCorbeille.clear();
+				contenuCorbeille.addAll(contenuCorbeille);
+			}
+		});
+		
 		table.setOnMouseClicked(evt -> {
 			if (evt.getButton() == MouseButton.SECONDARY) {
 				Set<Node> rows = table.lookupAll(".table-row-cell");
@@ -126,7 +138,14 @@ public class PanelCorbeille extends BorderPane {
 		contextMenu.getItems().addAll(itemRecup);
 		BorderPane monBP = new BorderPane();
 		VBox vboxBottom = new VBox();
-		vboxBottom.getChildren().addAll(labelRecup, boutonFermer);
+		HBox hboxCorbeille = new HBox();
+		hboxCorbeille.getChildren().addAll(boutonFermer, boutonVider);
+		hboxCorbeille.setPadding(new Insets(20,20,20,20));
+		hboxCorbeille.setSpacing(50);
+		hboxCorbeille.setAlignment(Pos.CENTER);
+		vboxBottom.getChildren().addAll(labelRecup, hboxCorbeille);
+		vboxBottom.setPadding(new Insets(20,20,20,20));
+		vboxBottom.setAlignment(Pos.CENTER);
 		monBP.setTop(labelCorbeille);
 		monBP.setCenter(table);
 		monBP.setBottom(vboxBottom);

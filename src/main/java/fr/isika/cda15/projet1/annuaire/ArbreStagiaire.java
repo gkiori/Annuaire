@@ -367,10 +367,6 @@ public class ArbreStagiaire {
         listeStagiaire.addAll(parcoursStagiaire());
         Collections.sort(listeStagiaire);
         try {
-//			raf.close();
-//			while(Files.deleteIfExists(Paths.get(PATH_FILE_BIN)) == false) {}
-//			raf = new RandomAccessFile(new File(PATH_FILE_BIN), "rw");
-//			while(Files.exists(Paths.get(PATH_FILE_BIN)) == false) {}
         	FileWriter fw = new FileWriter(new File(PATH_FILE_BIN));
         	fw.flush();
         	raf.setLength(0);
