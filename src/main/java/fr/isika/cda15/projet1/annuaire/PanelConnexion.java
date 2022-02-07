@@ -166,6 +166,7 @@ public class PanelConnexion extends BorderPane{
 		gridPane.setHgap(7);
 		gridPane.setVgap(7);
 		
+		
 		borderCenter.setCenter(gridPane);
 		borderCenter.setPrefHeight(1259);
 		borderCenter.setPrefWidth(899);
@@ -181,6 +182,15 @@ public class PanelConnexion extends BorderPane{
 		img1.setFitWidth(700);
 		panelPrincipal.setRight(img1);
 		
+		Image logo = new Image (new FileInputStream(PATH_RESOURCES + "logo.png"));
+		ImageView logo1 = new ImageView();
+		logo1.setImage(logo);
+		logo1.setFitWidth(184);
+		logo1.setFitHeight(96);
+		borderCenter.setTop(logo1);
+
+	
+	
 		
 		labelIncrip.setTextFill(Color.RED);
 		labelIncrip.setUnderline(true);
@@ -224,9 +234,12 @@ public class PanelConnexion extends BorderPane{
 		gridPane.add(labelPassword, 0, 11);
 		gridPane.add(mdpChamp, 0, 12);
 		gridPane.add(boutonLogin, 0, 17);	
+	
+		
 //		gridPane.setMinWidth(100);
 		
 		Scene scene = new Scene(panelPrincipal, 1050, 1259);
+		scene.setFill(Color.web("#EFF6FF"));
 //		scene.getStylesheets().add(PATH_TO_CSSFILE); 
 		stage.setTitle("Annuaire des stagiaires");
 		stage.setScene(scene);
