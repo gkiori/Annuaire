@@ -97,14 +97,14 @@ public class Stagiaire extends Compte implements Comparable<Stagiaire> {
 		
 		int nb;
 		if(this.getNom().compareTo(otherStagiaire.getNom()) != 0)
-			nb = this.getNom().compareTo(otherStagiaire.getNom());
-		else if((this.getPrenom().compareTo(otherStagiaire.getPrenom()) != 0))
-			nb = this.getPrenom().compareTo(otherStagiaire.getPrenom());
-		else if((this.getPromo().compareTo(otherStagiaire.getPromo()) != 0))
-			nb = this.getPromo().compareTo(otherStagiaire.getPromo());
-		else if((this.getAnneeEntree().compareTo(otherStagiaire.getAnneeEntree()) != 0))
-			nb = this.getAnneeEntree().compareTo(otherStagiaire.getAnneeEntree());
-		else nb = this.getDepartement().compareTo(otherStagiaire.getDepartement());
+			nb = this.getNom().compareToIgnoreCase(otherStagiaire.getNom());
+		else if((this.getPrenom().compareToIgnoreCase(otherStagiaire.getPrenom()) != 0))
+			nb = this.getPrenom().compareToIgnoreCase(otherStagiaire.getPrenom());
+		else if((this.getPromo().compareToIgnoreCase(otherStagiaire.getPromo()) != 0))
+			nb = this.getPromo().compareToIgnoreCase(otherStagiaire.getPromo());
+		else if((this.getAnneeEntree().compareToIgnoreCase(otherStagiaire.getAnneeEntree()) != 0))
+			nb = this.getAnneeEntree().compareToIgnoreCase(otherStagiaire.getAnneeEntree());
+		else nb = this.getDepartement().compareToIgnoreCase(otherStagiaire.getDepartement());
 		return nb;
 	}
 
