@@ -172,15 +172,15 @@ public class PanelAjoutStagiaire extends BorderPane{
 						+ "    -fx-background-insets: 0,1,2,3;\n"
 						+ "    -fx-background-radius: 6, 5;\n"
 						+ "    -fx-padding: 12 30 12 30;\n"
-						+ "    -fx-text-fill: white;\n"
+						+ "    -fx-text-fill: #047857;\n"
 						+ "    -fx-font-weight : bold;"
 						+ "    -fx-font-size: 12px;");
 				
-				btnAnnuler.setStyle("-fx-background-color: #F3C0A3;"
+				btnAnnuler.setStyle("-fx-background-color: #FF9F7D;"
 						+ "    -fx-background-insets: 0,1,2,3;\n"
 						+ "    -fx-background-radius: 6, 5;\n"
 						+ "    -fx-padding: 12 30 12 30;\n"
-						+ "    -fx-text-fill: white;\n"
+						+ "    -fx-text-fill: #C64011;\n"
 						+ "    -fx-font-weight : bold;"
 						+ "    -fx-font-size: 12px;");
 				
@@ -203,10 +203,11 @@ public class PanelAjoutStagiaire extends BorderPane{
 				panelTitre.getChildren().add(titre);
 				panelTitre.setAlignment(Pos.CENTER);
 				panelTitre.setMinHeight(100);
-				titre.setStyle("-fx-text-fill : green;"
-						 + "-fx-font-weight : 900; "
-						 + "-fx-font-size: 36px; "
+				titre.setStyle( "-fx-font-weight : 900; \n"
+						 + "-fx-font-size: 36px;\n "
+						 + "-fx-text-fill : #047857;\n" // couleur n'apparait pas ?
 						 + "-fx-font-family: Verdana;");
+				
 				
 		
 				gridPane.setAlignment(Pos.CENTER);

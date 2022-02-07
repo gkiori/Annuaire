@@ -65,6 +65,7 @@ public class PanelInscription01 extends GridPane {
 		theGridPane.setPadding(new Insets(40,40,40,40));
 		theGridPane.setHgap(10);
 		theGridPane.setVgap(10);
+		theGridPane.setStyle("-fx-background-color : #EFF6FF;");
 		
 		ColumnConstraints columnOne = new ColumnConstraints(100, 100, Double.MAX_VALUE);
 		columnOne.setHalignment(HPos.RIGHT);
@@ -76,13 +77,22 @@ public class PanelInscription01 extends GridPane {
 	
 	private static void addUIControls(GridPane theGridPane, User monUser) {
 		Label header = new Label("Créer un compte utilisateur");
-		header.setFont(Font.font("Tahoma", FontWeight.BOLD, 24));
+		//header.setFont(Font.font("Tahoma", FontWeight.BOLD, 24));
+		header.setStyle("-fx-text-fill : #94A3B8;"
+				 + "-fx-font-weight : 900; "
+				 + "-fx-font-size: 30px; "
+				 + "-fx-font-family: Verdana;");
 		theGridPane.add(header, 0, 0, 2, 1);
 		GridPane.setHalignment(header, HPos.CENTER);
 		GridPane.setMargin(header, new Insets(20, 0, 20, 0));
 		
 		Label nom = new Label("Votre nom : ");
 		theGridPane.add(nom, 0, 1);
+		nom.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : bold; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
+
 		
 		TextField champsNom = new TextField();
 		champsNom.setPrefHeight(40);
@@ -90,6 +100,10 @@ public class PanelInscription01 extends GridPane {
 		
 		Label prenom = new Label("Votre prénom : ");
 		theGridPane.add(prenom, 0, 2);
+		prenom.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : bold; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
 		
 		TextField champsPrenom = new TextField();
 		champsPrenom.setPrefHeight(40);
@@ -97,6 +111,10 @@ public class PanelInscription01 extends GridPane {
 		
 		Label email = new Label("Votre email : ");
 		theGridPane.add(email, 0, 3);
+		email.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : bold; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
 		
 		TextField champsEmail = new TextField();
 		champsEmail.setPrefHeight(40);
@@ -104,6 +122,10 @@ public class PanelInscription01 extends GridPane {
 		
 		Label mdp = new Label("Votre mot de passe : ");
 		theGridPane.add(mdp, 0, 4);
+		mdp.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : bold; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
 		
 		PasswordField champsMdp = new PasswordField();
 		champsMdp.setPrefHeight(40);
@@ -111,9 +133,21 @@ public class PanelInscription01 extends GridPane {
 		
 		
 		Label profil = new Label("Votre profil : ");
+		profil.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : bold; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
 		theGridPane.add(profil, 0, 5);
 		RadioButton userEnseignant = new RadioButton("Enseignant");
+		userEnseignant.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : normal; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
 		RadioButton userStagiaire = new RadioButton("Apprenant");
+		userStagiaire.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : normal; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
 		ToggleGroup profilUser = new ToggleGroup();
 		userEnseignant.setToggleGroup(profilUser);
 		userStagiaire.setToggleGroup(profilUser);
@@ -123,18 +157,48 @@ public class PanelInscription01 extends GridPane {
 		Button editNom = new Button("Editer");
 		theGridPane.add(editNom, 2, 1);
 		editNom.setVisible(false);
+		editNom.setStyle("-fx-background-color: #6EE7B7;"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: #047857;\n"
+				+ "    -fx-font-size: 12px;");
 		Button editPrenom = new Button("Editer");
 		theGridPane.add(editPrenom, 2, 2);
 		editPrenom.setVisible(false);
+		editPrenom.setStyle("-fx-background-color: #6EE7B7;"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: #047857;\n"
+				+ "    -fx-font-size: 12px;");
 		Button editEmail = new Button("Editer");
 		theGridPane.add(editEmail, 2, 3);
 		editEmail.setVisible(false);
+		editEmail.setStyle("-fx-background-color: #6EE7B7;"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: #047857;\n"
+				+ "    -fx-font-size: 12px;");
 		Button editMdp = new Button("Editer");
 		theGridPane.add(editMdp, 2, 4);
 		editMdp.setVisible(false);
+		editMdp.setStyle("-fx-background-color: #6EE7B7;"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: #047857;\n"
+				+ "    -fx-font-size: 12px;");
 		Button editProfil = new Button("Editer");
 		theGridPane.add(editProfil, 2, 6);
 		editProfil.setVisible(false);
+		editProfil.setStyle("-fx-background-color: #6EE7B7;"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: #047857;\n"
+				+ "    -fx-font-size: 12px;");
 		
 		if(monUser != null) {
 			header.setText("Informations du compte");
@@ -210,7 +274,13 @@ public class PanelInscription01 extends GridPane {
 		Button btn = new Button("Valider");
 		btn.setPrefHeight(40);
 		btn.setDefaultButton(true);
-		btn.setPrefWidth(100);
+		//btn.setPrefWidth(100);
+		btn.setStyle("-fx-background-color: #0E4DA4;"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: white;\n"
+				+ "    -fx-font-size: 15px;");
 		
 		theGridPane.add(btn, 0, 7, 3, 2);
 		GridPane.setHalignment(btn, HPos.CENTER);

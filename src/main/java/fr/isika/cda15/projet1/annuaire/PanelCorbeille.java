@@ -51,7 +51,7 @@ public class PanelCorbeille extends BorderPane {
 		Label labelRecup = new Label("Vous avez réintegré votre stagiaire");
 		labelRecup.setVisible(false);
 		Label labelCorbeille = new Label("Corbeille");
-		labelCorbeille.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
+		labelCorbeille.setFont(Font.font("Verdana", FontWeight.BOLD, 36));
 
 		TableColumn<Stagiaire, String> prenomCol = new TableColumn<Stagiaire, String>("Prénom");
 		prenomCol.setMinWidth(100);
@@ -140,6 +140,20 @@ public class PanelCorbeille extends BorderPane {
 		VBox vboxBottom = new VBox();
 		HBox hboxCorbeille = new HBox();
 		hboxCorbeille.getChildren().addAll(boutonFermer, boutonVider);
+		boutonVider.setStyle("-fx-background-color: #6EE7B7;"
+				+ "    -fx-background-insets: 0,1,2,3;\n"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: #047857;\n"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-font-size: 12px;");
+		boutonFermer.setStyle("-fx-background-color: #FF9F7D;"
+				+ "    -fx-background-insets: 0,1,2,3;\n"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: #C64011;\n"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-font-size: 12px;");
 		hboxCorbeille.setPadding(new Insets(20,20,20,20));
 		hboxCorbeille.setSpacing(50);
 		hboxCorbeille.setAlignment(Pos.CENTER);
@@ -147,8 +161,11 @@ public class PanelCorbeille extends BorderPane {
 		vboxBottom.setPadding(new Insets(20,20,20,20));
 		vboxBottom.setAlignment(Pos.CENTER);
 		monBP.setTop(labelCorbeille);
+		labelCorbeille.setMinHeight(100);
+		labelCorbeille.setPadding(new Insets(50, 50, 50, 50));
 		monBP.setCenter(table);
 		monBP.setBottom(vboxBottom);
+		monBP.setStyle("-fx-background-color : #F1FDF7;");
 
 		Scene maScene = new Scene(monBP, 800, 500);
 		popUpCorbeille.setScene(maScene);

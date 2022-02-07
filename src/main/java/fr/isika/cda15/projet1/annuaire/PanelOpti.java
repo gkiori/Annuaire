@@ -62,7 +62,12 @@ public class PanelOpti extends BorderPane{
 		});
 		
 		hauteurAvant.getChildren().addAll(hauteurMinAvant, hauteurMaxAvant);
+		hauteurMinAvant.setStyle("    -fx-text-fill: #0E4DA4;\n"+"    -fx-font-weight : bold;"+ "    -fx-font-size: 16px;");
+		hauteurMaxAvant.setStyle("    -fx-text-fill: #0E4DA4;\n"+"    -fx-font-weight : bold;"+ "    -fx-font-size: 16px;");
 		hauteurApres.getChildren().addAll(hauteurMinApres, hauteurMaxApres);
+		messageInfo.setStyle("    -fx-text-fill: #047857;\n"+"    -fx-font-weight : bold;"+ "    -fx-font-size: 16px;");
+		hauteurMinApres.setStyle("    -fx-text-fill: #047857;\n"+"    -fx-font-weight : bold;"+ "    -fx-font-size: 16px;");
+		hauteurMaxApres.setStyle("    -fx-text-fill: #047857;\n"+"    -fx-font-weight : bold;"+ "    -fx-font-size: 16px;");
 		contenuBas.getChildren().addAll(messageInfo, hauteurApres, valider);
 		contenuBas.setSpacing(10);
 		
@@ -70,6 +75,24 @@ public class PanelOpti extends BorderPane{
 		maBP.setCenter(boutonOpti);
 		maBP.setBottom(contenuBas);
 		maBP.setPadding(new Insets(10,20,10,20));
+		maBP.setStyle("-fx-background-color : #EFF6FF;");
+		
+		valider.setStyle("-fx-background-color: #6EE7B7;"
+				+ "    -fx-background-insets: 0,1,2,3;\n"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: #047857;\n"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-font-size: 12px;");
+		
+		boutonOpti.setStyle("-fx-background-color: #0E4DA4;"
+				+ "    -fx-background-insets: 0,1,2,3;\n"
+				+ "    -fx-background-radius: 6, 5;\n"
+				+ "    -fx-padding: 12 30 12 30;\n"
+				+ "    -fx-text-fill: white;\n"
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-font-size: 12px;");
+		
 	
 		PanelOpti.popUpOpti = new Stage();
 		popUpOpti.initModality(Modality.APPLICATION_MODAL);
