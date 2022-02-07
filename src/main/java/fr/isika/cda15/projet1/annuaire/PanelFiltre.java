@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 //import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeSet;
 
 import org.controlsfx.control.CheckComboBox;
@@ -44,6 +46,8 @@ public class PanelFiltre extends BorderPane{
 	private TreeSet<String> vueDepartement = new TreeSet<String>();
 	private TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 	
+	private static boolean changementLance = false;
+	
 	public PanelFiltre(final Stage stage) throws Exception{
 		
 		zoneRecherche.setPromptText("Recherche");
@@ -76,10 +80,18 @@ public class PanelFiltre extends BorderPane{
 		zoneRechercheNom.setStyle("-fx-background-color: #6989FE; -fx-text-fill: #ffffff;-fx-prompt-text-fill: #BAC8FA;");
 		zoneRecherchePrenom.setStyle("-fx-background-color: #6989FE; -fx-text-fill: #ffffff;-fx-prompt-text-fill: #BAC8FA;");
 		
+		
 		ChangeListener<String> changementZoneEcriture = new ChangeListener<String>(){
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				changementRecherche();
+				TimerTask tacheChangementRecherche = new TimerTask() {
+					@Override
+					public void run() {
+						if(!changementLance) changementRecherche();
+					}
+				};
+				Timer timerChangementRecherche = new Timer();
+				timerChangementRecherche.schedule(tacheChangementRecherche, 500);
 			}
 			
 		};
@@ -172,6 +184,7 @@ public class PanelFiltre extends BorderPane{
 	}
 	
 	public static void changementRecherche() {
+		changementLance = true;
 		Map<String, String> listeRecherche = new HashMap<String, String>();
 		if(menuPromo.getCheckModel().getCheckedItems().toString() != "[]") 
 			listeRecherche.put(menuPromo.getCheckModel().getCheckedItems().toString(), "promo");
@@ -186,5 +199,6 @@ public class PanelFiltre extends BorderPane{
 		TreeSet<Stagiaire> resultatRechercheTrie = new TreeSet<Stagiaire>(resultatRecherche);
 		PanelGestionnaire.data.clear();
 		PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRechercheTrie));
+		changementLance = false;
 	}
 }

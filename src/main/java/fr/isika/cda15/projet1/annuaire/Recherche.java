@@ -77,7 +77,6 @@ public class Recherche {
 //************************ Méthodes de recherche multicritère ************************
 	
 	public static HashSet<Stagiaire> chercherMultiCle(Map<String, String> listeRecherche) {
-		System.out.println(listeRecherche);
 		HashSet<Stagiaire> resultatRecherche = new HashSet<Stagiaire>();
 		resultatRecherche = ArbreStagiaire.parcoursStagiaire();
 		for (Map.Entry<String, String> recherche : listeRecherche.entrySet()) {
