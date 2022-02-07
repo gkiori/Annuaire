@@ -2,6 +2,7 @@ package fr.isika.cda15.projet1.annuaire;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +25,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TextFieldSkin;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -46,7 +49,8 @@ public class PanelConnexion extends BorderPane{
 	private final String PATH_FILE_INSCRIPTION  = "src/main/resources/fichierInscription";
 	private final String PATH_TO_CSSFILE = "src/main/resources/PanelConnexion.css";
 	private File fichierInscription = new File(PATH_FILE_INSCRIPTION );
-
+	private static final String PATH_RESOURCES = "src/main/resources/";
+	
 	private String mdpCheck, IdCheck;
 	private static User user;
 
@@ -138,11 +142,11 @@ public class PanelConnexion extends BorderPane{
 		
 		
 		labelQuestion.setStyle("-fx-text-fill : #0E4DA4;"
-				 			 + "-fx-font-weight : normal; "
+				 			 + "-fx-font-weight : bold; "
 				 			 + "-fx-font-size: 15px; "
 				 			 + "-fx-font-family: Verdana;");
 		labelIncrip.setStyle("-fx-text-fill :  	#880000;"
-						   + "-fx-font-weight : normal; "
+						   + "-fx-font-weight : bold; "
 						   + "-fx-font-size: 15px; "
 						   + "-fx-font-family: Verdana;");
 		questionLabel.getChildren().addAll(labelQuestion, labelIncrip);
@@ -169,8 +173,14 @@ public class PanelConnexion extends BorderPane{
 		
 
 		panelPrincipal.setLeft(borderCenter);
-		panelPrincipal.setStyle("-fx-background-image : url('src/main/resources/bantersnaps-pilh8f3eNSU-unsplash.jpg')");//-fx-background-color : #94A3B8
-
+		//panelPrincipal.setStyle("-fx-background-color : red ");//-fx-background-image : url('src/main/resources/imageConnexion.jpg')"
+		Image image1 = new Image (new FileInputStream(PATH_RESOURCES + "imageConnexion.jpg"));
+		ImageView img1 = new ImageView();
+		img1.setImage(image1);
+		img1.setFitHeight(1024);
+		img1.setFitWidth(700);
+		panelPrincipal.setRight(img1);
+		
 		
 		labelIncrip.setTextFill(Color.RED);
 		labelIncrip.setUnderline(true);
@@ -180,22 +190,31 @@ public class PanelConnexion extends BorderPane{
 //		panelPrincipal.setPadding(new Insets(10, 50, 50, 50));
 
 		labelUserName.setFont(Font.font("Arial", 15));
-		txtUserName.setPrefWidth(453);
-		txtUserName.setPrefHeight(56);
-		labelPassword.setFont(Font.font("Arial", 15));
+//		txtUserName.setPrefWidth(453);
+//		txtUserName.setPrefHeight(56);
+		labelUserName.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : normal; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
+//		labelPassword.setFont(Font.font("Arial", 15));
+		labelPassword.setStyle("-fx-text-fill : #0E4DA4;"
+	 			 + "-fx-font-weight : normal; "
+	 			 + "-fx-font-size: 12px; "
+	 			 + "-fx-font-family: Verdana;");
 		mdpChamp.setPrefWidth(453);
-		mdpChamp.setPrefHeight(56);
+//		mdpChamp.setPrefHeight(56);
 		
-		boutonLogin.setStyle("-fx-background-color: \n"
-				+ "        #000000,\n"
-				+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
-				+ "        linear-gradient(#426ab7, #263e75),\n"
-				+ "        linear-gradient(#395cab, #223768);\n"
+		boutonLogin.setStyle("-fx-background-color: #0E4DA4;"
+//				+ "        #000000,\n"
+//				+ "        linear-gradient(#7ebcea, #2f4b8f),\n"
+//				+ "        linear-gradient(#426ab7, #263e75),\n"
+//				+ "        linear-gradient(#395cab, #223768);\n"
 				+ "    -fx-background-insets: 0,1,2,3;\n"
 				+ "    -fx-background-radius: 6, 5;\n"
 				+ "    -fx-padding: 12 30 12 30;\n"
 				+ "    -fx-text-fill: white;\n"
-				+ "    -fx-font-size: 14px;");
+				+ "    -fx-font-weight : bold;"
+				+ "    -fx-font-size: 15px;");
 		boutonLogin.setPrefSize(145, 44);
 
 		gridPane.add(titreLabel, 0, 0, 2, 1);
