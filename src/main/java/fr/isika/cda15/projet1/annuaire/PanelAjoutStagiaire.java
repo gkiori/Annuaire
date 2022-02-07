@@ -83,6 +83,26 @@ public class PanelAjoutStagiaire extends BorderPane{
 									showAlert(Alert.AlertType.ERROR, principalBorder.getScene().getWindow(), "Erreur", "Veuillez remplir tous les champs pour continuer");
 									return;
 								}
+								if(nomTxt.getText().length() >25) {
+									showAlert(Alert.AlertType.ERROR, principalBorder.getScene().getWindow(), "Erreur", "Le nom ne peut pas faire plus de 25 caractères");
+									return;
+								}
+								if(prenomTxt.getText().length() >20) {
+									showAlert(Alert.AlertType.ERROR, principalBorder.getScene().getWindow(), "Erreur", "Le prénom ne peut pas faire plus de 20 caractères");
+									return;
+								}
+								if(departementTxt.getText().length() > 3) {
+									showAlert(Alert.AlertType.ERROR, principalBorder.getScene().getWindow(), "Erreur", "Le département ne peut pas faire plus de 3 caractères");
+									return;
+								}
+								if(promoTxt.getText().length() >15) {
+									showAlert(Alert.AlertType.ERROR, principalBorder.getScene().getWindow(), "Erreur", "Le nom de la promotion ne peut pas faire plus de 15 caractères");
+									return;
+								}
+								if(anneeEntreeTxt.getText().length() >4) {
+									showAlert(Alert.AlertType.ERROR, principalBorder.getScene().getWindow(), "Erreur", "L'année d'entrée ne peut pas faire plus de 4 caractères");
+									return;
+								}
 								Stagiaire newStagiaire = new Stagiaire(nomTxt.getText(), prenomTxt.getText(), 
 								departementTxt.getText(), promoTxt.getText(), anneeEntreeTxt.getText());
 								ArbreStagiaire.ajouter(newStagiaire);
