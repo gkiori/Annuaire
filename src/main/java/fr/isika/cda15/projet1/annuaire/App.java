@@ -30,14 +30,6 @@ public class App extends Application {
     	PanelGestionnaire.setData(initPanelGestionnaire());
     	PanelConnexion connexion = new PanelConnexion(stage);
 
-    	stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-    	    @Override
-    	    public void handle(WindowEvent t) {
-    	    	ArbreStagiaire.construireArbreEquilibre();
-    	        Platform.exit();
-    	        System.exit(0);
-    	    }
-    	});
 		panelPrincipal.setCenter(connexion);
 
 		Scene scene = new Scene(panelPrincipal, 1050, 1259);

@@ -380,55 +380,43 @@ public class ArbreStagiaire {
         construireArbreEquilibreRec(listeStagiaire, 0, listeStagiaire.size() - 1);
     }
 
-// // ******************* Méthode de calcul de hauteur d'arbre  *******************
-//    
-//    public static int minimumDepth()
-//    {
-//        return minimumDepth(racine);
-//    }
-// 
-//    /* Function to calculate the minimum depth of the tree */
-//    public static int minimumDepth(int courant)
-//    {
-// 
-//        // Base case : Leaf Node. This accounts for height = 1.
-//        if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1)
-//            return 1;
-// 
-//        // If left subtree is NULL, recur for right subtree
-//        if (lectureIndexFilsG(courant) == -1)
-//            return minimumDepth(lectureIndexFilsD(courant)) + 1;
-// 
-//        // If right subtree is NULL, recur for left subtree
-//        if (lectureIndexFilsD(courant) == -1)
-//            return minimumDepth(lectureIndexFilsG(courant)) + 1;
-// 
-//        return Math.min( minimumDepth(lectureIndexFilsG(courant)),
-//                        minimumDepth(lectureIndexFilsD(courant))) + 1;
-//    }
-//    
-//    public static int maximumDepth()
-//    {
-//        return maximumDepth(racine);
-//    }
-// 
-//    /* Function to calculate the minimum depth of the tree */
-//    public static int maximumDepth(int courant)
-//    {
-// 
-//        // Base case : Leaf Node. This accounts for height = 1.
-//        if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1)
-//            return 1;
-// 
-//        // If left subtree is NULL, recur for right subtree
-//        if (lectureIndexFilsG(courant) == -1)
-//            return maximumDepth(lectureIndexFilsD(courant)) + 1;
-// 
-//        // If right subtree is NULL, recur for left subtree
-//        if (lectureIndexFilsD(courant) == -1)
-//            return maximumDepth(lectureIndexFilsG(courant)) + 1;
-// 
-//        return Math.max( maximumDepth(lectureIndexFilsG(courant)),
-//                        maximumDepth(lectureIndexFilsD(courant))) + 1;
-//    }
+ // ******************* Méthode de calcul de hauteur d'arbre  *******************
+    
+    public static int hauteurMinimum(){
+    	
+        return hauteurMinimum(racine);
+    }
+ 
+    public static int hauteurMinimum(int courant){
+    	
+        if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1)
+            return 1;
+ 
+        if (lectureIndexFilsG(courant) == -1)
+            return hauteurMinimum(lectureIndexFilsD(courant)) + 1;
+ 
+        if (lectureIndexFilsD(courant) == -1)
+            return hauteurMinimum(lectureIndexFilsG(courant)) + 1;
+ 
+        return Math.min(hauteurMinimum(lectureIndexFilsG(courant)),hauteurMinimum(lectureIndexFilsD(courant))) + 1;
+    }
+    
+    public static int hauteurMaximum(){
+    	
+        return hauteurMaximum(racine);
+    }
+ 
+    public static int hauteurMaximum(int courant){
+ 
+        if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1)
+            return 1;
+ 
+        if (lectureIndexFilsG(courant) == -1)
+            return hauteurMaximum(lectureIndexFilsD(courant)) + 1;
+ 
+        if (lectureIndexFilsD(courant) == -1)
+            return hauteurMaximum(lectureIndexFilsG(courant)) + 1;
+ 
+        return Math.max( hauteurMaximum(lectureIndexFilsG(courant)), hauteurMaximum(lectureIndexFilsD(courant))) + 1;
+    }
 }

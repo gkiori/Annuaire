@@ -139,13 +139,30 @@ public class PanelFiltre extends BorderPane{
 //				+ "		-fx-font-weight: bold;\n"
 				+ "    -fx-font-size: 16px;");
 		
+		Button boutonOpti = new Button("Optimisation");
+		boutonOpti.setOnAction(new EventHandler<ActionEvent>(){
+			
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					PanelOpti.PanelOpti();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
 		VBox orgVbox = new VBox();
-		orgVbox.getChildren().addAll(zoneRecherche, menuPromo, menuDepartement, menuAnneeEntree, zoneRechercheNom, zoneRecherchePrenom);
+		VBox boxBottom = new VBox();
+		boxBottom.getChildren().add(boutonOpti);
+		boxBottom.setAlignment(Pos.CENTER);
+		boxBottom.setPadding(new Insets(0,0,10,0));
+		orgVbox.getChildren().addAll(zoneRecherche, menuPromo, menuDepartement, menuAnneeEntree, zoneRechercheNom, zoneRecherchePrenom, reinitialisationFiltre);
 		orgVbox.setPadding(new Insets(20,20,20,10));
 		orgVbox.setSpacing(10);
 		this.setTop(titre);
 		this.setCenter(orgVbox);
-		this.setBottom(reinitialisationFiltre);
+		this.setBottom(boxBottom);
 		this.setStyle("-fx-background-color: #FBFDFF");
 		Scene scene = new Scene(this, 314, 1024);
 		stage.setScene(scene);
