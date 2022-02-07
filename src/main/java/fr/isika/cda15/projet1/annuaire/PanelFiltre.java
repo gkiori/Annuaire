@@ -152,6 +152,9 @@ public class PanelFiltre extends BorderPane{
 			}
 		});
 		
+		if (PanelConnexion.getUser().getProfil().compareTo("Apprenant") == 0 ) {
+			boutonOpti.setDisable(true);
+		}
 		VBox orgVbox = new VBox();
 		VBox boxBottom = new VBox();
 		boxBottom.getChildren().add(boutonOpti);
