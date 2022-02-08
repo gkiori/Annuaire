@@ -60,6 +60,7 @@ public class PanelConnexion extends BorderPane{
 	private Label labelUserName = new Label("Identifiant : ");
 	private Label labelPassword = new Label("Mot de passe : ");
 	private Button boutonLogin = new Button("Connexion");
+	private Label labelError = new Label();
 
 	private final TextField txtUserName = new TextField();
 	private final PasswordField mdpChamp = new PasswordField();
@@ -131,7 +132,9 @@ public class PanelConnexion extends BorderPane{
 							 user = new User (nom, prenom, email, mdp, profil);
 							 PanelGestionnaire.setData(initPanelGestionnaire());
 							 new PanelGestionnaire(stage);
-						 }						 
+						 }else {
+							 labelError.setText("Identifiant et/ou mot de passe eronné !");
+						 }
 					}				
 				} catch (Exception e) {
 					
@@ -198,6 +201,8 @@ public class PanelConnexion extends BorderPane{
 		mdpChamp.setSkin(new VisiblePasswordFieldSkin(mdpChamp));
 		
 //		panelPrincipal.setPadding(new Insets(10, 50, 50, 50));
+		
+		labelError.setTextFill(Color.RED);
 
 		labelUserName.setFont(Font.font("Arial", 15));
 //		txtUserName.setPrefWidth(453);
@@ -233,7 +238,8 @@ public class PanelConnexion extends BorderPane{
 		gridPane.add(txtUserName, 0, 6);
 		gridPane.add(labelPassword, 0, 11);
 		gridPane.add(mdpChamp, 0, 12);
-		gridPane.add(boutonLogin, 0, 17);	
+		gridPane.add(labelError, 0, 15);
+		gridPane.add(boutonLogin, 0, 19);	
 	
 		
 //		gridPane.setMinWidth(100);

@@ -178,6 +178,7 @@ public class PanelGeneralInfos extends BorderPane {
 		
 		if(PanelConnexion.getUser().getProfil().equalsIgnoreCase("Apprenant")) {
 			optiBtn.setDisable(true);
+			corbeilleBtn.setDisable(true);
 		}
 		optiBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			

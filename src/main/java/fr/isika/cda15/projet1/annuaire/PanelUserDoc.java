@@ -124,13 +124,13 @@ public class PanelUserDoc extends BorderPane {
 				switch (pageToShow) {
 				case 0:
 //					
-					btnBack.setDisable(true);
+					
 					btnOK.setDisable(false);
 					principalBorber.setCenter(listImage.get(pageToShow));
 					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 1:
-//					
+					btnBack.setDisable(true);
 					btnOK.setDisable(false);
 					pageToShow--;
 					principalBorber.setCenter(listImage.get(pageToShow));

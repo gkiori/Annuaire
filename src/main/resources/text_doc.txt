@@ -1,0 +1,72 @@
+              ANNUAIRE VERSION 1.0.0
+              Manuel d’utilisation
+              de l’annuaire des
+              stagiaires ISIKA
+              Bienvenue dans l’annuaire d’ISIKA. Vous avez la possibilité
+              de trier et d’effectuer des recherches fines en filtrant la liste
+              des stagiaires avec les paramètres suivants : nom, prénom,
+              département de résidence, année d’admission et promotion
+              intégrée. Vous pouvez également imprimer tout ou partie de
+              la liste en téléchargeant un export PDF.
+              Si vous faites partie de l’équipe pédagogique, vous avez la
+              posibilité d’ajouter, de supprimer et de modifier les informa-
+              tions d’un stagiaire. Les stagiaires peuvent consulter la liste
+              mais ne sont pas en mesure de l’éditer. Retrouvez le détail
+              des différentes fonctionnalités ci-desssous :
+Ajouter un stagiaire
+              Pour ajouter un stagiaire :
+                     1- Cliquez sur le bouton “ajouter” à droite de l’écran
+                     2- Remplissez les champs : nom, prénom, promotion, département, 		
+                     admission
+                     3- Validez votre saisie
+Supprimer un stagiaire
+              Pour supprimer un stagiaire :
+                     1- Positionnez le curseur sur la ligne qui correspond au stagiaire
+                     2- Faites un clique droit sur la ligne
+                     3- Selectionnez le bouton supprimer
+              Suite page suivante
+Supprimer un stagiaire
+Modifier les informations d’un stagaire
+               Pour modifier les données d’un stagiaire :
+                        1- Positionnez le curseur sur la ligne qui correspond au stagiaire
+                        2- Faite un clique droit sur la ligne
+                        3- Selectionner le bouton modifier
+                        4- Mettez à jour les données du stagiaire
+                        5- Validez votre saisie
+Trier la liste
+               Il est possible de trier la liste par colonne pour afficher les résultats par ordre
+               alphabétique ou croissant. Une flèche pleine dirigée vers le haut signifie que
+               les valeurs de la colonne sont triées par ordre croissant. Une flèche pleine
+               dirigée vers le bas signifie que les valeurs de la colonne sont triées par ordre
+               décroissant. Pour cela :
+                        - Cliquez sur l’en-tête de la colonne que vous voulez trier : La colonne
+                        est triée par ordre croissant ou décroissant.
+                        - Cliquez à nouveau sur l’en-tête : La colonne est triée dans l’ordre 		
+                        inverse.
+Effectuer une rechercher dans la liste
+               Vous avez la possiblité d’effectuer une recherche simple ou fine (multi-
+               critères) en utilisant le panneau “Filtres” à droite. Les résultats s’afficheront
+               de façon dynamique à chaque saiside filtre, vous avez la possibilité :
+                        1- D’entrez un mot clé dans le champs “recherche” pour rechercher 		
+                        dans l’ensemble des colonnes
+                        2- De selectionner dans les menus déroulants dédiés une ou plusieurs
+                        promotions, années d’admision, départements.
+                        3- D’entrez un mot clé qui filtrera uniquement les noms de famille ou
+                        les prénoms
+                        4- De combiner les différents champs pour affiner votre recherche.
+               Suite page suivante
+Effectuer une rechercher dans la liste
+Imprimer tout ou partie de la liste
+               L’impression de la liste complète, triée ou non, est possible en cliquant sur le
+               bouton “imprimer”. Pour imprimer une partie de la liste :
+                      1- Effectuez une recherche en utlisant le panneau de droite “Filtres”
+                      2- Cliquez sur le bouton “imprimer”
+                      3- Lancer l’impression de puis le document PDF qui s’affiche
+Modifier vos informations personnels
+               Pour modifier vos informations personnelles comme votre identifiant ou mot
+               de passe :
+                      1- Cliquez sur votre nom dans le panneau de gauche
+                      2- Mettez à jour vos données
+                      3- Validez votre saisi
+                      4- Vous modifiez ainsi les informations liées à votre compte et à votre
+                      authentification.
