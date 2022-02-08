@@ -50,7 +50,7 @@ public class PanelGeneralInfos extends BorderPane {
 	
 	private VBox vbMiddle = new VBox();
 	private Label rechBtn = new Label("Rechercher");
-	private Label listBtn = new Label("Réinitialiser les filtres");
+	private Label optiBtn = new Label("Optimiser");
 	private Label imprBtn = new Label("Impression");
 	private Label infoBtn = new Label("Information");
 	private Label corbeilleBtn = new Label("Corbeille");
@@ -148,48 +148,46 @@ public class PanelGeneralInfos extends BorderPane {
 		ImageView imageInterIN = new ImageView(imageListIN);
 		imageInterIN.setFitWidth(70);
 		imageInterIN.setFitHeight(70);	
-		listBtn.setGraphic(imageInter);
-		listBtn.setStyle("-fx-text-fill : #757D8A;"
+		optiBtn.setGraphic(imageInter);
+		optiBtn.setStyle("-fx-text-fill : #757D8A;"
 		 		   + "-fx-font-weight : bold; "
 		 		   + "-fx-font-size: 14px; "
 		 		   + "-fx-font-family: Verdana;");
-		listBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		optiBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				listBtn.setGraphic(imageInterIN);
-				listBtn.setStyle("-fx-text-fill : #4E73F8;" //4E73F8 color mouse
+				optiBtn.setGraphic(imageInterIN);
+				optiBtn.setStyle("-fx-text-fill : #4E73F8;" //4E73F8 color mouse
 	 			 		   + "-fx-font-weight : bold; "
 	 			 		   + "-fx-font-size: 14px; "
 	 			 		   + "-fx-font-family: Verdana;");
 			}
 		});
-		listBtn.setOnMouseExited(new EventHandler<MouseEvent>() {
+		optiBtn.setOnMouseExited(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				listBtn.setGraphic(imageInter);
-				listBtn.setStyle("-fx-text-fill : #757D8A;" //4E73F8 color mouse
+				optiBtn.setGraphic(imageInter);
+				optiBtn.setStyle("-fx-text-fill : #757D8A;" //4E73F8 color mouse
 	 			 		   + "-fx-font-weight : bold; "
 	 			 		   + "-fx-font-size: 14px; "
 	 			 		   + "-fx-font-family: Verdana;");
 			}
 		});
-		listBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		
+		if(PanelConnexion.getUser().getProfil().equalsIgnoreCase("Apprenant")) {
+			optiBtn.setDisable(true);
+		}
+		optiBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			
 			@Override
 			public void handle(MouseEvent event) {
-				// Appel la fonction d'initialisation
-				if (event.getButton() == MouseButton.PRIMARY) {
-					try {
-						PanelGestionnaire.data.clear();
-						PanelGestionnaire.data.addAll(App.initPanelGestionnaire());
-//						new PanelGestionnaire(stage);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}				
+				try {
+					PanelOpti.PanelOpti();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		
@@ -553,7 +551,7 @@ public class PanelGeneralInfos extends BorderPane {
 		vbUser.getChildren().addAll(lblBienvenue, lblUserName);
 		hbUser.getChildren().addAll(imgUser, vbUser);
 
-		vbMiddle.getChildren().addAll(rechBtn, listBtn, imprBtn, infoBtn, corbeilleBtn);
+		vbMiddle.getChildren().addAll(rechBtn, imprBtn, infoBtn, corbeilleBtn, optiBtn);
 		vbMiddle.setSpacing(40);
 		// ajouter ici alignement 
 

@@ -165,26 +165,7 @@ public class PanelFiltre extends BorderPane{
 				+ "		-fx-font-weight: bold;\n"
 				+ "    -fx-font-size: 18px;");
 		
-		Button boutonOpti = new Button("Optimisation");
-		boutonOpti.setOnAction(new EventHandler<ActionEvent>(){
-			
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					PanelOpti.PanelOpti();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 		
-		if (PanelConnexion.getUser().getProfil().compareTo("Apprenant") == 0 ) {
-			boutonOpti.setDisable(true);
-		}
-		VBox boxBottom = new VBox();
-		boxBottom.getChildren().add(boutonOpti);
-		boxBottom.setAlignment(Pos.BOTTOM_LEFT);
-		boxBottom.setPadding(new Insets(0,0,10,0));
 		VBox boxRecherche = new VBox();
 		boxRecherche.getChildren().addAll(zoneRechercheNom, zoneRecherchePrenom, menuPromo, menuDepartement, menuAnneeEntree);
 		boxRecherche.setSpacing(10);
@@ -194,19 +175,10 @@ public class PanelFiltre extends BorderPane{
 		orgVbox.setSpacing(50);
 		this.setTop(titre);
 		this.setCenter(orgVbox);
-		this.setBottom(boxBottom);
 		this.setStyle("-fx-background-color: #FBFDFF");
 		cacherRecherche();
 		Scene scene = new Scene(this, 314, 1024);
 		stage.setScene(scene);
-		
-		boutonOpti.setStyle("-fx-background-color: #0E4DA4;"
-				+ "    -fx-background-insets: 0,1,2,3;\n"
-				+ "    -fx-background-radius: 6, 5;\n"
-				+ "    -fx-padding: 12 30 12 30;\n"
-				+ "    -fx-text-fill: white;\n"
-				+ "    -fx-font-weight : bold;"
-				+ "    -fx-font-size: 14px;");
 	
 	}
 	
