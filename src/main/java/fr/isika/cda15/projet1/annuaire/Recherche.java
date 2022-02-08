@@ -64,8 +64,13 @@ public class Recherche {
 						setResultat.add(stagiaire);
 				break;
 			case 6:
-				for(int i = 1; i <= 5; i++)
-					setResultat.addAll(rechercher(cle, i, setEntrant));
+				for(Stagiaire stagiaire : setEntrant)
+					if(stagiaire.getNom().toLowerCase().contains(cle.toLowerCase())
+						|| stagiaire.getPrenom().toLowerCase().contains(cle.toLowerCase())
+						|| stagiaire.getAnneeEntree().toLowerCase().contains(cle.toLowerCase())
+						|| stagiaire.getPromo().toLowerCase().contains(cle.toLowerCase())
+						|| stagiaire.getDepartement().toLowerCase().contains(cle.toLowerCase())) 
+						setResultat.add(stagiaire);
 				break;
 			default:
 				System.out.println("No Results founded");
