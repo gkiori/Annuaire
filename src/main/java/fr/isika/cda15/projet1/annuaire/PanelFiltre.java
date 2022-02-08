@@ -46,6 +46,7 @@ public class PanelFiltre extends BorderPane{
 	private TreeSet<String> vueDepartement = new TreeSet<String>();
 	private TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 
+	private boolean activeRecherche = true;
 	private static boolean changementLance = false;
 	
 	public PanelFiltre(final Stage stage) throws Exception{
@@ -112,7 +113,8 @@ public class PanelFiltre extends BorderPane{
 		ListChangeListener<String> changementComboBox = new ListChangeListener<String>() {
 			@Override
 			public void onChanged(ListChangeListener.Change<? extends String> c) {
-				changementRecherche();
+				if(activeRecherche)
+					changementRecherche();
 			}
 		};
 		menuPromo.getCheckModel().getCheckedItems().addListener(changementComboBox);
@@ -123,12 +125,15 @@ public class PanelFiltre extends BorderPane{
 			
 			@Override
 			public void handle(ActionEvent event) {
+				activeRecherche = false;
 				menuPromo.getCheckModel().clearChecks();
 				menuDepartement.getCheckModel().clearChecks();
 				menuAnneeEntree.getCheckModel().clearChecks();
 				zoneRecherche.clear();
 				zoneRechercheNom.clear();
 				zoneRecherchePrenom.clear();
+				activeRecherche = true;
+				changementRecherche();
 			}
 		});
 		
