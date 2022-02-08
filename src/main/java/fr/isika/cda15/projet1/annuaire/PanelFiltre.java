@@ -185,9 +185,13 @@ public class PanelFiltre extends BorderPane{
 		boxBottom.getChildren().add(boutonOpti);
 		boxBottom.setAlignment(Pos.BOTTOM_LEFT);
 		boxBottom.setPadding(new Insets(0,0,10,0));
-		orgVbox.getChildren().addAll(zoneRecherche, menuPromo, menuDepartement, menuAnneeEntree, zoneRechercheNom, zoneRecherchePrenom, reinitialisationFiltre);
+		VBox boxRecherche = new VBox();
+		boxRecherche.getChildren().addAll(zoneRechercheNom, zoneRecherchePrenom, menuPromo, menuDepartement, menuAnneeEntree);
+		boxRecherche.setSpacing(10);
+		//boxRecherche.setPadding(new Insets(20,20,20,10));
+		orgVbox.getChildren().addAll(zoneRecherche, boxRecherche, reinitialisationFiltre);
 		orgVbox.setPadding(new Insets(20,20,20,10));
-		orgVbox.setSpacing(10);
+		orgVbox.setSpacing(50);
 		this.setTop(titre);
 		this.setCenter(orgVbox);
 		this.setBottom(boxBottom);
