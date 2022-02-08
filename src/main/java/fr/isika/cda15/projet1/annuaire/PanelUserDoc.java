@@ -91,19 +91,26 @@ public class PanelUserDoc extends BorderPane {
 			public void handle(ActionEvent event) {
 				switch (pageToShow) {
 				case 0:
-					principalBorber.setCenter(listImage.get(pageToShow));
 					btnBack.setDisable(true);
 					pageToShow++;
+					principalBorber.setCenter(listImage.get(pageToShow));
+//					btnBack.setDisable(true);
+//					pageToShow++;
+					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 1:
-					principalBorber.setCenter(listImage.get(pageToShow));
 					btnBack.setDisable(false);
 					pageToShow++;
+					principalBorber.setCenter(listImage.get(pageToShow));
+//					btnBack.setDisable(false);
+//					pageToShow++;
+					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 2:
-					principalBorber.setCenter(listImage.get(pageToShow));
 					btnOK.setDisable(true);
 					btnBack.setDisable(false);
+					principalBorber.setCenter(listImage.get(pageToShow));
+					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				}
 //				popUpDoc.close();	
@@ -116,24 +123,31 @@ public class PanelUserDoc extends BorderPane {
 			public void handle(ActionEvent event) {
 				switch (pageToShow) {
 				case 0:
-					principalBorber.setCenter(listImage.get(pageToShow));
+//					
 					btnBack.setDisable(true);
 					btnOK.setDisable(false);
+					principalBorber.setCenter(listImage.get(pageToShow));
+					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 1:
-					principalBorber.setCenter(listImage.get(pageToShow));
+//					
 					btnOK.setDisable(false);
 					pageToShow--;
+					principalBorber.setCenter(listImage.get(pageToShow));
+					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 2:
-					principalBorber.setCenter(listImage.get(pageToShow));
+//					
 					btnOK.setDisable(false);
 					pageToShow--;
+					principalBorber.setCenter(listImage.get(pageToShow));
+					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				}
 //				popUpDoc.close();	
 			}
 		});
+		
 		GridPane gridPane = new GridPane();
 //		gridPane.getChildren().addAll(btnBack,btnOK);
 		gridPane.add(btnOK, 1, 0);
