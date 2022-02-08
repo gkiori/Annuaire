@@ -101,7 +101,7 @@ public class PanelFiltre extends BorderPane{
 					}
 				};
 				Timer timerChangementRecherche = new Timer();
-				timerChangementRecherche.schedule(tacheChangementRecherche, 500);
+				timerChangementRecherche.schedule(tacheChangementRecherche, 300);
 			}
 			
 		};
