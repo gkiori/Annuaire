@@ -30,6 +30,11 @@ public class ArbreStagiaire {
 
 //************************* Manipulation fichiers binaires ************************** //
 	
+	/**
+	 *  Méthode d'initialisation :
+	 *  - si un fichier binaire existe, l'ouvre et initialise le RandomAccessFile
+	 *  - s'il n'existe aucun fichier binaire, en crée un et initialise le RandomAccessFile, puis lance l'initialisation à partir d'un fichier .DON
+	 */
 	public static void initArbre() {
 		File monFichierBin = new File(PATH_FILE_BIN);
 		File monFichierDon = new File(PATH_FILE_DON);
@@ -53,6 +58,13 @@ public class ArbreStagiaire {
 
 //	************************** Initialisation de l'arbre à partir d'un fichier bin ************************** //
 	
+	/**
+	 *	Méthode permettant la lecture d'un fichier .DON avec la structure demandée
+	 *	Crée une liste contenant tout les stagiaires contenus dans le fichier
+	 *	appelle la méthode construireArbreEquilibre
+	 *
+	 *	@see ArbreStagiaire#construireArbreEquilibre()
+	 */
 	private static void initLectureDon(File monFichier) {
 		String nom = "", prenom = "", departement = "", nomPromo = "", anneeEntree = "";
 		List<Stagiaire> listeStagiaire = new ArrayList<Stagiaire>();
@@ -78,6 +90,13 @@ public class ArbreStagiaire {
 	
 //	************************** Méthodes pour la lecture et l'écriture dans le fichier ************************** //
 	
+	/**
+	 *  Méthode permettant d'écrire un lien père fils entre deux noeuds dans le fichier lors de l'ajout d'un nouveau stagiaire et d'appeler la méthode écraser
+	 *  
+	 *  @see ArbreStagiaire#ecraser(int, Stagiaire)
+	 *  @param x	le nouveau stagiaire
+	 *  @param indexPere	l'index correspondant à la position du père dans le fichier
+	 */
 	private static void ecritureNoeudFichier(Stagiaire x, int indexPere) {
 		int index = 0;
 		try {
@@ -98,6 +117,12 @@ public class ArbreStagiaire {
 		}
 	}
 	
+	/**
+	 * Méthode permettant d'écrire un stagiaire au bon index dans le fichier
+	 * 
+	 * @param index		index correspondant à la position ou le stagiaire doit être écrit
+	 * @param x 		le stagiaire à écrire
+	 */
 	private static void ecraser(int index, Stagiaire x) {
 		try {
 			raf.seek(index*142);
@@ -126,6 +151,12 @@ public class ArbreStagiaire {
 		}
 	}
 	
+	/**
+	 *  Méthode permettant de lire un stagiaire à un certain index dans le fichier
+	 *  
+	 *  @param index	la position du stagiaire à lire
+	 *  @return 		retourne le stagiaire lu
+	 */
 	private static Stagiaire lectureStagiaire(int index) {
 		Stagiaire stagiaireTemporaire = new Stagiaire("", "", "", "", "");
 		String motTemporaire = "";
@@ -164,6 +195,12 @@ public class ArbreStagiaire {
 		return stagiaireTemporaire;
 	}
 	
+	/**
+	 * 	Méthode permettant de lire du fils gauche d'un stagiaire positionné à un index précis
+	 * 
+	 * 	@param index	l'index du stagiaire dont on lira le fils gauche 
+	 *  @return			l'index du fils gauche du stagiaire
+	 */
 	private static int lectureIndexFilsG(int index) {
 		int retour = 0;
 		try {
@@ -175,6 +212,12 @@ public class ArbreStagiaire {
 		return retour;
 	}
 	
+	/**
+	 * 	Méthode permettant de lire du fils droit d'un stagiaire positionné à un index précis
+	 * 
+	 * 	@param index	l'index du stagiaire dont on lira le fils droit 
+	 *  @return			l'index du fils droit du stagiaire
+	 */
 	private static int lectureIndexFilsD(int index) {
 		int retour = 0;
 		try {
@@ -186,6 +229,11 @@ public class ArbreStagiaire {
 		return retour;
 	}
 	
+	/**
+	 * 	Méthode permettant de changer le fils gauche d'un stagiaire positionné à un index précis
+	 * 
+	 * 	@param index	l'index du stagiaire dont on changera le fils gauche
+	 */
 	private static void ecrireIndexFilsG(int index, int nouveauIndex) {
 		try {
 			raf.seek((index*142)+134);
@@ -195,6 +243,11 @@ public class ArbreStagiaire {
 		}
 	}
 	
+	/**
+	 * 	Méthode permettant de changer le fils droit d'un stagiaire positionné à un index précis
+	 * 
+	 * 	@param index	l'index du stagiaire dont on changera le fils droit
+	 */
 	private static void ecrireIndexFilsD(int index, int nouveauIndex) {
 		try {
 			raf.seek((index*142)+138);
@@ -204,6 +257,13 @@ public class ArbreStagiaire {
 		}
 	}
 	
+	/**
+	 * 	Méthode permettant de changer la racine du fichier
+	 * 
+	 * 	@param x		la nouvelle racine
+	 * 	@param filsG	le fils gauche de cette nouvelle racine
+	 * 	@param filsD	le fils droit de cette nouvelle racine
+	 */
 	private static void nouvelleRacine(Stagiaire x, int filsG, int filsD) {
 		ecritureNoeudFichier(x, -1);
 		try {
@@ -218,10 +278,22 @@ public class ArbreStagiaire {
 	
 //	************************** Méthodes pour ajout de Noeud ************************** //	
 	
+	/**
+	 * 	Point d'entrée de la méthode récursive d'ajout d'un nouveau stagiaire dans le fichier
+	 * 
+	 * 	@param x 	Le stagiaire à ajouter
+	 */
 	public static void ajouter(Stagiaire x) {
 		ajouterNoeud(x, racine, -1);
 	}
 	
+	/**
+	 * 	Méthode récursive d'ajout d'un nouveau stagiaire dans le fichier
+	 * 
+	 * 	@param x 			Le stagiaire à ajouter
+	 * 	@param courant		Le noeud sur lequel on est situé actuellement
+	 * 	@param indexPere	Le noeud pere du noeud courant
+	 */
 	private static void ajouterNoeud(Stagiaire x, int courant, int indexPere) {
 		if(courant == -1) {
 			ecritureNoeudFichier(x, indexPere);
@@ -235,6 +307,11 @@ public class ArbreStagiaire {
 	
 //	************************** Méthodes pour suppression de Noeud ************************** //	
 	
+	/**
+	 * 	Point d'entrée de la méthode récursive de suppression d'un nouveau stagiaire dans le fichier
+	 * 
+	 * 	@param x 	Le stagiaire à supprimer
+	 */
 	public static void supprimer(Stagiaire x) {
 		int racineAvant = racine;
 		racine = supprimerNoeud(x, racine);
@@ -245,6 +322,12 @@ public class ArbreStagiaire {
 		Corbeille.ajoutCorbeille(x);
 	}
 	
+	/**
+	 * 	Méthode récursive de recherche du stagiaire à supprimer
+	 * 
+	 * 	@param x 		Le stagiaire à supprimer
+	 * 	@param courant	Le noeud sur lequel on est situé actuellement
+	 */
 	private static int supprimerNoeud(Stagiaire x, int courant) {
         if (courant == -1)
             return 0;
@@ -261,7 +344,15 @@ public class ArbreStagiaire {
         }
         return courant;
     }
-	
+
+	/**
+	 * 	Méthode récursive de suppression d'un nouveau stagiaire dans le fichier qui gère les cas suivant :
+	 * 	- Le noeud à supprimer est une feuille
+	 * 	- Le noeud à supprimer n'a qu'un seul fils
+	 * 	- Le noeud à supprimer a deux fils
+	 * 
+	 * 	@param courant	Le noeud sur lequel on est situé actuellement qui contient le stagiaire à supprimer
+	 */
 	private static int supprimerRacine(int courant) {
 		if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1) {
 			return -1;
@@ -279,6 +370,11 @@ public class ArbreStagiaire {
         }
     }
 
+	/**
+	 * 	Méthode cherchant le dernier descendant le plus à droit du noeud courant
+	 * 
+	 * 	@param courant	Fils gauche du noeud père à supprimer
+	 */
     private static int dernierDescendant(int courant) {
         if (lectureIndexFilsD(courant) == -1)
             return courant;
@@ -287,36 +383,72 @@ public class ArbreStagiaire {
 
 //	************************** Méthodes pour modification de Noeud ************************** //
     
+    /**
+	 * 	Méthode modifiant le nom d'un stagiaire
+	 * 
+	 * 	@param stagiaire	stagiaire dont le nom va être modifié
+	 * 	@param nouveauNom	nouveau nom du stagiaire
+	 */
     public static void modifierNom(Stagiaire stagiaire, String nouveauNom) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setNom(nouveauNom);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
+    /**
+	 * 	Méthode modifiant le prénom d'un stagiaire
+	 * 
+	 * 	@param stagiaire		stagiaire dont le prénom va être modifié
+	 * 	@param nouveauPrenom	nouveau prénom du stagiaire
+	 */
     public static void modifierPrenom(Stagiaire stagiaire, String nouveauPrenom) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setPrenom(nouveauPrenom);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
+    /**
+	 * 	Méthode modifiant le département d'un stagiaire
+	 * 
+	 * 	@param stagiaire			stagiaire dont le département va être modifié
+	 * 	@param nouveauDepartement	nouveau département du stagiaire
+	 */
     public static void modifierDepartement(Stagiaire stagiaire, String nouveauDepartement) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setDepartement(nouveauDepartement);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
+    /**
+	 * 	Méthode modifiant la promotion d'un stagiaire
+	 * 
+	 * 	@param stagiaire		stagiaire dont la promotion va être modifié
+	 * 	@param nouvellePromo	nouvelle promotion du stagiaire
+	 */
     public static void modifierPromo(Stagiaire stagiaire, String nouvellePromo) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setPromo(nouvellePromo);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
+    /**
+	 * 	Méthode modifiant l'année d'entrée d'un stagiaire
+	 * 
+	 * 	@param stagiaire			stagiaire dont l'année d'entrée va être modifié
+	 * 	@param nouvelleAnneeEntree	nouvelle année d'entrée du stagiaire
+	 */
     public static void modifierAnneeEntree(Stagiaire stagiaire, String nouvelleAnneeEntree) {
     	Stagiaire ancienStagiaire = stagiaire;
     	stagiaire.setAnneeEntree(nouvelleAnneeEntree);
     	modifier(ancienStagiaire, stagiaire); 	
     }
     
+    /**
+	 * 	Méthode supprimant un stagiaire et en ajoutant un nouveau
+	 * 
+	 * 	@param ancienStagiaire	stagiaire à supprimer
+	 * 	@param nouveauStagiaire stagiaire à ajouter
+	 */
     public static void modifier(Stagiaire ancienStagiaire, Stagiaire nouveauStagiaire) {
     	supprimer(ancienStagiaire);
     	ajouter(nouveauStagiaire);
@@ -325,15 +457,21 @@ public class ArbreStagiaire {
  // ******************* Création de la liste complète des stagiaire  *******************
 	
  	/**
- 	 * Méthode de création de la liste complète des stagiaires présent dans l'arbre
- 	 * @param ArbreStagiaire : arbre
- 	 * @return List<Stagiaire> : listInfixe
+ 	 * Méthode d'entrée de la méthode récursive parcourant l'arbre pour retourner un HashSet contenant tout les stagiaires
+ 	 * 
+ 	 * @return retourne un set contenant tout les stagiaires contenu dans le fichier
  	 */
  	public static HashSet<Stagiaire> parcoursStagiaire(){
  		HashSet<Stagiaire> listStagiaire = new HashSet<Stagiaire>();
  		return parcoursStagiaire(racine, listStagiaire);
  	}
  	
+ 	/**
+ 	 * Méthode récursive parcourant l'arbre pour retourner un HashSet contenant tout les stagiaires
+ 	 * 
+ 	 * @param listInfixe	Set dans lequel on ajoutera tout les stagiaires contenu dans le fichier 
+ 	 * @return 				retourne un set contenant tout les stagiaires contenu dans le fichier
+ 	 */
  	private static HashSet<Stagiaire> parcoursStagiaire(int r, HashSet<Stagiaire> listInfixe){
  		if(r == -1) return new HashSet<Stagiaire>(listInfixe);
  		
@@ -347,6 +485,15 @@ public class ArbreStagiaire {
  
  	 // ******************* Méthode d'équilibrage d'arbre  *******************
  	
+ 	/**
+ 	 * Méthode récursive ajoutant les stagiaires d'une liste reçue en paramètre de manière à constituer un arbre équilibré 
+ 	 * en ajoutant à chaque appel récursif la médiane du tableau qu'on reçoit en paramètre 
+ 	 * et en appelant ensuite cette méthode sur la partie gauche puis droite du tableau
+ 	 * 
+ 	 * @param arbre 	Liste des stagiaires à ajouter
+ 	 * @param debut		index du début de la partie du tableau sur laquelle on va travailler durant l'appel récursif
+ 	 * @param fin		index de la fin de la partie du tableau sur laquelle on va travailler durant l'appel récursif
+ 	 */
     private static void construireArbreEquilibreRec(List<Stagiaire> arbre, int debut, int fin){
         if (debut > fin) {
             return;
@@ -359,7 +506,11 @@ public class ArbreStagiaire {
         construireArbreEquilibreRec(arbre, debut, milieu - 1);
         construireArbreEquilibreRec(arbre, milieu + 1, fin);
     }
- 
+    
+    /**
+ 	 * Point d'entrée de la méthode récursive ajoutant les stagiaires pour constituer un arbre équilibré.
+ 	 * Elle écrase le fichier précédent afin d'en créer un nouveau contenant l'arbre équilibré
+ 	 */
     public static void construireArbreEquilibre(){
     	List<Stagiaire> listeStagiaire = new ArrayList<Stagiaire>();
         listeStagiaire.addAll(parcoursStagiaire());
@@ -374,17 +525,29 @@ public class ArbreStagiaire {
         construireArbreEquilibreRec(listeStagiaire, 0, listeStagiaire.size() - 1);
     }
     
+    /**
+ 	 * Point d'entrée de la méthode récursive ajoutant les stagiaires pour constituer un arbre équilibré.
+ 	 * Elle prend en paramètre un liste de stagiaire et n'est appelée que lors de l'initialisation à partir d'un fichier .DON
+ 	 */
     private static void construireArbreEquilibre(List<Stagiaire> listeStagiaire){
         construireArbreEquilibreRec(listeStagiaire, 0, listeStagiaire.size() - 1);
     }
 
  // ******************* Méthode de calcul de hauteur d'arbre  *******************
     
+    /**
+ 	 * Point d'entrée de la méthode récursive calculant la hauteur minimum d'un arbre
+ 	 */
     public static int hauteurMinimum(){
     	
         return hauteurMinimum(racine);
     }
  
+    /**
+ 	 * Méthode récursive calculant la hauteur minimum de arbre situé dans le fichier
+ 	 * 
+ 	 * @param courant	le noeud sur lequel on est situé durant cet appel récursif
+ 	 */
     public static int hauteurMinimum(int courant){
     	
         if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1)
@@ -399,11 +562,19 @@ public class ArbreStagiaire {
         return Math.min(hauteurMinimum(lectureIndexFilsG(courant)),hauteurMinimum(lectureIndexFilsD(courant))) + 1;
     }
     
+    /**
+ 	 * Point d'entrée de la méthode récursive calculant la hauteur maximum d'un arbre
+ 	 */
     public static int hauteurMaximum(){
     	
         return hauteurMaximum(racine);
     }
  
+    /**
+ 	 * Méthode récursive calculant la hauteur maximum de l'arbre situé dans le fichier
+ 	 * 
+ 	 * @param courant	le noeud sur lequel on est situé durant cet appel récursif
+ 	 */
     public static int hauteurMaximum(int courant){
  
         if (lectureIndexFilsG(courant) == -1 && lectureIndexFilsD(courant) == -1)
