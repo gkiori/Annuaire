@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 
 public class PanelFiltre extends BorderPane{
 	
-	private Label titre = new Label("Filtres");
+	private static Label titre = new Label("Filtres");
 	private static TextField zoneRecherche = new TextField();
 	private static TextField zoneRechercheNom = new TextField();
 	private static TextField zoneRecherchePrenom = new TextField();
@@ -45,7 +45,8 @@ public class PanelFiltre extends BorderPane{
 	private TreeSet<String> vuePromo = new TreeSet<String>();
 	private TreeSet<String> vueDepartement = new TreeSet<String>();
 	private TreeSet<String> vueAnneeEntree = new TreeSet<String>();
-	
+
+	private static VBox orgVbox = new VBox();
 	private static boolean changementLance = false;
 	
 	public PanelFiltre(final Stage stage) throws Exception{
@@ -180,7 +181,6 @@ public class PanelFiltre extends BorderPane{
 		if (PanelConnexion.getUser().getProfil().compareTo("Apprenant") == 0 ) {
 			boutonOpti.setDisable(true);
 		}
-		VBox orgVbox = new VBox();
 		VBox boxBottom = new VBox();
 		boxBottom.getChildren().add(boutonOpti);
 		boxBottom.setAlignment(Pos.BOTTOM_LEFT);
@@ -192,6 +192,7 @@ public class PanelFiltre extends BorderPane{
 		this.setCenter(orgVbox);
 		this.setBottom(boxBottom);
 		this.setStyle("-fx-background-color: #FBFDFF");
+		cacherRecherche();
 		Scene scene = new Scene(this, 314, 1024);
 		stage.setScene(scene);
 		
@@ -203,6 +204,16 @@ public class PanelFiltre extends BorderPane{
 				+ "    -fx-font-weight : bold;"
 				+ "    -fx-font-size: 14px;");
 	
+	}
+	
+	public static void cacherRecherche() {
+		titre.setVisible(false);
+		orgVbox.setVisible(false);
+	}
+	
+	public static void montrerRecherche() {
+		titre.setVisible(true);
+		orgVbox.setVisible(true);
 	}
 	
 	public static void changementRecherche() {
