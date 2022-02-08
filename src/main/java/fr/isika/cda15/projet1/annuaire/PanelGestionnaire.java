@@ -211,6 +211,7 @@ public class PanelGestionnaire extends BorderPane {
 			        
 			        PanelFiltre monPanelFiltre = new PanelFiltre(stage);
 			        PanelGeneralInfos monPanelInfos = new PanelGeneralInfos(stage);
+			        PanelFiltre.cacherRecherche();
 			        
 			        BorderPane panelBottom = new BorderPane();
 			        panelBottom.setCenter(vbox);
