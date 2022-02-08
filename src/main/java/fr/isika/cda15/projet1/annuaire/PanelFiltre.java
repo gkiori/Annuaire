@@ -36,7 +36,7 @@ public class PanelFiltre extends BorderPane{
 	private static TextField zoneRecherche = new TextField();
 	private static TextField zoneRechercheNom = new TextField();
 	private static TextField zoneRecherchePrenom = new TextField();
-	private Button reinitialisationFiltre = new Button("Réinitialiser les filtres");
+	private static Button reinitialisationFiltre = new Button("Réinitialiser les filtres");
 
 	private static CheckComboBox<String> menuPromo = new CheckComboBox<String>();
 	private static CheckComboBox<String> menuDepartement = new CheckComboBox<String>();
@@ -46,7 +46,6 @@ public class PanelFiltre extends BorderPane{
 	private TreeSet<String> vueDepartement = new TreeSet<String>();
 	private TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 
-	private static VBox orgVbox = new VBox();
 	private static boolean changementLance = false;
 	
 	public PanelFiltre(final Stage stage) throws Exception{
@@ -169,7 +168,7 @@ public class PanelFiltre extends BorderPane{
 		VBox boxRecherche = new VBox();
 		boxRecherche.getChildren().addAll(zoneRechercheNom, zoneRecherchePrenom, menuPromo, menuDepartement, menuAnneeEntree);
 		boxRecherche.setSpacing(10);
-		//boxRecherche.setPadding(new Insets(20,20,20,10));
+		VBox orgVbox = new VBox();
 		orgVbox.getChildren().addAll(zoneRecherche, boxRecherche, reinitialisationFiltre);
 		orgVbox.setPadding(new Insets(20,20,20,10));
 		orgVbox.setSpacing(50);
@@ -184,12 +183,23 @@ public class PanelFiltre extends BorderPane{
 	
 	public static void cacherRecherche() {
 		titre.setVisible(false);
-		orgVbox.setVisible(false);
+		zoneRecherche.setVisible(false);
+		reinitialisationFiltre.setVisible(false);
+		zoneRechercheNom.setVisible(false);
+		zoneRecherchePrenom.setVisible(false);
+		menuPromo.setVisible(false);
+		menuDepartement.setVisible(false);
+		menuAnneeEntree.setVisible(false);
 	}
 	
 	public static void montrerRecherche() {
-		titre.setVisible(true);
-		orgVbox.setVisible(true);
+		zoneRecherche.setVisible(true);
+		reinitialisationFiltre.setVisible(true);
+		zoneRechercheNom.setVisible(true);
+		zoneRecherchePrenom.setVisible(true);
+		menuPromo.setVisible(true);
+		menuDepartement.setVisible(true);
+		menuAnneeEntree.setVisible(true);
 	}
 	
 	public static void changementRecherche() {
