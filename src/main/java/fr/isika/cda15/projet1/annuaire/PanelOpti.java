@@ -98,7 +98,7 @@ public class PanelOpti extends BorderPane{
 		popUpOpti.initModality(Modality.APPLICATION_MODAL);
 		popUpOpti.setTitle("Optimisation");
 		
-		Scene theScene = new Scene (maBP, 500,200);
+		Scene theScene = new Scene (maBP, 500,300);
 		popUpOpti.setScene(theScene);
 		popUpOpti.showAndWait();
 		
