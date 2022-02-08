@@ -93,7 +93,7 @@ public class PanelFiltre extends BorderPane{
 		
 		
 		ChangeListener<String> changementZoneEcriture = new ChangeListener<String>(){
-			@Override
+			@Override 
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				TimerTask tacheChangementRecherche = new TimerTask() {
 					@Override
