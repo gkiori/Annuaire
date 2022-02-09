@@ -149,8 +149,8 @@ public class PanelAjoutStagiaire extends BorderPane{
 									return;
 								}
 								ArbreStagiaire.modifier(stagiaire, newStagiaire);
-								PanelGestionnaire.data.remove(stagiaire);
-								PanelGestionnaire.data.add(newStagiaire);
+								PanelGestionnaire.data.clear();
+								PanelGestionnaire.data.addAll(PanelConnexion.initPanelGestionnaire());
 								popUpStagiaire.close();
 //								new PanelGestionnaire(stage);
 						}
