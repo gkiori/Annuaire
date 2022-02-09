@@ -234,5 +234,8 @@ public class PanelFiltre extends BorderPane{
 		menuPromo.getItems().addAll(vuePromo);
 		menuDepartement.getItems().addAll(vueDepartement);
 		menuAnneeEntree.getItems().addAll(vueAnneeEntree);
+		menuPromo.setTitle("Promotion");
+		menuDepartement.setTitle("Département");
+		menuAnneeEntree.setTitle("Année d'entrée");
 	}
 }
