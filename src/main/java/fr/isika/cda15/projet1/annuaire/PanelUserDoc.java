@@ -96,7 +96,7 @@ public class PanelUserDoc extends BorderPane {
 					principalBorber.setCenter(listImage.get(pageToShow));
 //					btnBack.setDisable(true);
 //					pageToShow++;
-					System.out.println("print pagetoShow : " + pageToShow);
+//					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 1:
 					btnBack.setDisable(false);
@@ -104,13 +104,13 @@ public class PanelUserDoc extends BorderPane {
 					principalBorber.setCenter(listImage.get(pageToShow));
 //					btnBack.setDisable(false);
 //					pageToShow++;
-					System.out.println("print pagetoShow : " + pageToShow);
+//					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 2:
 					btnOK.setDisable(true);
 					btnBack.setDisable(false);
 					principalBorber.setCenter(listImage.get(pageToShow));
-					System.out.println("print pagetoShow : " + pageToShow);
+//					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				}
 //				popUpDoc.close();	
@@ -127,21 +127,21 @@ public class PanelUserDoc extends BorderPane {
 					
 					btnOK.setDisable(false);
 					principalBorber.setCenter(listImage.get(pageToShow));
-					System.out.println("print pagetoShow : " + pageToShow);
+//					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 1:
 					btnBack.setDisable(true);
 					btnOK.setDisable(false);
 					pageToShow--;
 					principalBorber.setCenter(listImage.get(pageToShow));
-					System.out.println("print pagetoShow : " + pageToShow);
+//					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				case 2:
 //					
 					btnOK.setDisable(false);
 					pageToShow--;
 					principalBorber.setCenter(listImage.get(pageToShow));
-					System.out.println("print pagetoShow : " + pageToShow);
+//					System.out.println("print pagetoShow : " + pageToShow);
 					break;
 				}
 //				popUpDoc.close();	

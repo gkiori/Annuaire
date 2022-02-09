@@ -483,7 +483,7 @@ public class PanelGeneralInfos extends BorderPane {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-//					new PanelInformation();
+					PanelSupport.PanelSupport();
 				}
 			}
         	
