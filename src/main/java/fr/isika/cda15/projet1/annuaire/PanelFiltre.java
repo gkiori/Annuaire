@@ -42,9 +42,9 @@ public class PanelFiltre extends BorderPane{
 	private static CheckComboBox<String> menuDepartement = new CheckComboBox<String>();
 	private static CheckComboBox<String> menuAnneeEntree = new CheckComboBox<String>();
 	
-	private TreeSet<String> vuePromo = new TreeSet<String>();
-	private TreeSet<String> vueDepartement = new TreeSet<String>();
-	private TreeSet<String> vueAnneeEntree = new TreeSet<String>();
+	private static TreeSet<String> vuePromo = new TreeSet<String>();
+	private static TreeSet<String> vueDepartement = new TreeSet<String>();
+	private static TreeSet<String> vueAnneeEntree = new TreeSet<String>();
 
 	private boolean activeRecherche = true;
 	private static boolean changementLance = false;
@@ -55,9 +55,7 @@ public class PanelFiltre extends BorderPane{
 		zoneRechercheNom.setPromptText("Nom");
 		zoneRecherchePrenom.setPromptText("Prenom");
 		
-		vuePromo.addAll(Recherche.getListePromo());
-		vueDepartement.addAll(Recherche.getListeDepartement());
-		vueAnneeEntree.addAll(Recherche.getListeAnneeEntree());
+		actualisationBox();
 		
 		ObservableList<String> listePromo = FXCollections.observableArrayList();
 		for(String promo : vuePromo) listePromo.add(promo);
@@ -224,5 +222,17 @@ public class PanelFiltre extends BorderPane{
 		PanelGestionnaire.data.clear();
 		PanelGestionnaire.data.addAll(FXCollections.observableArrayList(resultatRechercheTrie));
 		changementLance = false;
+	}
+	
+	public static void actualisationBox() {
+		vuePromo.addAll(Recherche.getListePromo());
+		vueDepartement.addAll(Recherche.getListeDepartement());
+		vueAnneeEntree.addAll(Recherche.getListeAnneeEntree());
+		menuPromo.getItems().clear();
+		menuDepartement.getItems().clear();
+		menuAnneeEntree.getItems().clear();
+		menuPromo.getItems().addAll(vuePromo);
+		menuDepartement.getItems().addAll(vueDepartement);
+		menuAnneeEntree.getItems().addAll(vueAnneeEntree);
 	}
 }

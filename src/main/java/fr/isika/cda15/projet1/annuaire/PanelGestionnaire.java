@@ -130,6 +130,7 @@ public class PanelGestionnaire extends BorderPane {
 			        			
 			        			Stagiaire stagiaire = new Stagiaire();
 			        			PanelAjoutStagiaire.PanelAjoutStagiaire(stagiaire);
+			        			PanelFiltre.actualisationBox();
 							} catch (Exception e3) {
 								e3.printStackTrace();
 							}
@@ -168,6 +169,7 @@ public class PanelGestionnaire extends BorderPane {
 			            	Stagiaire stagiaireAModif = table.getSelectionModel().getSelectedItem();
 			            	try {
 			            		PanelAjoutStagiaire.PanelAjoutStagiaire(stagiaireAModif);
+			            		PanelFiltre.actualisationBox();
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -184,6 +186,7 @@ public class PanelGestionnaire extends BorderPane {
 			            	//TODO appel de la fonction suppression 	
 			            	Stagiaire stagiaireASupp = table.getSelectionModel().getSelectedItem();
 			            	ArbreStagiaire.supprimer(stagiaireASupp);
+			            	PanelFiltre.actualisationBox();
 			            	data.remove(stagiaireASupp);
 			            	contextMenuResultLbl.setText("Vous avez choisi de supprimer la cellule " + stagiaireASupp);
 			               
