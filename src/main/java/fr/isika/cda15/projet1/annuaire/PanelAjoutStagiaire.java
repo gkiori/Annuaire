@@ -149,6 +149,8 @@ public class PanelAjoutStagiaire extends BorderPane{
 									return;
 								}
 								ArbreStagiaire.modifier(stagiaire, newStagiaire);
+								PanelGestionnaire.data.remove(stagiaire);
+								PanelGestionnaire.data.add(newStagiaire);
 								popUpStagiaire.close();
 //								new PanelGestionnaire(stage);
 						}
@@ -184,6 +186,8 @@ public class PanelAjoutStagiaire extends BorderPane{
 						alert.show();
 					}
 				});
+				
+				//Modification
 				
 				hbBtn.getChildren().addAll(btnAjouter, btnAnnuler);
 				hbBtn.setSpacing(5);
